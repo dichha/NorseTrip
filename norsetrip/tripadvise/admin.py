@@ -33,11 +33,11 @@ class Course_Lodge_AssignmentAdmin(admin.ModelAdmin):
 admin.site.register(Course_Lodge_Assignment, Course_Lodge_AssignmentAdmin)
 
 class UserAdmin(admin.ModelAdmin):
-	list_display = ('userId', 'role')
+	list_display = ('userId','email','role')
 admin.site.register(User, UserAdmin)
 
 class ReviewAdmin(admin.ModelAdmin):
-	list_display = ('reviewId','lodge_Id','user_Id','rating','cost')
+	list_display = ('reviewId','lodge_Id','user_Id','rating','cost','pub_date')
 admin.site.register(Review, ReviewAdmin)
 
 class Course_AssignmentAdmin(admin.ModelAdmin):
