@@ -19,7 +19,7 @@ from django.contrib import admin
 from . import views
 
 urlpatterns = [
-    url(r'^tripadvise/', include('tripadvise.urls')),
+    url(r'', include('tripadvise.urls')),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', views.hello_world),
+    #url(r'^$', views.hello_world),
 ]
