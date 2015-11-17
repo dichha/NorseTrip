@@ -9,13 +9,13 @@ class Lodge(models.Model):
 
 	lodgeId = models.AutoField(primary_key = True,db_column = "LodgeId")	
 	lodge_name = models.CharField(max_length = 200,db_column = "Name")	
- 	lodge_address = models.CharField(max_length = 200, db_column = "Address")
- 	city = models.CharField(max_length = 100, db_column = "City")
- 	#country = models.CharField(max_length = 100, db_column = "Country")
- 	country = CountryField(blank_label = '(Select Country)')
- 	lodge_url = models.URLField(db_column = "URL")
- 	lodge_descrip = models.TextField(db_column = "Description")
- 	average_rating = models.IntegerField(db_column = "Average Rating", default = 100)
+	lodge_address = models.CharField(max_length = 200, db_column = "Address")
+	city = models.CharField(max_length = 100, db_column = "City")
+	#country = models.CharField(max_length = 100, db_column = "Country")
+	country = CountryField(blank_label = '(Select Country)')
+	lodge_url = models.URLField(db_column = "URL")
+	lodge_descrip = models.TextField(db_column = "Description")
+	average_rating = models.IntegerField(db_column = "Average Rating", default = 100)
 
 
 class Course(models.Model):
@@ -25,45 +25,45 @@ class Course(models.Model):
 
 
 	TERM = (
-	('JTERM','JTERM'),
-	('SUMMER','SUMMER'),
-	('YEAR','YEAR'),
-	('SEMESTER',"SEMESTER"),
-	)
+        ('JTERM','JTERM'),
+        ('SUMMER','SUMMER'),
+        ('YEAR','YEAR'),
+        ('SEMESTER',"SEMESTER"),
+        )
 
 	DEPT = (('AFRICANA STUDIES', 'AFRICANA STUDIES'),
-			('BIOLOGY', 'BIOLOGY'),
-			('CHEMISTRY','CHEMISTRY'),
-			('CLASSICS','CLASSICS'),
-			('COMMUNICATION STUDIES', 'COMMUNICATION STUDIES'),
-			('COMPUTER SCIENCE','COMPUTER SCIENCE'),
-			('ECONOMICS AND BUSINESS','ECONOMICS AND BUSINESS'),
-			('EDUCATION','EDUCATION'),
-			('ENGLISH','ENGLISH'),
-			('ENVIRONMENTAL STUDIES','ENVIRONMENTAL STUDIES'),
-			('HEALTH AND PHYSICAL EDUCATION','HEALTH AND PHYSICAL EDUCATION'),
-			('HISTORY','HISTORY'),
-			('INTERNATIONAL STUDIES','INTERNATIONAL STUDIES'),
-			('LIBRARY AND INFORMATION STUDIES','LIBRARY AND INFORMATION STUDIES'),
-			('MATHEMATICS', 'MATHEMATICS'),
-			('MODERN LANGUAGES, LITERATURES AND LINGUISTICS','MODERN LANGUAGES, LITERATURES AND LINGUISTICS'),
-			('MUSEUM STUDIES','MUSEUM STUDIES'),
-			('MUSIC','MUSIC'),
-			('NURSING','NURSING'),
-			('PAIDIEA','PAIDIEA'),
-			('PHILOSOPHY','PHILOSOPHY'),
-			('PHYSICS','PHYSICS'),
-			('POLITICAL SCIENCE','POLITICAL SCIENCE'),
-			('PSYCHOLOGY','PSYCHOLOGY'),
-			('RELIGION','RELIGION'),
-			('RUSSIAN STUDIES','RUSSIAN STUDIES'),
-			('SCHOLARS PROGRAM','SCHOLARS PROGRAM'),
-			('SOCIOLOGY/ANTHROPOLOGY/SOCIAL WORK', 'SOCIOLOGY/ANTHROPOLOGY/SOCIAL WORK'),
-			('VISUAL AND PERFORMING ARTS','VISUAL AND PERFORMING ARTS'),
-			('WOMEN AND GENDER STUDIES', 'WOMEN AND GENDER STUDIES'),
+	        ('BIOLOGY', 'BIOLOGY'),
+	        ('CHEMISTRY','CHEMISTRY'),
+	        ('CLASSICS','CLASSICS'),
+	        ('COMMUNICATION STUDIES', 'COMMUNICATION STUDIES'),
+	        ('COMPUTER SCIENCE','COMPUTER SCIENCE'),
+	        ('ECONOMICS AND BUSINESS','ECONOMICS AND BUSINESS'),
+	        ('EDUCATION','EDUCATION'),
+	        ('ENGLISH','ENGLISH'),
+	        ('ENVIRONMENTAL STUDIES','ENVIRONMENTAL STUDIES'),
+	        ('HEALTH AND PHYSICAL EDUCATION','HEALTH AND PHYSICAL EDUCATION'),
+	        ('HISTORY','HISTORY'),
+	        ('INTERNATIONAL STUDIES','INTERNATIONAL STUDIES'),
+	        ('LIBRARY AND INFORMATION STUDIES','LIBRARY AND INFORMATION STUDIES'),
+	        ('MATHEMATICS', 'MATHEMATICS'),
+	        ('MODERN LANGUAGES, LITERATURES AND LINGUISTICS','MODERN LANGUAGES, LITERATURES AND LINGUISTICS'),
+	        ('MUSEUM STUDIES','MUSEUM STUDIES'),
+	        ('MUSIC','MUSIC'),
+	        ('NURSING','NURSING'),
+	        ('PAIDIEA','PAIDIEA'),
+	        ('PHILOSOPHY','PHILOSOPHY'),
+	        ('PHYSICS','PHYSICS'),
+	        ('POLITICAL SCIENCE','POLITICAL SCIENCE'),
+	        ('PSYCHOLOGY','PSYCHOLOGY'),
+	        ('RELIGION','RELIGION'),
+	        ('RUSSIAN STUDIES','RUSSIAN STUDIES'),
+	        ('SCHOLARS PROGRAM','SCHOLARS PROGRAM'),
+	        ('SOCIOLOGY/ANTHROPOLOGY/SOCIAL WORK', 'SOCIOLOGY/ANTHROPOLOGY/SOCIAL WORK'),
+	        ('VISUAL AND PERFORMING ARTS','VISUAL AND PERFORMING ARTS'),
+	        ('WOMEN AND GENDER STUDIES', 'WOMEN AND GENDER STUDIES'),
 
 
-		)
+                )
 
 	courseId = models.IntegerField(primary_key = True, db_column = "CourseId")
 	name = models.CharField(max_length = 200, db_column = "Name")
@@ -89,10 +89,10 @@ class User(models.Model):
 	email = models.EmailField(db_column = "Email", max_length = 24)
 
 	ROLE_CHOICES = (('PROFESSOR', 'PROFESSOR'),
-					('STUDENT','STUDENT'),
-					('ALUMNI', 'ALUMNI'),
-					('FACULTY', 'FACULTY'),
-		)
+	                ('STUDENT','STUDENT'),
+	                ('ALUMNI', 'ALUMNI'),
+	                ('FACULTY', 'FACULTY'),
+                )
 	role = models.CharField(max_length = 9, choices = ROLE_CHOICES, db_column = "ROLE")
 
 class Review(models.Model):
@@ -108,11 +108,11 @@ class Review(models.Model):
 	FIVE = '5'
 	
 	RATING_CHOICES = ((ONE,"1"),
-					  (TWO,"2"),
-					  (THREE,"3"),
-					  (FOUR,"4"),
-					  (FIVE,"5"),
-		)
+	                  (TWO,"2"),
+	                  (THREE,"3"),
+	                  (FOUR,"4"),
+	                  (FIVE,"5"),
+                )
 	rating = models.CharField(choices = RATING_CHOICES, db_column = "Rating", max_length = 1)
 	VC = '1'
 	PC = '2'
@@ -120,11 +120,11 @@ class Review(models.Model):
 	PE = '4'
 	VE = '5'
 	COST_CHOICES = ((VC, "Very Cheap"),
-					(PC, "Pretty Cheap"),
-					(AVG, "Average"),
-					(PE, "Pretty Expensive"),
-					(VE, "Very Expensive"),
-		)
+	                (PC, "Pretty Cheap"),
+	                (AVG, "Average"),
+	                (PE, "Pretty Expensive"),
+	                (VE, "Very Expensive"),
+                )
 	cost = models.CharField(choices = COST_CHOICES, db_column = "Cost", max_length = 16)
 	comment = models.TextField(db_column = "Comment")
 	pub_date = models.DateTimeField(db_column = "Date")
