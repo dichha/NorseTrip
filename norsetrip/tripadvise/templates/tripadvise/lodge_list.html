@@ -1,3 +1,8 @@
+{% extends 'tripadvise/base.html' %}
+
+{% block content %}
+
+
 {% for lodge in lodge %}
 
 <h2> {{ lodge.lodge_name}} <h2>
@@ -5,3 +10,5 @@
 	
 
 {% endfor %}
+
+{% endblock %}
