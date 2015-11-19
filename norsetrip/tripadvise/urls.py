@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     
-    url(r'^$', views.lodge_list, name ='lodge_list'),
+    url(r'^$', views.lodge_list, name ='base'),
+    #url(r'^$', views.base, name ='base'),
     
     ]
