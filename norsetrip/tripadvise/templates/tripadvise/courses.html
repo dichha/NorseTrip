@@ -2,6 +2,14 @@
 
 {% block content %}
 
-<h1> In Courses </h1>
+<h1> Norse Courses </h1>
+
+{% for course in course %}
+
+<a href="course_page.html"> {{ course.name}}</a>
+	{{ course.dept}}
+	
+
+{% endfor %}
 
 {% endblock %}

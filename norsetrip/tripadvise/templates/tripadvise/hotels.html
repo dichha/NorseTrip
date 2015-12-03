@@ -2,6 +2,14 @@
 
 {% block content %}
 
-<h1> In Hotels </h1>	
+<h1> Hotels </h1>
+
+{% for lodge in lodge %}
+
+<h2> {{ lodge.lodge_name}} </h2>
+	{{ lodge.lodge_address}}
+	
+
+{% endfor %}
 
 {% endblock %}
