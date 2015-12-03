@@ -2,6 +2,20 @@
 
 {% block content %}
 
-<h1> In Courses </h1>
+<h1> Study Abroad Courses </h1>
+{%for course in courses%}
+<div>
+	<h2>{{course.name}}</h2>
+	{{course.dept}} <br>
+	{{course.prof}} <br>
+	{{course.year_offered}} <br>
+	{{course.term}} <br>
+	<a href="lodge_list.html">Hotels and Restaurants</a> 
+	<br>
+	<br>
+	
+
+</div>
+{%endfor%}
 
 {% endblock %}

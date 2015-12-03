@@ -1,14 +1,33 @@
-{% extends 'tripadvise/base.html' %}
+l{% extends 'tripadvise/base.html' %}
 
 {% block content %}
+<h1>Lodges</h1>
 
-
-{% for lodge in lodge %}
+{% for lodge in lodges %}
+<div>
 
 <h2> {{ lodge.lodge_name}} <h2>
-	{{ lodge.lodge_address}}
+	<h5>{{lodge.lodgeId}}</h5>
+	{{ lodge.lodge_address}}<br>
+	{{lodge.city}}<br>
+	{{lodge.country}}<br>
+	<a href>{{lodge.lodge_url}}</a><br>
+	{{lodge.lodge_descrip}}<br>
+	{{lodge.average_rating}}<br>
+	<br>
+	<br>
+</div>	
+{% endfor %}
+
+<!-- {%for cl_fk in cla %}
+<div>
+	{{cl_fk.lodgeAssignId}}
+	{{cl_fk.lodge_Id}} 
+</div>
+{% endfor %} -->
+
 	
 
-{% endfor %}
+
 
 {% endblock %}

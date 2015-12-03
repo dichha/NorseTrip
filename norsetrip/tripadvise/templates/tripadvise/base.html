@@ -14,7 +14,7 @@
 
      <!-- Bootstrap Core CSS -->
      <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-	 
+     
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/tripadvise.css' %}">
@@ -35,26 +35,29 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li> <a href="courses.html">Courses</a> </li>
                     <li> <a href="hotels.html">Hotels</a> </li>
+                         <a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
+                         <a href="{% url 'post_course' %}" class="top-menu"><span class="glyphicon glyphicon-minus"></span></a>
+                         
                     <li> <a href="http://www.luther.edu/global-learning/">Global Learning</a> </li>
-                    <li> <a href="reviews.html">Write a Review</a> </li>
+                   <!--  <li> <a href="reviews.html">Write a Review</a> </li>
                     <li> <a href="login.html">Login</a> </li>
-                </ul>
+                </ul> -->
             </div>
         </div>
     </nav>
-	
+    
     <script>
     $('.carousel').carousel({
         interval: 5000 //changes the speed
     })
     </script>
-	
-	{% block content %}
-	{% endblock %}
-	
-	<script src="{% static 'js/bootstrap.min.js' %}"></script>
+    
+    {% block content %}
+    {% endblock %}
+    
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
 
-	<script src="{% static 'js/jquery.js' %}"></script>
+    <script src="{% static 'js/jquery.js' %}"></script>
 </body>
 
 </html>

@@ -19,7 +19,6 @@ class Lodge(models.Model):
 
 
 class Course(models.Model):
-
 	def __int__(self):
 		return self.courseId
 
@@ -71,11 +70,10 @@ class Course(models.Model):
 	prof = models.CharField(max_length = 200, db_column = "Professor")
 	year_offered = models.IntegerField(db_column = "Year Offered")
 	term = models.CharField(max_length = 8, choices = TERM, default = 'JTERM')
-	
 
 class Course_Lodge_Assignment(models.Model):
 	def __int__(self):
-		return self.lodge_Id
+		return self.lodgeAssignId
 
 	lodgeAssignId = models.AutoField(primary_key = True, db_column = "LodgeAssignId")
 	course_Id = models.ForeignKey(Course, verbose_name = "CourseId FK")
