@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render,get_object_or_404
 from django.views.generic import View
 
 from django.shortcuts import redirect
@@ -23,6 +23,9 @@ from .forms import CourseForm
 def home(request):
     #lodge = Lodge.objects.all()
     return render(request, 'tripadvise/home.html')
+def sample(request):
+    #lodge = Lodge.objects.all()
+    return render(request, 'tripadvise/sample.html')
 
 def courses(request):
 	course = Course.objects.all()
@@ -33,8 +36,10 @@ def hotels(request):
 	return render(request, 'tripadvise/hotels.html', {'lodge': lodge})
 #def course_lodge_assignment(request):
  #   course_lodge = Lodge.objects.()
+def hotel_details(request,lodgeId):
+    lodge_info = get_object_or_404(Lodge,pk = lodgeId);
+    return render(request,'tripadvise/hotel_details.html',{'lodge_info':lodge_info})
     
-    #majic
 
 def post_new(request):
     if request.method == "POST":
@@ -77,8 +82,3 @@ def post_course(request):
         #form = LodgeForm(instance=post)
     #return render(request, 'tripadvise/post_edit.html', {'form': form})
 
-<<<<<<< HEAD
- #return render(request, 'tripadvise/lodge_list.html', {'lodge' : lodge})
-=======
- #return render(request, 'tripadvise/lodge_list.html', {'lodge' : lodge})
->>>>>>> 1a6db851cce1220884d8fb17706161747a044ed8
