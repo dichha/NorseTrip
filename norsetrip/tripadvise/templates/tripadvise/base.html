@@ -9,6 +9,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="83536201782-ftd54feptc5nm4dj3l009bktu41uaaiq.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
 
     <title>Norse Trip Advisor</title>
 
@@ -35,13 +38,25 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li> <a href="courses.html">Courses</a> </li>
                     <li> <a href="hotels.html">Hotels</a> </li>
+<<<<<<< HEAD
                          <a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
                          <a href="{% url 'post_course' %}" class="top-menu"><span class="glyphicon glyphicon-minus"></span></a>
                          
+=======
+					     <a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
+					     <a href="{% url 'post_course' %}" class="top-menu"><span class="glyphicon glyphicon-minus"></span></a>
+						 
+>>>>>>> 1a6db851cce1220884d8fb17706161747a044ed8
                     <li> <a href="http://www.luther.edu/global-learning/">Global Learning</a> </li>
                    <!--  <li> <a href="reviews.html">Write a Review</a> </li>
                     <li> <a href="login.html">Login</a> </li>
+<<<<<<< HEAD
                 </ul> -->
+=======
+                    <li> <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div> </li>
+                    <li> <a href="#" onclick="signOut();">Sign out</a> </li>
+                </ul>
+>>>>>>> 1a6db851cce1220884d8fb17706161747a044ed8
             </div>
         </div>
     </nav>
@@ -50,6 +65,25 @@
     $('.carousel').carousel({
         interval: 5000 //changes the speed
     })
+    
+    function onSignIn(googleUser) {
+        // Useful data for your client-side scripts:
+        var profile = googleUser.getBasicProfile();
+        console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+        console.log("Name: " + profile.getName());
+        console.log("Image URL: " + profile.getImageUrl());
+        console.log("Email: " + profile.getEmail());
+
+        // The ID token you need to pass to your backend:
+        var id_token = googleUser.getAuthResponse().id_token;
+        console.log("ID Token: " + id_token);
+      };
+      function signOut() {
+    	var auth2 = gapi.auth2.getAuthInstance();
+    	auth2.signOut().then(function () {
+      	console.log('User signed out.');
+    	});
+  	  }
     </script>
     
     {% block content %}

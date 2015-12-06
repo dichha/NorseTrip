@@ -1,5 +1,10 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.views.generic import View
+
+from django.shortcuts import redirect
+
+from django.shortcuts import redirect
 
 from django.shortcuts import redirect
 
@@ -72,4 +77,8 @@ def post_course(request):
         #form = LodgeForm(instance=post)
     #return render(request, 'tripadvise/post_edit.html', {'form': form})
 
+<<<<<<< HEAD
  #return render(request, 'tripadvise/lodge_list.html', {'lodge' : lodge})
+=======
+ #return render(request, 'tripadvise/lodge_list.html', {'lodge' : lodge})
+>>>>>>> 1a6db851cce1220884d8fb17706161747a044ed8
