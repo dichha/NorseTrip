@@ -11,4 +11,6 @@ urlpatterns = [
     url(r'^hotel_details/(?P<lodgeId>[0-9]+)/$', views.hotel_details, name ='hotel_details'),
     url(r'^post_new', views.post_new, name = 'post_new'),
     url(r'^post_course', views.post_course, name = 'post_course'),
+    url(r'^membership_new', views.membership_new, name = 'membership_new'),
+    
     ]
