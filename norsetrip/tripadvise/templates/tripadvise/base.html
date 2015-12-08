@@ -1,6 +1,12 @@
 {% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
+<style>
+#sign-in {
+	color: lightgray;
+}
+
+</style>
 
 <head>
 
@@ -46,7 +52,7 @@
                     <li> <a href="{% url 'post_new' %}" class="top-menu">Write a Review</a> </li>
                     <!-- <li> <a href="login.html">Login</a> </li>
                 </ul> -->
-                    <li> <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div> </li>
+                    <li id="sign-in"> <a class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></a> </li>
                     <li> <a href="#" onclick="signOut();">Sign out</a> </li>
                 </ul>
             </div>
@@ -58,9 +64,12 @@
         interval: 5000 //changes the speed
     })
     
+    var SignedIn = false;
+    
     function onSignIn(googleUser) {
         // Useful data for your client-side scripts:
         var profile = googleUser.getBasicProfile();
+        SignedIn = true;
         console.log("ID: " + profile.getId()); // Don't send this directly to your server!
         console.log("Name: " + profile.getName());
         console.log("Image URL: " + profile.getImageUrl());
@@ -69,11 +78,15 @@
         // The ID token you need to pass to your backend:
         var id_token = googleUser.getAuthResponse().id_token;
         console.log("ID Token: " + id_token);
+        document.getElementById('sign-in').innerHTML = 'Logged in as ' + profile.getName();
       };
       function signOut() {
     	var auth2 = gapi.auth2.getAuthInstance();
     	auth2.signOut().then(function () {
       	console.log('User signed out.');
+      	SignedIn = false;
+      	location.reload();
+		
     	});
   	  }
     </script>
