@@ -68,6 +68,8 @@ class Course(models.Model):
 
 	courseId = models.IntegerField(primary_key = True, db_column = "CourseId")
 	name = models.CharField(max_length = 200, db_column = "Name")
+	def __str__(self):
+			return self.name	
 	dept = models.CharField(max_length = 200, db_column = "Department", choices = DEPT)
 	prof = models.CharField(max_length = 200, db_column = "Professor")
 	year_offered = models.IntegerField(db_column = "Year Offered")
