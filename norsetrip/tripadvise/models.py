@@ -8,7 +8,9 @@ class Lodge(models.Model):
 		return self.lodgeId
 
 	lodgeId = models.AutoField(primary_key = True,db_column = "LodgeId")	
-	lodge_name = models.CharField(max_length = 200,db_column = "Name")	
+	lodge_name = models.CharField(max_length = 200,db_column = "Name")
+	def __str__(self):
+		return self.lodge_name
 	lodge_address = models.CharField(max_length = 200, db_column = "Address")
 	city = models.CharField(max_length = 100, db_column = "City")
 	#country = models.CharField(max_length = 100, db_column = "Country")
@@ -71,10 +73,11 @@ class Course(models.Model):
 	year_offered = models.IntegerField(db_column = "Year Offered")
 	lodge_membership = models.ManyToManyField(Lodge,through='Membership',)
 	term = models.CharField(max_length = 8, choices = TERM, default = 'JTERM')
+	#.objects.filter(name="Yak and yeti")
 
 class Membership(models.Model):
 	
-	lodge = models.ForeignKey(Lodge, related_name='name', on_delete=models.CASCADE)
+	lodge = models.ForeignKey(Lodge, on_delete=models.CASCADE)
 	course = models.ForeignKey(Course, on_delete=models.CASCADE)
 	#Membership._meta.get_field('lodge').rel.to
 	#Membership._meta.get_field('').rel.to.lodge_name	
