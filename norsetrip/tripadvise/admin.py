@@ -3,7 +3,7 @@ from django.contrib import admin
 # Register your models here.
 from .models import Lodge
 from .models import Course
-from .models import Course_Lodge_Assignment
+from .models import Membership
 from .models import User
 from .models import Review
 from .models import Course_Assignment
@@ -25,12 +25,12 @@ class CourseAdmin(admin.ModelAdmin):
 	list_per_page = 50
 admin.site.register(Course, CourseAdmin)
 
-class Course_Lodge_AssignmentAdmin(admin.ModelAdmin):
-	list_display = ('lodgeAssignId','course_Id','lodge_Id')
-	list_filter = ['course_Id']
-	search_fields = ['course_Id']
+class MembershipAdmin(admin.ModelAdmin):
+	list_display = ("hotel_that_was_switched", 'date_switched')
+	#list_filter = ['course_Id']
+	#search_fields = ['course_Id']
 	
-admin.site.register(Course_Lodge_Assignment, Course_Lodge_AssignmentAdmin)
+admin.site.register(Membership, MembershipAdmin)
 
 class UserAdmin(admin.ModelAdmin):
 	list_display = ('userId','email','role')

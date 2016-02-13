@@ -2,7 +2,7 @@
 
 {% block content %}
 <h1> Norse Courses </h1>
-
+<a href="{% url 'membership_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
 {% for course in course %}
 
 <a href="course_page.html"> {{ course.name}}</a>

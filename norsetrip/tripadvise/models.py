@@ -8,7 +8,9 @@ class Lodge(models.Model):
 		return self.lodgeId
 
 	lodgeId = models.AutoField(primary_key = True,db_column = "LodgeId")	
-	lodge_name = models.CharField(max_length = 200,db_column = "Name")	
+	lodge_name = models.CharField(max_length = 200,db_column = "Name")
+	def __str__(self):
+		return self.lodge_name
 	lodge_address = models.CharField(max_length = 200, db_column = "Address")
 	city = models.CharField(max_length = 100, db_column = "City")
 	#country = models.CharField(max_length = 100, db_column = "Country")
@@ -66,19 +68,23 @@ class Course(models.Model):
 
 	courseId = models.IntegerField(primary_key = True, db_column = "CourseId")
 	name = models.CharField(max_length = 200, db_column = "Name")
+	def __str__(self):
+			return self.name	
 	dept = models.CharField(max_length = 200, db_column = "Department", choices = DEPT)
 	prof = models.CharField(max_length = 200, db_column = "Professor")
 	year_offered = models.IntegerField(db_column = "Year Offered")
+	lodge_membership = models.ManyToManyField(Lodge,through='Membership',)
 	term = models.CharField(max_length = 8, choices = TERM, default = 'JTERM')
+	#.objects.filter(name="Yak and yeti")
 
-class Course_Lodge_Assignment(models.Model):
-	def __int__(self):
-		return self.lodgeAssignId
-
-	lodgeAssignId = models.AutoField(primary_key = True, db_column = "LodgeAssignId")
-	course_Id = models.ForeignKey(Course, verbose_name = "CourseId FK")
-	lodge_Id = models.ForeignKey(Lodge, verbose_name = "LodgeId FK")
-
+class Membership(models.Model):
+	
+	lodge = models.ForeignKey(Lodge, on_delete=models.CASCADE)
+	course = models.ForeignKey(Course, on_delete=models.CASCADE)
+	#Membership._meta.get_field('lodge').rel.to
+	#Membership._meta.get_field('').rel.to.lodge_name	
+	hotel_that_was_switched = models.CharField(max_length=65, db_column = "Hotel that was Switched")
+	date_switched = models.DateField()
 class User(models.Model):
 	def __int__(self):
 		return self.userId

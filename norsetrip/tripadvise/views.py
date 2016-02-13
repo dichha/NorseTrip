@@ -13,9 +13,11 @@ from .models import Lodge
 
 from .models import Course
 
-from .models import Course_Lodge_Assignment
+from .models import Membership
 
 from .forms import LodgeForm
+
+from .forms import MembershipForm
 
 from .forms import CourseForm
 # Create your views here.
@@ -53,6 +55,16 @@ def post_new(request):
     else:
         form = LodgeForm()
     return render(request, 'tripadvise/post_edit.html', {'form': form})
+def membership_new(request):
+    if request.method == "POST":
+	form = MembershipForm(request.POST)
+	if form.is_valid():
+	    post = form.save(commit=False)
+	    post.save()
+	    
+    else:
+	form = MembershipForm()
+    return render(request, 'tripadvise/membership.html',{'form':form})
 
 def post_course(request):
     if request.method =="POST":
