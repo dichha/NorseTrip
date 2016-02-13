@@ -12,7 +12,7 @@ class Lodge(models.Model):
 	lodge_address = models.CharField(max_length = 200, db_column = "Address")
 	city = models.CharField(max_length = 100, db_column = "City")
 	#country = models.CharField(max_length = 100, db_column = "Country")
-	country = CountryField(blank_label = '(Select Country)')
+	country = CountryField(blank_label = 'Select Country')
 	lodge_url = models.URLField(db_column = "URL")
 	lodge_descrip = models.TextField(db_column = "Description")
 	average_rating = models.IntegerField(db_column = "Average Rating", default = 100)
