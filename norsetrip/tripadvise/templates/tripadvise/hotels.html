@@ -9,7 +9,7 @@
 
 {% for lodge in lodge %}
 
-<a href="sample.html">{{ lodge.lodge_name}}</a>
+<a href="{% url 'hotel_details' lodge.lodgeId %}">{{ lodge.lodge_name}}</a>
 	{{ lodge.lodge_address}}<br><br>
 	
 

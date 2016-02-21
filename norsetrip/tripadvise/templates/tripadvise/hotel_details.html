@@ -1,15 +1,15 @@
 {% extends 'tripadvise/base.html' %}
 
 {% block content %}
-<h1>Lodges</h1>
+<h1>{{lodge_info.lodge_name}} </h1>
 <div>
-{{lodge_info.lodge_name}} <br>
-{{lodge_info.lodge_address}} <br>
-{{lodge_info.city}} <br>
-{{lodge_info.country}}<br>
-{{lodge_info.lodge_url}} <br>
-{{lodge_info.lodge_descrip}} <br>
-{{lodge_info.average_rating}}
+Address: {{lodge_info.lodge_address}} <br><br>
+City: {{lodge_info.city}} <br><br>
+Country: {{lodge_info.country}}<br><br>
+URL: {{lodge_info.lodge_url}} <br><br>
+Description: {{lodge_info.lodge_descrip}} <br><br>
+Rating: {{lodge_info.average_rating}} <br><br>
+Courses that used this accomodation: 
 </div>
 
 {% endblock %}

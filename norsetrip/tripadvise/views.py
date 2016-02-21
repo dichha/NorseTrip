@@ -13,11 +13,11 @@ from .models import Lodge
 
 from .models import Course
 
-from .models import Membership
+from .models import Course_Lodge_Assignment
 
 from .forms import LodgeForm
 
-from .forms import MembershipForm
+from .forms import Course_Lodge_AssignmentForm
 
 from .forms import CourseForm
 # Create your views here.
@@ -32,6 +32,12 @@ def sample(request):
 def courses(request):
 	course = Course.objects.all()
 	return render(request, 'tripadvise/courses.html' , {'course': course})
+
+def course_detail(request, courseId):
+    course_info = get_object_or_404(Course, pk = courseId)
+    return render(request, 'tripadvise/course_detail.html', {'course_info': course_info})
+
+
 	
 def hotels(request):
 	lodge = Lodge.objects.all()
@@ -39,7 +45,7 @@ def hotels(request):
 #def course_lodge_assignment(request):
  #   course_lodge = Lodge.objects.()
 def hotel_details(request,lodgeId):
-    lodge_info = get_object_or_404(Lodge,pk = lodgeId);
+    lodge_info = get_object_or_404(Lodge,pk = lodgeId)
     return render(request,'tripadvise/hotel_details.html',{'lodge_info':lodge_info})
     
 
@@ -55,16 +61,16 @@ def post_new(request):
     else:
         form = LodgeForm()
     return render(request, 'tripadvise/post_edit.html', {'form': form})
-def membership_new(request):
+def courseLodgeAssign_new(request):
     if request.method == "POST":
-	form = MembershipForm(request.POST)
+	form = Course_Lodge_AssignmentForm(request.POST)
 	if form.is_valid():
 	    post = form.save(commit=False)
 	    post.save()
 	    
     else:
-	form = MembershipForm()
-    return render(request, 'tripadvise/membership.html',{'form':form})
+	form = Course_Lodge_AssignmentForm()
+    return render(request, 'tripadvise/new_clAssign.html',{'form':form})
 
 def post_course(request):
     if request.method =="POST":

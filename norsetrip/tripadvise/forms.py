@@ -4,7 +4,7 @@ from .models import Lodge
 
 from .models import Course
 
-from .models import Membership
+from .models import Course_Lodge_Assignment
 
 
 class LodgeForm(forms.ModelForm):
@@ -17,11 +17,19 @@ class CourseForm(forms.ModelForm):
     
     class Meta:
         model = Course
-        fields = ('name', 'dept','prof', 'term', 'year_offered','lodge_membership',)
+        fields = [
+        'courseId',
+        'name', 
+        'dept',
+        'prof', 
+        'term', 
+        'year_offered',
+        'course_description',
+        'course_lodge_membership']
         
-class MembershipForm(forms.ModelForm):
+class Course_Lodge_AssignmentForm(forms.ModelForm):
     
-    class Meta:
-        model = Membership
+     class Meta:
+         model = Course_Lodge_Assignment
         
-        fields = ('lodge','course','hotel_that_was_switched','date_switched',)
+         fields = ('lodge_Id','course_Id','hotel_that_was_switched','date_switched',)
