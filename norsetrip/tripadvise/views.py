@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render,get_object_or_404
 from django.views.generic import View
 
@@ -49,40 +49,41 @@ def hotel_details(request,lodgeId):
     return render(request,'tripadvise/hotel_details.html',{'lodge_info':lodge_info})
     
 
-def post_new(request):
+def post_lodge(request):
     if request.method == "POST":
-        form = LodgeForm(request.POST)
+        form = LodgeForm(request.POST or None, request.FILES or None)
         if form.is_valid():
             post = form.save(commit=False)
-            post.author = request.user
-            #post.published_date = timezone.now()
             post.save()
-            #return redirect('tripadvise.views.post_detail.html',)
+            #message needs to be written 
+            #return HttpResponseRedirect(post.get_absolute_url())
     else:
         form = LodgeForm()
-    return render(request, 'tripadvise/post_edit.html', {'form': form})
+    return render(request, 'tripadvise/post_lodge.html', {'form': form})
 def courseLodgeAssign_new(request):
     if request.method == "POST":
-	form = Course_Lodge_AssignmentForm(request.POST)
-	if form.is_valid():
-	    post = form.save(commit=False)
-	    post.save()
+    	form = Course_Lodge_AssignmentForm(request.POST)
+    	if form.is_valid():
+    	    post = form.save(commit=False)
+    	    post.save()
 	    
     else:
-	form = Course_Lodge_AssignmentForm()
+    	form = Course_Lodge_AssignmentForm()
+
     return render(request, 'tripadvise/new_clAssign.html',{'form':form})
 
 def post_course(request):
     if request.method =="POST":
-	form = CourseForm(request.POST)
-	if form.is_valid():
-	    post = form.save(commit=False)
-	    post.author = request.user
-	    #post.published_date = timezone.now()
-	    post.save()
-		    #return redirect('tripadvise.views.post_detail.html',)
+        #request.POST or None is builtin validation
+	   form = CourseForm(request.POST or None)
+	   if form.is_valid():
+    	    post = form.save(commit=False)
+    	    post.author = request.user
+    	    #post.published_date = timezone.now()
+    	    post.save()
+    		    #return redirect('tripadvise.views.post_detail.html',)
     else:
-	form = CourseForm()
+    	form = CourseForm()
     return render(request, 'tripadvise/post_course.html', {'form': form})	
 	
 

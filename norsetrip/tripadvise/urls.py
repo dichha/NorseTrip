@@ -11,9 +11,10 @@ urlpatterns = [
     url(r'^sample', views.sample, name = 'sample'),
     url(r'^hotels', views.hotels, name = 'hotels'),
     url(r'^hotel_details/(?P<lodgeId>[0-9]+)/$', views.hotel_details, name ='hotel_details'),
-    url(r'^post_new', views.post_new, name = 'post_new'),
+    url(r'^post_lodge', views.post_lodge, name = 'post_lodge'),
     url(r'^post_course', views.post_course, name = 'post_course'),
-     url(r'^courseLodgeAssign_new', views.courseLodgeAssign_new, name = 'courseLodgeAssign_new'),
+    url(r'^courseLodgeAssign_new', views.courseLodgeAssign_new, name = 'courseLodgeAssign_new'),
+
     
     ]
 # if settings.DEBUG:

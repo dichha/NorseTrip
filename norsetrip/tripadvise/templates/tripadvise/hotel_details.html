@@ -1,8 +1,11 @@
 {% extends 'tripadvise/base.html' %}
 
 {% block content %}
+<div class = 'col-sm-6 col-sm-offset-3'>
 <h1>{{lodge_info.lodge_name}} </h1>
-<div>
+
+		<img src="{{lodge_info.lodge_image.url }}" class="img-responsive" ><br><br>
+
 Address: {{lodge_info.lodge_address}} <br><br>
 City: {{lodge_info.city}} <br><br>
 Country: {{lodge_info.country}}<br><br>
