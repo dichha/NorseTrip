@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render,get_object_or_404
 from django.views.generic import View
@@ -55,8 +56,11 @@ def post_lodge(request):
         if form.is_valid():
             post = form.save(commit=False)
             post.save()
-            #message needs to be written 
-            #return HttpResponseRedirect(post.get_absolute_url())
+            #message success
+            messages.success(request, "Successfully Created!")
+            return HttpResponseRedirect(post.get_absolute_url())
+        else:
+            messages.error(request, "Not Successfully Created.")
     else:
         form = LodgeForm()
     return render(request, 'tripadvise/post_lodge.html', {'form': form})
@@ -75,13 +79,15 @@ def courseLodgeAssign_new(request):
 def post_course(request):
     if request.method =="POST":
         #request.POST or None is builtin validation
-	   form = CourseForm(request.POST or None)
-	   if form.is_valid():
-    	    post = form.save(commit=False)
-    	    post.author = request.user
-    	    #post.published_date = timezone.now()
-    	    post.save()
-    		    #return redirect('tripadvise.views.post_detail.html',)
+        form = CourseForm(request.POST or None)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            messages.success(request, "Successfully Created")
+            return HttpResponseRedirect(post.get_absolute_url())
+        else:
+            messages.error(request, "Not Successfully Created")
     else:
     	form = CourseForm()
     return render(request, 'tripadvise/post_course.html', {'form': form})	

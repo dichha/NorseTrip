@@ -2,6 +2,15 @@
 {% extends 'tripadvise/base.html' %}
 
 {% block content%}
+<div class="col-sm-12">
+{% if messages %}
+<br><br><br><br>
+<ul class="messages">
+	{% for message in messages %}
+	<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}} </li>
+	{% endfor %}
+</ul>
+{% endif %}
 <h1>{{course_info.name}}</h1>
 Department : {{course_info.dept}}<br><br>
 Year Offered: {{course_info.year_offered}}<br><br>
@@ -9,6 +18,7 @@ Professor: {{course_info.prof}}<br><br>
 Term: {{ course_info.term}}<br><br>
 Description: {{ course_info.course_description}} <br><br>
 Hotels Stayed: 
+</div>
 
 
 

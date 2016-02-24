@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django_countries.fields import CountryField
+from django.core.urlresolvers import reverse
 # Create your models here.
 
 class Lodge(models.Model):
@@ -22,6 +23,9 @@ class Lodge(models.Model):
 	lodge_descrip = models.TextField(db_column = "Description")
 	average_rating = models.IntegerField(db_column = "Average Rating", default = 100)
 	lodge_image = models.FileField(null=True, blank = True)
+
+	def get_absolute_url(self):
+		return reverse('tripadvise.views.hotel_details', args=[str(self.lodgeId)])
 
 
 class Course(models.Model):
@@ -82,6 +86,9 @@ class Course(models.Model):
 	course_lodge_membership = models.ManyToManyField(Lodge,through='Course_Lodge_Assignment',)
 	term = models.CharField(max_length = 8, choices = TERM, default = 'JTERM')
 	course_description = models.TextField(db_column = "Desciption", null = True )
+
+	def get_absolute_url(self):
+		return reverse('tripadvise.views.course_detail',args=[str(self.courseId)])
 	
 
 class Course_Lodge_Assignment(models.Model):

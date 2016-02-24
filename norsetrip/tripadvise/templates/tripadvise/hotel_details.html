@@ -1,7 +1,17 @@
 {% extends 'tripadvise/base.html' %}
 
 {% block content %}
+
 <div class = 'col-sm-6 col-sm-offset-3'>
+{% if messages %}
+<br><br><br><br>
+<ul class="messages">
+	{% for message in messages %}
+	<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}} </li>
+	{% endfor %}
+</ul>
+{% endif %}
+
 <h1>{{lodge_info.lodge_name}} </h1>
 
 		<img src="{{lodge_info.lodge_image.url }}" class="img-responsive" ><br><br>
