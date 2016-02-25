@@ -16,8 +16,8 @@
 			{% endif %}
 		</div> -->
 		<div>
-			<a href="{% url 'hotel_details' lodge.lodgeId %}">Name: {{ lodge.lodge_name}}</a>
-			Address: {{ lodge.lodge_address}}<br><br>
+			<a href="{% url 'hotel_details' lodge.lodgeId %}">{{ lodge.lodge_name}}</a>
+			{{ lodge.lodge_address}}<br><br>
 		</div>
 	<!-- </div> -->
 {% endfor %}
