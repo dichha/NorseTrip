@@ -13,8 +13,9 @@
 {% endif %}
 
 <h1>{{lodge_info.lodge_name}} </h1>
-
+		{% if lodge_info.lodge_image.url %}
 		<img src="{{lodge_info.lodge_image.url }}" class="img-responsive" ><br><br>
+		{% endif %}
 
 Address: {{lodge_info.lodge_address}} <br><br>
 City: {{lodge_info.city}} <br><br>
@@ -22,7 +23,7 @@ Country: {{lodge_info.country}}<br><br>
 URL: {{lodge_info.lodge_url}} <br><br>
 Description: {{lodge_info.lodge_descrip}} <br><br>
 Rating: {{lodge_info.average_rating}} <br><br>
-Courses that used this accomodation: 
+Courses that used this accomodation: {{lodge_info.course_lodge_membership}} <br><br> 
 </div>
 
 {% endblock %}

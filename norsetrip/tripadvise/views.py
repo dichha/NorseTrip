@@ -1,14 +1,11 @@
+
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render,get_object_or_404
 from django.views.generic import View
 
 from django.shortcuts import redirect
-
-from django.shortcuts import redirect
-
-from django.shortcuts import redirect
-
 
 from .models import Lodge
 
@@ -41,8 +38,28 @@ def course_detail(request, courseId):
 
 	
 def hotels(request):
-	lodge = Lodge.objects.all()
-	return render(request, 'tripadvise/hotels.html', {'lodge': lodge})
+    lodge_list = Lodge.objects.all()
+    paginator = Paginator(lodge_list, 6) # Show 5 lodges per page
+    page_request_var = "lodge_page"
+    page = request.GET.get(page_request_var)
+    try:
+        lodge = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        lodge = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        lodge = paginator.page(paginator.num_pages)
+
+    context = {
+    'lodge': lodge, 
+    'page_request_var': page_request_var,
+    'title': 'Hotel'
+    }
+
+    return render(request, 'tripadvise/hotels.html', context)
+
+
 #def course_lodge_assignment(request):
  #   course_lodge = Lodge.objects.()
 def hotel_details(request,lodgeId):
@@ -52,6 +69,7 @@ def hotel_details(request,lodgeId):
 
 def post_lodge(request):
     if request.method == "POST":
+
         form = LodgeForm(request.POST or None, request.FILES or None)
         if form.is_valid():
             post = form.save(commit=False)

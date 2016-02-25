@@ -22,10 +22,19 @@ class Lodge(models.Model):
 	lodge_url = models.URLField(db_column = "URL")
 	lodge_descrip = models.TextField(db_column = "Description")
 	average_rating = models.IntegerField(db_column = "Average Rating", default = 100)
-	lodge_image = models.FileField(null=True, blank = True)
+	
+	lodge_image = models.ImageField(null=True, blank = True,width_field = "width_field", 
+		height_field = "height_field")
+
+	height_field = models.IntegerField(default = 0)
+	width_field = models.IntegerField(default = 0)
 
 	def get_absolute_url(self):
 		return reverse('tripadvise.views.hotel_details', args=[str(self.lodgeId)])
+
+	#new lodge in the beginning	
+	class Meta:
+		ordering = ["-lodgeId"]
 
 
 class Course(models.Model):

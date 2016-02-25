@@ -3,18 +3,43 @@
 {% block content %}
 <div class="col-sm-12">
 
-<h1>Hotels </h1>
+<h1>{{title}} </h1>
 <h1> 
 {{ hotels }}
 </h1>
 
 {% for lodge in lodge %}
-
-<a href="{% url 'hotel_details' lodge.lodgeId %}">{{ lodge.lodge_name}}</a>
-	{{ lodge.lodge_address}}<br><br>
-	
-
+	<!-- <div class="col-sm-4 "> -->
+		<!-- <div class="thumbnail">
+			{% if lodge.lodge_image %}
+			<img src="{{lodge.lodge_image.url}}" class="img-responsive">
+			{% endif %}
+		</div> -->
+		<div>
+			<a href="{% url 'hotel_details' lodge.lodgeId %}">Name: {{ lodge.lodge_name}}</a>
+			Address: {{ lodge.lodge_address}}<br><br>
+		</div>
+	<!-- </div> -->
 {% endfor %}
 </div>
+				
+
+
+<div class="pagination">
+    <span class="step-links">
+        {% if lodge.has_previous %}
+            <a href="?{{ page_request_var }}={{ lodge.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ lodge.number }} of {{ lodge.paginator.num_pages }}.
+        </span>
+
+        {% if lodge.has_next %}
+            <a href="?{{ page_request_var }}={{ lodge.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
+
 
 {% endblock %}
