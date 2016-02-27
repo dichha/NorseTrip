@@ -3,9 +3,7 @@
 {% block content %}
 <div class="col-sm-12">
 <h1> Norse Courses </h1>
-<a href="{% url 'courseLodgeAssign_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
-{% for course in course %}
-
+ {% for course in courses %}
 <a href="{% url 'course_detail' course.courseId %}"> {{ course.name}}</a>
 {{ course.dept}}<br><br>
 	

@@ -18,6 +18,19 @@ Professor: {{course_info.prof}}<br><br>
 Term: {{ course_info.term}}<br><br>
 Description: {{ course_info.course_description}} <br><br>
 Hotels Stayed: 
+Courses that used this accomodation: 
+{% for cla in cl_assign %}
+	{% if course_info.name == cla.course_name|stringformat:"s" %} 
+
+		{% for lodge in lodges %}
+			{% if lodge.lodge_name == cla.lodge_name|stringformat:"s" %}
+				<a href="/hotel_details/{{ lodge.lodgeId }}">
+				{{cla.lodge_name|stringformat:"s"}}</a>,
+			{% endif %}
+		{% endfor %}
+
+	{% endif %}
+{% endfor %}
 </div>
 
 

@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'tripadvise',
     'django_countries',
+    'django.contrib.humanize'
 )
 
 MIDDLEWARE_CLASSES = (

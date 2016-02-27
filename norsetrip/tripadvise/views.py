@@ -4,42 +4,42 @@ from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render,get_object_or_404
 from django.views.generic import View
-
 from django.shortcuts import redirect
 
 from .models import Lodge
-
 from .models import Course
-
 from .models import Course_Lodge_Assignment
 
 from .forms import LodgeForm
-
+from .forms import CourseForm
 from .forms import Course_Lodge_AssignmentForm
 
-from .forms import CourseForm
-# Create your views here.
+
 
 def home(request):
-    #lodge = Lodge.objects.all()
     return render(request, 'tripadvise/home.html')
-def sample(request):
-    #lodge = Lodge.objects.all()
-    return render(request, 'tripadvise/sample.html')
+
 
 def courses(request):
-	course = Course.objects.all()
-	return render(request, 'tripadvise/courses.html' , {'course': course})
+	courses = Course.objects.all()
+	return render(request, 'tripadvise/courses.html' , {'courses': courses})
 
 def course_detail(request, courseId):
     course_info = get_object_or_404(Course, pk = courseId)
-    return render(request, 'tripadvise/course_detail.html', {'course_info': course_info})
+    cl_assign = Course_Lodge_Assignment.objects.all()
+    lodges = Lodge.objects.all()
+    context = {
+    'course_info':course_info,
+    'cl_assign': cl_assign,
+    'lodges' : lodges
+    }
+    return render(request, 'tripadvise/course_detail.html', context)
 
 
 	
 def hotels(request):
     lodge_list = Lodge.objects.all()
-    paginator = Paginator(lodge_list, 6) # Show 5 lodges per page
+    paginator = Paginator(lodge_list, 6) # Show 6 lodges per page
     page_request_var = "lodge_page"
     page = request.GET.get(page_request_var)
     try:
@@ -60,11 +60,17 @@ def hotels(request):
     return render(request, 'tripadvise/hotels.html', context)
 
 
-#def course_lodge_assignment(request):
- #   course_lodge = Lodge.objects.()
 def hotel_details(request,lodgeId):
     lodge_info = get_object_or_404(Lodge,pk = lodgeId)
-    return render(request,'tripadvise/hotel_details.html',{'lodge_info':lodge_info})
+    cl_assign = Course_Lodge_Assignment.objects.all()
+    courses = Course.objects.all()
+    context = {
+    'lodge_info':lodge_info,
+    'cl_assign': cl_assign,
+    'courses' : courses
+    }
+
+    return render(request,'tripadvise/hotel_details.html',context)
     
 
 def post_lodge(request):
@@ -82,7 +88,7 @@ def post_lodge(request):
     else:
         form = LodgeForm()
     return render(request, 'tripadvise/post_lodge.html', {'form': form})
-def courseLodgeAssign_new(request):
+def clAssignment(request):
     if request.method == "POST":
     	form = Course_Lodge_AssignmentForm(request.POST)
     	if form.is_valid():
@@ -92,7 +98,7 @@ def courseLodgeAssign_new(request):
     else:
     	form = Course_Lodge_AssignmentForm()
 
-    return render(request, 'tripadvise/new_clAssign.html',{'form':form})
+    return render(request, 'tripadvise/clAssignment.html',{'form':form})
 
 def post_course(request):
     if request.method =="POST":

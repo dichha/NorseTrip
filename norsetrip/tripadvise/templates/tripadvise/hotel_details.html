@@ -20,10 +20,23 @@
 Address: {{lodge_info.lodge_address}} <br><br>
 City: {{lodge_info.city}} <br><br>
 Country: {{lodge_info.country}}<br><br>
-URL: {{lodge_info.lodge_url}} <br><br>
+URL: <a href = "{{ lodge_info.lodge_url }}">{{ lodge_info.lodge_url }} </a> <br><br>
 Description: {{lodge_info.lodge_descrip}} <br><br>
 Rating: {{lodge_info.average_rating}} <br><br>
-Courses that used this accomodation: {{lodge_info.course_lodge_membership}} <br><br> 
+
+Courses that used this accomodation: 
+{% for cla in cl_assign %}
+	{% if lodge_info.lodge_name == cla.lodge_name|stringformat:"s" %} 
+		{% for course in courses %}
+			{% if course.name == cla.course_name|stringformat:"s" %}
+				<a href="/course_detail/{{ course.courseId }}">
+				{{cla.course_name|stringformat:"s"}}</a>,
+			{% endif %}
+		{% endfor %}
+
+	{% endif %}
+{% endfor %}
+<br><br>
 </div>
 
 {% endblock %}

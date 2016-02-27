@@ -19,7 +19,8 @@ class LodgeForm(forms.ModelForm):
         'country', 
         'lodge_url', 
         'lodge_descrip',
-        'average_rating']
+        'average_rating',
+        ]
         
 class CourseForm(forms.ModelForm):
     
@@ -32,15 +33,16 @@ class CourseForm(forms.ModelForm):
         'prof', 
         'term', 
         'year_offered',
-        'course_description',
-        'course_lodge_membership']
+        'course_description']
+        #course_lodge_assignments']
         
 class Course_Lodge_AssignmentForm(forms.ModelForm):
     
      class Meta:
          model = Course_Lodge_Assignment
         
-         fields = ['lodge_Id',
-         'course_Id',
-         'hotel_that_was_switched',
-         'date_switched',]
+         fields = [
+         'lodge_name',
+         'course_name']
+#          'hotel_that_was_switched',
+#          'date_switched',]

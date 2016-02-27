@@ -2,7 +2,8 @@ from django.db import models
 from django.utils import timezone
 from django_countries.fields import CountryField
 from django.core.urlresolvers import reverse
-# Create your models here.
+
+
 
 class Lodge(models.Model):
 	def __int__(self):
@@ -13,16 +14,13 @@ class Lodge(models.Model):
 
 	lodgeId = models.AutoField(primary_key = True,db_column = "LodgeId")	
 	lodge_name = models.CharField(max_length = 200,db_column = "Name")
-	
-
 	lodge_address = models.CharField(max_length = 200, db_column = "Address")
 	city = models.CharField(max_length = 100, db_column = "City")
-	#country = models.CharField(max_length = 100, db_column = "Country")
 	country = CountryField(blank_label = 'Select Country')
 	lodge_url = models.URLField(db_column = "URL")
 	lodge_descrip = models.TextField(db_column = "Description")
 	average_rating = models.IntegerField(db_column = "Average Rating", default = 100)
-	
+
 	lodge_image = models.ImageField(null=True, blank = True,width_field = "width_field", 
 		height_field = "height_field")
 
@@ -92,7 +90,7 @@ class Course(models.Model):
 	dept = models.CharField(max_length = 200, db_column = "Department", choices = DEPT)
 	prof = models.CharField(max_length = 200, db_column = "Professor")
 	year_offered = models.IntegerField(db_column = "Year Offered")
-	course_lodge_membership = models.ManyToManyField(Lodge,through='Course_Lodge_Assignment',)
+	course_lodge_assignments = models.ManyToManyField(Lodge,through='Course_Lodge_Assignment')
 	term = models.CharField(max_length = 8, choices = TERM, default = 'JTERM')
 	course_description = models.TextField(db_column = "Desciption", null = True )
 
@@ -104,18 +102,10 @@ class Course_Lodge_Assignment(models.Model):
 	def __int__(self):
 		return self.clAssignId
 
-	# def __int__(self):
-	# 	return self.lodge_Id
-
-	# def __int__(self):
-	# 	return self.course_Id
-
 	clAssignId = models.AutoField(primary_key= True, db_column="CourseLodgeAssignId")
-	lodge_Id = models.ForeignKey(Lodge, on_delete=models.CASCADE)
-	course_Id = models.ForeignKey(Course, on_delete=models.CASCADE)
-		
-	hotel_that_was_switched = models.CharField(max_length=65, db_column = "Hotel that was Switched")
-	date_switched = models.DateField()
+	lodge_name = models.ForeignKey(Lodge, on_delete=models.CASCADE)
+	course_name = models.ForeignKey(Course, on_delete=models.CASCADE)
+
 
 
 	

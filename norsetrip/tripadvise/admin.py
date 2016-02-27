@@ -27,7 +27,7 @@ admin.site.register(Course, CourseAdmin)
 
 class Course_Lodge_AssignmentAdmin(admin.ModelAdmin):
 	#list_display = ("hotel_that_was_switched", 'date_switched')
-	list_display = ("clAssignId","lodge_Id","course_Id","hotel_that_was_switched","date_switched")
+	list_display = ("clAssignId","lodge_name","course_name")#"hotel_that_was_switched","date_switched")
 	#list_filter = ['course_Id']
 	#search_fields = ['course_Id']
 	
