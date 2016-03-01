@@ -1,0 +1,11 @@
+{% extends 'tripadvise/base.html' %}
+
+{% block content %}
+<div class="col-sm-6 col-sm-offset-3">
+    <h1>Course Lodge Assignment</h1>
+    <form method="POST" class="post-form">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-primary">Save</button>
+    </form>
+</div>
+{% endblock %}
