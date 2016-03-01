@@ -2,13 +2,28 @@
 
 {% block content %}
 <div class="col-sm-12">
-<h1> Norse Courses </h1>
- {% for course in courses %}
+<h1> Courses </h1>
+ {% for course in course %}
 <a href="{% url 'course_detail' course.courseId %}"> {{ course.name}}</a>
 {{ course.dept}}<br><br>
 	
 
 {% endfor %}
+</div>
+<div class="pagination">
+    <span class="step-links">
+        {% if course.has_previous %}
+            <a href="?{{ page_request_var }}={{ course.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ course.number }} of {{ course.paginator.num_pages }}.
+        </span>
+
+        {% if course.has_next %}
+            <a href="?{{ page_request_var }}={{ course.next_page_number }}">next</a>
+        {% endif %}
+    </span>
 </div>
 
 {% endblock %}

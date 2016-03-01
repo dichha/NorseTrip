@@ -30,9 +30,10 @@ class Lodge(models.Model):
 	def get_absolute_url(self):
 		return reverse('tripadvise.views.hotel_details', args=[str(self.lodgeId)])
 
-	#new lodge in the beginning	
+	#newly added lodge in the beginning	
 	class Meta:
 		ordering = ["-lodgeId"]
+		#ordering = ["lodge_name"]
 
 
 class Course(models.Model):
@@ -94,6 +95,12 @@ class Course(models.Model):
 	term = models.CharField(max_length = 8, choices = TERM, default = 'JTERM')
 	course_description = models.TextField(db_column = "Desciption", null = True )
 
+	#newly added Course in the beginning
+	class Meta:
+		ordering = ["-courseId"]
+		# ordering = ["dept"]
+
+
 	def get_absolute_url(self):
 		return reverse('tripadvise.views.course_detail',args=[str(self.courseId)])
 	
@@ -105,6 +112,9 @@ class Course_Lodge_Assignment(models.Model):
 	clAssignId = models.AutoField(primary_key= True, db_column="CourseLodgeAssignId")
 	lodge_name = models.ForeignKey(Lodge, on_delete=models.CASCADE)
 	course_name = models.ForeignKey(Course, on_delete=models.CASCADE)
+
+	
+		
 
 
 

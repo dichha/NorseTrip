@@ -21,8 +21,25 @@ def home(request):
 
 
 def courses(request):
-	courses = Course.objects.all()
-	return render(request, 'tripadvise/courses.html' , {'courses': courses})
+    course_list = Course.objects.all()
+    paginator = Paginator(course_list, 6) # Show 6 lodges per page
+    page_request_var = "course_page"
+    page = request.GET.get(page_request_var)
+    try:
+        course = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        course = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        course = paginator.page(paginator.num_pages)
+
+    context = {
+    'course' : course,
+    'page_request_var': page_request_var
+
+    }
+    return render(request, 'tripadvise/courses.html', context )
 
 def course_detail(request, courseId):
     course_info = get_object_or_404(Course, pk = courseId)
@@ -94,6 +111,13 @@ def clAssignment(request):
     	if form.is_valid():
     	    post = form.save(commit=False)
     	    post.save()
+            form = Course_Lodge_AssignmentForm()
+            success = True
+            #message success
+            messages.success(request, "Successfully Assigned.")
+           
+        else:
+            messages.error(request, "Not Successfully Assigned.")
 	    
     else:
     	form = Course_Lodge_AssignmentForm()
