@@ -1,4 +1,5 @@
 from django.conf.urls import url
+from django.conf.urls import include
 
 from . import views
 
@@ -16,9 +17,11 @@ urlpatterns = [
 
     url(r'^course_detail/(?P<courseId>[0-9]+)/edit/$',views.course_update, name= "course_update"),
     
-
     url(r'^post_course', views.post_course, name = 'post_course'),
     url(r'^clAssignment', views.clAssignment, name = 'clAssignment'),
+    url(r'', include('social.apps.django_app.urls', namespace='social')),
+    url('', include('django.contrib.auth.urls', namespace='auth')),
+    url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}) # views.logout, name = 'logout'),
 
     
     ]

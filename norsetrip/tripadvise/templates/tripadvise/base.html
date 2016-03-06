@@ -43,19 +43,23 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
+                {% if user and not user.is_anonymous %}
                     <li> <a href="/courses.html">Courses</a> </li>
                     <li> <a href="/hotels.html">Hotels</a> </li>
                     <li><a href="{% url 'post_course' %}" class="top-menu">Enter Course</a></li>
                     <li> <a href="{% url 'post_lodge' %}" class="top-menu">Enter Lodge</a> </li>
                     <li><a href="{% url 'clAssignment' %}" class="top_menu">C&L Assign</a></li> 
                     <li> <a href="http://www.luther.edu/global-learning/">GLearning</a> </li>
-                    
-
+                    <li> <a>Hello {{ user.get_full_name|default:user.username }}</a> </li>
+                    <li id="sign-out"><a href="{% url 'auth:logout' %}?next={{ request.path }}">Logout</a> </li>
+                {% else %}
+                	<li> <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}"> Login with Norse Key</a> </li>
                    
                     <!-- <li> <a href="login.html">Login</a> </li>
                 </ul> -->
                    <!--  <li id="sign-in"> <a class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></a> </li> -->
                     <!-- <li> <a href="#" onclick="signOut();">Sign out</a> </li> -->
+                {% endif %}
                 </ul>
             </div>
         </div>
@@ -80,12 +84,12 @@
         // The ID token you need to pass to your backend:
         var id_token = googleUser.getAuthResponse().id_token;
         console.log("ID Token: " + id_token);
-        document.getElementById('sign-in').innerHTML = 'Logged in as ' + profile.getName();
+        document.getElementById("sign-in").innerHTML = 'Logged in as ' + profile.getName();
       };
       function signOut() {
     	var auth2 = gapi.auth2.getAuthInstance();
     	auth2.signOut().then(function () {
-      	console.log('User signed out.');
+      	console.log('User signed out. (Google)');
       	SignedIn = false;
       	location.reload();
 		

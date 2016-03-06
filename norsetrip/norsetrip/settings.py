@@ -39,8 +39,14 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'tripadvise',
     'django_countries',
-    'django.contrib.humanize'
+    'django.contrib.humanize',
+    'social.apps.django_app.default',
 )
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '83536201782-ftd54feptc5nm4dj3l009bktu41uaaiq.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '1_bay7l8w6CP7JJlQlmVlOWs'
+
+LOGIN_REDIRECT_URL = '/'
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -54,6 +60,11 @@ MIDDLEWARE_CLASSES = (
 )
 
 ROOT_URLCONF = 'norsetrip.urls'
+
+AUTHENTICATION_BACKENDS = (
+	'social.backends.google.GoogleOAuth2',
+	'django.contrib.auth.backends.ModelBackend',
+)
 
 TEMPLATES = [
     {
@@ -97,6 +108,8 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+SESSION_SERIALIZER='django.contrib.sessions.serializers.PickleSerializer'
 
 
 # Static files (CSS, JavaScript, Images)
