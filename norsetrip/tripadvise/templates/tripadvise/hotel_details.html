@@ -4,7 +4,6 @@
 
 <div class = 'col-sm-6 col-sm-offset-3'>
 {% if messages %}
-<br><br><br><br>
 <ul class="messages">
 	{% for message in messages %}
 	<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}} </li>
@@ -37,6 +36,12 @@ Courses that used this accomodation:
 	{% endif %}
 {% endfor %}
 <br><br>
+
+<!-- only for admin -->
+<button type="submit" class="save btn btn-info"><a href="edit" style="text-decoration: none; color: white">Edit Hotel</a></button>
+
+<br><br>
 </div>
+
 
 {% endblock %}

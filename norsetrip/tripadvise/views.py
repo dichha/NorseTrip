@@ -141,17 +141,43 @@ def post_course(request):
     return render(request, 'tripadvise/post_course.html', {'form': form})	
 	
 
-#def post_edit(request, pk):
-    #post = get_object_or_404(Lodge, pk=pk)
-    #if request.method == "POST":
-        #form = LodgeForm(request.POST, instance=post)
-        #if form.is_valid():
-            #post = form.save(commit=False)
-            #post.author = request.user
-            #post.published_date = timezone.now()
-            #post.save()
-            #return redirect('tripadvise.views.post_detail', pk=post.pk)
-    #else:
-        #form = LodgeForm(instance=post)
-    #return render(request, 'tripadvise/post_edit.html', {'form': form})
+def lodge_update(request, lodgeId = None):
+    lodges = get_object_or_404(Lodge, pk = lodgeId)
+    form = LodgeForm(request.POST or None, instance = lodges)
+    if form.is_valid():
+        lodges = form.save(commit=False)
+        lodges.save()
+        messages.success(request, "Successfully Updated")
+        return HttpResponseRedirect(lodges.get_absolute_url())
+    # else:
+    #     messages.error(request, "Not Successfully Updated")
+      
+    context = {
+      "lodges": lodges,
+      "form": form
+
+    }
+    
+    return render(request, 'tripadvise/post_lodge.html', context)
+
+
+def course_update(request, courseId = None):
+    courses = get_object_or_404(Course, pk = courseId)
+    form = CourseForm(request.POST or None, instance = courses)
+    if form.is_valid():
+        courses = form.save(commit=False)
+        courses.save()
+        messages.success(request, "Successfully Updated")
+        return HttpResponseRedirect(courses.get_absolute_url())
+    # else:
+    #     messages.error(request, "Not Successfully Updated")
+      
+    context = {
+      "courses": courses,
+      "form": form
+
+    }
+
+    
+    return render(request, 'tripadvise/post_course.html', context)
 

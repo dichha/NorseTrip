@@ -4,7 +4,6 @@
 {% block content%}
 <div class="col-sm-12">
 {% if messages %}
-<br><br><br><br>
 <ul class="messages">
 	{% for message in messages %}
 	<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}} </li>
@@ -30,6 +29,11 @@ Hotels Stayed:
 
 	{% endif %}
 {% endfor %}
+<br><br>
+<!-- only for admin -->
+<button type="submit" class="save btn btn-info"><a href="edit" style="text-decoration: none; color: white">Edit Course</a></button>
+
+<br><br>
 </div>
 
 

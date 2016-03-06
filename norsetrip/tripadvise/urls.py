@@ -12,6 +12,11 @@ urlpatterns = [
     url(r'^hotels', views.hotels, name = 'hotels'),
     url(r'^hotel_details/(?P<lodgeId>[0-9]+)/$', views.hotel_details, name ='hotel_details'),
     url(r'^post_lodge', views.post_lodge, name = 'post_lodge'),
+    url(r'^hotel_details/(?P<lodgeId>[0-9]+)/edit/$',views.lodge_update, name= "lodge_update"),
+
+    url(r'^course_detail/(?P<courseId>[0-9]+)/edit/$',views.course_update, name= "course_update"),
+    
+
     url(r'^post_course', views.post_course, name = 'post_course'),
     url(r'^clAssignment', views.clAssignment, name = 'clAssignment'),
 
