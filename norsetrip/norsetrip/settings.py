@@ -40,11 +40,11 @@ INSTALLED_APPS = (
     'tripadvise',
     'django_countries',
     'django.contrib.humanize',
-    'social_auth',
+    'social.apps.django_app.default',
 )
 
-GOOGLE_OAUTH2_CLIENT_ID = '83536201782-ftd54feptc5nm4dj3l009bktu41uaaiq.apps.googleusercontent.com'
-GOOGLE_OAUTH2_CLIENT_SECRET = '1_bay7l8w6CP7JJlQlmVlOWs'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '83536201782-ftd54feptc5nm4dj3l009bktu41uaaiq.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '1_bay7l8w6CP7JJlQlmVlOWs'
 
 LOGIN_REDIRECT_URL = '/'
 
@@ -62,7 +62,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'norsetrip.urls'
 
 AUTHENTICATION_BACKENDS = (
-	'social_auth.backends.google.GoogleOAuth2Backend',
+	'social.backends.google.GoogleOAuth2',
 	'django.contrib.auth.backends.ModelBackend',
 )
 
