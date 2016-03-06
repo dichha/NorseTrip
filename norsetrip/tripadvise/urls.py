@@ -1,4 +1,5 @@
 from django.conf.urls import url
+from django.conf.urls import include
 
 from . import views
 
@@ -14,6 +15,8 @@ urlpatterns = [
     url(r'^post_lodge', views.post_lodge, name = 'post_lodge'),
     url(r'^post_course', views.post_course, name = 'post_course'),
     url(r'^clAssignment', views.clAssignment, name = 'clAssignment'),
+    url(r'', include('social_auth.urls')),
+    url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}) # views.logout, name = 'logout'),
 
     
     ]

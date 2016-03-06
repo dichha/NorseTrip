@@ -49,6 +49,8 @@
                     <li> <a href="{% url 'post_lodge' %}" class="top-menu">Enter Lodge</a> </li>
                     <li><a href="{% url 'clAssignment' %}" class="top_menu">C&L Assign</a></li> 
                     <li> <a href="http://www.luther.edu/global-learning/">GLearning</a> </li>
+                    <li id="sign-in"> <a onclick="onSignIn" href="{% url 'socialauth_begin' 'google-oauth2' %}" class ="primaryLink">Login with Norse ID</a> </li>
+                    <li id="sign-out"> <a onclick="signOut()" href="/logout"> Logout </a>
                     
 
                    
@@ -80,12 +82,12 @@
         // The ID token you need to pass to your backend:
         var id_token = googleUser.getAuthResponse().id_token;
         console.log("ID Token: " + id_token);
-        document.getElementById('sign-in').innerHTML = 'Logged in as ' + profile.getName();
+        document.getElementById("sign-in").innerHTML = 'Logged in as ' + profile.getName();
       };
       function signOut() {
     	var auth2 = gapi.auth2.getAuthInstance();
     	auth2.signOut().then(function () {
-      	console.log('User signed out.');
+      	console.log('User signed out. (Google)');
       	SignedIn = false;
       	location.reload();
 		

@@ -1,10 +1,12 @@
-
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render,get_object_or_404, HttpResponseRedirect
 from django.views.generic import View
 from django.shortcuts import redirect
+from django.contrib.auth import (
+	logout as auth_logout, update_session_auth_hash,
+)
 
 from .models import Lodge
 from .models import Course
@@ -140,6 +142,11 @@ def post_course(request):
     	form = CourseForm()
     return render(request, 'tripadvise/post_course.html', {'form': form})	
 	
+def logout_view(request):
+	logger.debug("Logout called by user")
+	logout(request)
+	return HttpResponseRedirect("/")
+
 
 #def post_edit(request, pk):
     #post = get_object_or_404(Lodge, pk=pk)
