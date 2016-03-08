@@ -1,9 +1,8 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render,get_object_or_404, HttpResponseRedirect
+from django.shortcuts import render,get_object_or_404, HttpResponseRedirect, redirect
 from django.views.generic import View
-from django.shortcuts import redirect
 from django.contrib.auth import (
 	logout as auth_logout, update_session_auth_hash,
 )
@@ -187,4 +186,17 @@ def course_update(request, courseId = None):
 
     
     return render(request, 'tripadvise/post_course.html', context)
+
+def course_delete(request, courseId = None):
+    course = get_object_or_404(Course, pk = courseId)
+    course.delete()
+    messages.success(request, "Successfully deleted")
+    return redirect("tripadvise.views.courses")
+
+def hotel_delete(request, lodgeId = None):
+    lodge = get_object_or_404(Lodge, pk = lodgeId)
+    lodge.delete()
+    messages.success(request, "Successfully deleted")
+    return redirect("tripadvise.views.hotels")
+
 
