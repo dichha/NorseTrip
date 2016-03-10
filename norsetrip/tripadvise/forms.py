@@ -1,10 +1,10 @@
 from django import forms
 from django import forms 
+
 from .models import Lodge
-
 from .models import Course
-
 from .models import Course_Lodge_Assignment
+from .models import User
 
 
 class LodgeForm(forms.ModelForm):
@@ -44,5 +44,12 @@ class Course_Lodge_AssignmentForm(forms.ModelForm):
          fields = [
          'lodge_name',
          'course_name']
-#          'hotel_that_was_switched',
-#          'date_switched',]
+class UserForm(forms.ModelForm):
+    class Meta: 
+        model = User
+        fields = [
+        'userId',
+        'fullName',
+        'email',
+        'role'
+        ]

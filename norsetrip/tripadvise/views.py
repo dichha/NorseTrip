@@ -10,11 +10,12 @@ from django.contrib.auth import (
 from .models import Lodge
 from .models import Course
 from .models import Course_Lodge_Assignment
+from .models import User
 
 from .forms import LodgeForm
 from .forms import CourseForm
 from .forms import Course_Lodge_AssignmentForm
-
+from .forms import UserForm
 
 
 def home(request):
@@ -131,7 +132,6 @@ def post_course(request):
         form = CourseForm(request.POST or None)
         if form.is_valid():
             post = form.save(commit=False)
-            post.author = request.user
             post.save()
             messages.success(request, "Successfully Created")
             return HttpResponseRedirect(post.get_absolute_url())
@@ -140,6 +140,21 @@ def post_course(request):
     else:
     	form = CourseForm()
     return render(request, 'tripadvise/post_course.html', {'form': form})	
+
+
+def post_user(request):
+    if request.method == "POST":
+        form = UserForm(request.POST or None)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.save()
+            messages.success(request, "Successfully Created")
+            return HttpResponseRedirect(user.get_absolute_url())
+        else:
+            messages.error(request, "Not Successfully Created")
+    else:
+        form = UserForm()
+    return render(request, 'tripadvise/post_user.html', {'form':form})
 	
 def logout_view(request):
 	logger.debug("Logout called by user")

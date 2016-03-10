@@ -6,7 +6,7 @@ from .models import Course
 from .models import Course_Lodge_Assignment
 from .models import User
 from .models import Review
-from .models import Course_Assignment
+from .models import Course_User_Assignment
 
 #admin.site.register(Lodging)
 class LodgeAdmin(admin.ModelAdmin):
@@ -34,13 +34,13 @@ class Course_Lodge_AssignmentAdmin(admin.ModelAdmin):
 admin.site.register(Course_Lodge_Assignment, Course_Lodge_AssignmentAdmin)
 
 class UserAdmin(admin.ModelAdmin):
-	list_display = ('userId','email','role')
+	list_display = ('userId','fullName','email','role')
 admin.site.register(User, UserAdmin)
 
 class ReviewAdmin(admin.ModelAdmin):
 	list_display = ('reviewId','lodge_Id','user_Id','rating','cost','pub_date')
 admin.site.register(Review, ReviewAdmin)
 
-class Course_AssignmentAdmin(admin.ModelAdmin):
+class Course_User_AssignmentAdmin(admin.ModelAdmin):
 	list_display = ('courseAssignId','course_Id','user_Id')
-admin.site.register(Course_Assignment, Course_AssignmentAdmin)
+admin.site.register(Course_User_Assignment, Course_User_AssignmentAdmin)
