@@ -3,13 +3,90 @@
 <html lang="en">
 <style>
 #sign-in {
-	color: lightgray;
+color: lightgray;
+}
+/* Clearfix */
+.clearfix:before,
+.clearfix:after {
+    content: " ";
+    display: table;
+}
+.clearfix:after {
+    clear: both;
+}
+.clearfix {
+    *zoom: 1;
+}
+
+}
+nav {
+    position: relative;
+}
+
+nav li {
+    display: inline;
+    float: right;
+}
+nav a {
+    display: inline-block;
+    text-align: center;
+}
+nav li:last-child a {
+    border-right: 0;
+}
+nav a:hover, nav a:active {
+    background-color: #8c99a4;
+}
+nav a#pull {
+    display: none;
+}
+
+/* When the screen is less than 680 pixels wide, hide all list items,
+except for the first one ("Home"). Show the list item that contains
+the link to open and close the topnav (li.icon) */
+@media screen and (max-width:680px) {
+  ul.topnav li:not(:first-child) {display: none;}
+  ul.topnav li.icon {
+    float: right;
+    display: inline-block;
+  }
+}
+
+/* The "responsive" class is added to the topnav with JavaScript when
+the user clicks on the icon. This class makes the topnav look good on
+small screens */
+@media screen and (max-width:680px) {
+  ul.topnav.responsive {position: relative;}
+  ul.topnav.responsive li.icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  ul.topnav.responsive li {
+    float: none;
+    display: inline;
+  }
+  ul.topnav.responsive li a {
+    display: block;
+    text-align: left;
+  }
+}
+/*Smartphone*/
+@media only screen and (max-width : 320px) {
+    nav li {
+        display: block;
+        float: none;
+        width: 100%;
+    }
+    nav li a {
+        border-bottom: 1px solid #576979;
+    }
 }
 
 </style>
 
 <head>
-
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,17 +94,19 @@
     <meta name="author" content="">
     <meta name="google-signin-scope" content="profile email">
     <meta name="google-signin-client_id" content="83536201782-ftd54feptc5nm4dj3l009bktu41uaaiq.apps.googleusercontent.com">
+
     
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
 
     <title>Norse Trip Advisor</title>
 
      <!-- Bootstrap Core CSS -->
      <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-     
+
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/tripadvise.css' %}">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
 
 </head>
 
@@ -35,48 +114,47 @@
 
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
+        <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
                 <a class="navbar-brand" href="/">Norse Trip Advisor</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
-                {% if user and not user.is_anonymous %}
                     <li> <a href="/courses.html">Courses</a> </li>
                     <li> <a href="/hotels.html">Hotels</a> </li>
-                    <li><a href="{% url 'post_course' %}" class="top-menu">Enter Course</a></li>
-                    <li> <a href="{% url 'post_lodge' %}" class="top-menu">Enter Lodge</a> </li>
-                    <li><a href="{% url 'clAssignment' %}" class="top_menu">C&L Assign</a></li> 
+                    <li><a href="{% url 'post_user' %}" class="top_menu">Student Registration</a></li> 
                     <li> <a href="http://www.luther.edu/global-learning/">GLearning</a> </li>
-                    <li> <a>Hello {{ user.get_full_name|default:user.username }}</a> </li>
-                    <li id="sign-out"><a href="{% url 'auth:logout' %}?next={{ request.path }}">Logout</a> </li>
-                {% else %}
-                	<li> <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}"> Login with Norse Key</a> </li>
-                   
-                    <!-- <li> <a href="login.html">Login</a> </li>
-                </ul> -->
+
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" >Admin<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'tripadvise.views.post_course' %}"class="top-menu">Enter Course</a></li>
+                            <li> <a href="{% url 'tripadvise.views.post_lodge' %}"class="top-menu">Enter Lodge</a> </li>
+                            <li><a href="{% url 'tripadvise.views.clAssignment' %}"class="top_menu">C&L Assign</a></li>
+                        </ul>
+                    </li>
+
+
+
                    <!--  <li id="sign-in"> <a class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></a> </li> -->
-                    <!-- <li> <a href="#" onclick="signOut();">Sign out</a> </li> -->
-                {% endif %}
+                    <!-- <li> <a href="#" onclick="signOut();">Signout</a> </li> -->
                 </ul>
-            </div>
         </div>
     </nav>
-    
+
     <script>
     $('.carousel').carousel({
         interval: 5000 //changes the speed
     })
-    
+
     var SignedIn = false;
-    
+
     function onSignIn(googleUser) {
         // Useful data for your client-side scripts:
         var profile = googleUser.getBasicProfile();
         SignedIn = true;
-        console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+        console.log("ID: " + profile.getId()); // Don't send thisdirectly to your server!
         console.log("Name: " + profile.getName());
         console.log("Image URL: " + profile.getImageUrl());
         console.log("Email: " + profile.getEmail());
@@ -84,25 +162,25 @@
         // The ID token you need to pass to your backend:
         var id_token = googleUser.getAuthResponse().id_token;
         console.log("ID Token: " + id_token);
-        document.getElementById("sign-in").innerHTML = 'Logged in as ' + profile.getName();
-      };
-      function signOut() {
-    	var auth2 = gapi.auth2.getAuthInstance();
-    	auth2.signOut().then(function () {
-      	console.log('User signed out. (Google)');
-      	SignedIn = false;
-      	location.reload();
-		
-    	});
-  	  }
+        document.getElementById('sign-in').innerHTML = 'Logged in as '+ profile.getName();};
+        function signOut() {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+          console.log('User signed out.');
+          SignedIn = false;
+          location.reload();
+        });
+    }
     </script>
-    
+
     {% block content %}
     {% endblock %}
-    
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
 
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
 </body>
 
 </html>

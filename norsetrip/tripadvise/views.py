@@ -126,6 +126,7 @@ def clAssignment(request):
 
     return render(request, 'tripadvise/clAssignment.html',{'form':form})
 
+
 def post_course(request):
     if request.method =="POST":
         #request.POST or None is builtin validation
@@ -148,10 +149,10 @@ def post_user(request):
         if form.is_valid():
             user = form.save(commit=False)
             user.save()
-            messages.success(request, "Successfully Created")
-            return HttpResponseRedirect(user.get_absolute_url())
-        else:
-            messages.error(request, "Not Successfully Created")
+        #     messages.success(request, "Successfully Created")
+        #     return HttpResponseRedirect(user.get_absolute_url())
+        # else:
+        #     messages.error(request, "Not Successfully Created")
     else:
         form = UserForm()
     return render(request, 'tripadvise/post_user.html', {'form':form})

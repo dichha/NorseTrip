@@ -127,6 +127,7 @@ class User(models.Model):
 		return self.email
 
 	userId =  models.AutoField(primary_key = True, db_column = "UserId")
+	fullName = models.CharField(max_length = 50, db_column = "Name")
 	email = models.EmailField(db_column = "Email", max_length = 24)
 
 	ROLE_CHOICES = (('PROFESSOR', 'PROFESSOR'),
@@ -135,6 +136,9 @@ class User(models.Model):
 	                ('FACULTY', 'FACULTY'),
                 )
 	role = models.CharField(max_length = 9, choices = ROLE_CHOICES, db_column = "ROLE")
+	def get_absolute_url(self):
+		return reverse('tripadvise.views.user_detail',args=[str(self.userId)])
+
 
 class Review(models.Model):
 	def __int__(self):
@@ -171,7 +175,7 @@ class Review(models.Model):
 	comment = models.TextField(db_column = "Comment")
 	pub_date = models.DateTimeField(db_column = "Date")
 
-class Course_Assignment(models.Model):
+class Course_User_Assignment(models.Model):
 	def __int__(self):
 		return self.courseAssignId
 
