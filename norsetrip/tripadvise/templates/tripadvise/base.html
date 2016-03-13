@@ -123,7 +123,7 @@ small screens */
                 <ul class="nav navbar-nav navbar-right">
                     <li> <a href="/courses.html">Courses</a> </li>
                     <li> <a href="/hotels.html">Hotels</a> </li>
-                    <li><a href="{% url 'post_user' %}" class="top_menu">Student Registration</a></li> 
+                    <li><a href="{% url 'users' %}" class="top_menu">Users</a></li>
                     <li> <a href="http://www.luther.edu/global-learning/">GLearning</a> </li>
 
                     <li class="dropdown">
@@ -132,6 +132,8 @@ small screens */
                             <li><a href="{% url 'tripadvise.views.post_course' %}"class="top-menu">Enter Course</a></li>
                             <li> <a href="{% url 'tripadvise.views.post_lodge' %}"class="top-menu">Enter Lodge</a> </li>
                             <li><a href="{% url 'tripadvise.views.clAssignment' %}"class="top_menu">C&L Assign</a></li>
+                            <li><a href="{% url 'post_user' %}" class="top_menu">User Registration</a></li> 
+                             <li><a href="{% url 'tripadvise.views.cuAssignment' %}"class="top_menu">C&U Assign</a></li>
                         </ul>
                     </li>
 

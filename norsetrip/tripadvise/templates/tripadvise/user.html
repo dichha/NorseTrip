@@ -1,0 +1,37 @@
+{% extends 'tripadvise/base.html' %}
+
+{% block content %}
+<div class="col-sm-12">
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}} </li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<h1> Users </h1>
+ {% for user in user %}
+<a href="{% url 'user_detail' user.userId %}"> {{ user.fullName}}</a>
+{{ user.role}}<br><br>
+	
+
+{% endfor %}
+</div>
+<div class="pagination">
+    <span class="step-links">
+        {% if user.has_previous %}
+            <a href="?{{ page_request_var }}={{ user.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ user.number }} of {{ user.paginator.num_pages }}.
+        </span>
+
+        {% if user.has_next %}
+            <a href="?{{ page_request_var }}={{ user.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
+
+{% endblock %}

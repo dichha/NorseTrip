@@ -1,0 +1,21 @@
+{% extends 'tripadvise/base.html' %}
+
+{% block content %}
+<div class="col-sm-6 col-sm-offset-3">
+{% if messages %}
+<div class = "row"> 
+	{% for message in messages %}
+	<p{% if message.tags == "success" %} 
+	class="alert alert-success"{% endif %}>{{ message }}</p>
+	{% endfor %}
+</div>
+{% endif %}
+
+
+    <h1>Course User Assignment</h1>
+    <form method="POST" class="post-form">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-primary">Save</button>
+    </form>
+</div>
+{% endblock %}

@@ -26,6 +26,13 @@ urlpatterns = [
     url(r'^hotel_details/(?P<lodgeId>[0-9]+)/delete/$', views.hotel_delete, name = 'hotel_delete'),
 
     url(r'^post_user', views.post_user, name = 'post_user'),
+    url(r'^users', views.users, name = 'users'),
+    url(r'^user_detail/(?P<userId>[0-9]+)/$', views.user_detail, name = "user_detail"),
+    url(r'^user_detail/(?P<courseId>[0-9]+)/edit/$',views.user_update, name= "user_update"),
+    url(r'^cuAssignment', views.cuAssignment, name = 'cuAssignment'),
+    url(r'^user_detail/(?P<userId>[0-9]+)/delete/$', views.user_delete, name = 'user_delete'),
+
+
 
     url(r'', include('social.apps.django_app.urls', namespace='social')),
     url('', include('django.contrib.auth.urls', namespace='auth')),

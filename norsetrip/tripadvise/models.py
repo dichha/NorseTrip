@@ -33,7 +33,9 @@ class Lodge(models.Model):
 	#newly added lodge in the beginning	
 	class Meta:
 		ordering = ["-lodgeId"]
-		#ordering = ["lodge_name"]
+		#preventing duplicates
+		unique_together = ["lodge_name", "lodge_address","city","country","lodge_url"]
+
 
 
 class Course(models.Model):
@@ -113,10 +115,8 @@ class Course_Lodge_Assignment(models.Model):
 	lodge_name = models.ForeignKey(Lodge, on_delete=models.CASCADE)
 	course_name = models.ForeignKey(Course, on_delete=models.CASCADE)
 
-	
-		
-
-
+	class Meta:
+		unique_together = ['lodge_name', 'course_name']
 
 	
 class User(models.Model):
@@ -136,6 +136,9 @@ class User(models.Model):
 	                ('FACULTY', 'FACULTY'),
                 )
 	role = models.CharField(max_length = 9, choices = ROLE_CHOICES, db_column = "ROLE")
+
+	course_user_assignments = models.ManyToManyField(Course,through='Course_User_Assignment')
+
 	def get_absolute_url(self):
 		return reverse('tripadvise.views.user_detail',args=[str(self.userId)])
 
@@ -179,11 +182,12 @@ class Course_User_Assignment(models.Model):
 	def __int__(self):
 		return self.courseAssignId
 
-
 	courseAssignId = models.AutoField(primary_key = True, db_column = "Course_AssignmentId")
-	course_Id = models.ForeignKey(Course, db_column = "CourseId FK")
-	user_Id = models.ForeignKey(User, db_column = "UserId FK")
+	course_Id = models.ForeignKey(Course, db_column = "CourseId FK", on_delete=models.CASCADE)
+	user_Id = models.ForeignKey(User, db_column = "UserId FK", on_delete=models.CASCADE)
 
+	class Meta:
+		unique_together = ["course_Id", "user_Id"]
 
 
 

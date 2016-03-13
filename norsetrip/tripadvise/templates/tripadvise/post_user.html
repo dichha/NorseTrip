@@ -2,6 +2,14 @@
 
 {% block content %}
 <div class="col-sm-12">
+{% if messages %}
+	<ul class="messages">
+    {% for message in messages %}
+    <p{% if message.tags == "error" %} class= "alert alert-warning" class="{{ message.tags }}"{% endif %}>{{message}} </p>
+  <!--   <li{% if message.tags == "success" %} class= "alert alert-success" class="{{ message.tags }}"{% endif %}>{{message}} </li> -->
+    {% endfor %}
+	</ul>
+{% endif %}
     <h1>New Student</h1>
     <form method="POST" class="post-form">{% csrf_token %}
         {{ form.as_p }}

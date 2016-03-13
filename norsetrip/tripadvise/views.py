@@ -11,11 +11,13 @@ from .models import Lodge
 from .models import Course
 from .models import Course_Lodge_Assignment
 from .models import User
+from .models import Course_User_Assignment
 
 from .forms import LodgeForm
 from .forms import CourseForm
 from .forms import Course_Lodge_AssignmentForm
 from .forms import UserForm
+from .forms import Course_User_AssignmentForm
 
 
 def home(request):
@@ -128,7 +130,7 @@ def clAssignment(request):
 
 
 def post_course(request):
-    if request.method =="POST":
+    if request.method == "POST":
         #request.POST or None is builtin validation
         form = CourseForm(request.POST or None)
         if form.is_valid():
@@ -149,13 +151,100 @@ def post_user(request):
         if form.is_valid():
             user = form.save(commit=False)
             user.save()
-        #     messages.success(request, "Successfully Created")
-        #     return HttpResponseRedirect(user.get_absolute_url())
-        # else:
-        #     messages.error(request, "Not Successfully Created")
+            messages.success(request, "Successfully Created")
+            return HttpResponseRedirect(user.get_absolute_url())
+        else:
+            messages.error(request, "Not Successfully Created")
     else:
         form = UserForm()
     return render(request, 'tripadvise/post_user.html', {'form':form})
+
+def users(request):
+    user_list = User.objects.all()
+    paginator = Paginator(user_list, 6) # Show 6 lodges per page
+    page_request_var = "lodge_page"
+    page = request.GET.get(page_request_var)
+    try:
+        user = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        user = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        user = paginator.page(paginator.num_pages)
+
+    context = {
+    'user': user, 
+    'page_request_var': page_request_var,
+    'title': 'User'
+    }
+
+    return render(request, 'tripadvise/user.html', context)
+
+
+
+def user_detail(request, userId):
+    user_info = get_object_or_404(User,pk = userId)
+    cu_assign = Course_User_Assignment.objects.all()
+    courses = Course.objects.all()
+    context = {
+    'user_info': user_info,
+    'cu_assign': cu_assign,
+    'courses' : courses
+    }
+    return render(request, 'tripadvise/user_detail.html', context)
+
+def user_update(request, courseId = None):
+    user = get_object_or_404(User, pk = courseId)
+    form = UserForm(request.POST or None, instance = user)
+    if form.is_valid():
+        user = form.save(commit=False)
+        user.save()
+        messages.success(request, "Successfully Updated")
+        return HttpResponseRedirect(user.get_absolute_url())
+    else:
+        messages.error(request, "Not Successfully Updated")
+      
+    context = {
+      "user": user,
+      "form": form
+
+    }
+    
+    return render(request, 'tripadvise/post_user.html', context)
+
+def cuAssignment(request):
+    if request.method == "POST":
+        form = Course_User_AssignmentForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.save()
+            form = Course_User_AssignmentForm()
+            success = True
+            #message success
+            messages.success(request, "Successfully Assigned.")
+           
+        else:
+            messages.error(request, "Not Successfully Assigned.")
+        
+    else:
+        form = Course_User_AssignmentForm()
+
+    return render(request, 'tripadvise/cuAssignment.html',{'form':form})
+
+
+def hotel_details(request,lodgeId):
+    lodge_info = get_object_or_404(Lodge,pk = lodgeId)
+    cl_assign = Course_Lodge_Assignment.objects.all()
+    courses = Course.objects.all()
+
+    context = {
+    'lodge_info':lodge_info,
+    'cl_assign': cl_assign,
+    'courses' : courses
+    }
+
+    return render(request,'tripadvise/hotel_details.html',context)
 	
 def logout_view(request):
 	logger.debug("Logout called by user")
@@ -171,8 +260,8 @@ def lodge_update(request, lodgeId = None):
         lodges.save()
         messages.success(request, "Successfully Updated")
         return HttpResponseRedirect(lodges.get_absolute_url())
-    # else:
-    #     messages.error(request, "Not Successfully Updated")
+    else:
+        messages.error(request, "Not Successfully Updated")
       
     context = {
       "lodges": lodges,
@@ -191,15 +280,14 @@ def course_update(request, courseId = None):
         courses.save()
         messages.success(request, "Successfully Updated")
         return HttpResponseRedirect(courses.get_absolute_url())
-    # else:
-    #     messages.error(request, "Not Successfully Updated")
+    else:
+        messages.error(request, "Not Successfully Updated")
       
     context = {
       "courses": courses,
       "form": form
 
     }
-
     
     return render(request, 'tripadvise/post_course.html', context)
 
@@ -215,4 +303,9 @@ def hotel_delete(request, lodgeId = None):
     messages.success(request, "Successfully deleted")
     return redirect("tripadvise.views.hotels")
 
+def user_delete(request, userId = None):
+    user = get_object_or_404(User, pk = userId)
+    user.delete()
+    messages.success(request, "Successfully deleted")
+    return redirect("tripadvise.views.users")
 

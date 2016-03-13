@@ -1,0 +1,42 @@
+
+{% extends 'tripadvise/base.html' %}
+
+{% block content%}
+<div class="col-sm-12">
+
+{% if messages %}
+<ul class="messages">
+	{% for message in messages %}
+	<p{% if message.tags == "success" %} class="alert alert-success" class="{{ message.tags }}"{% endif %}>{{message}} </p>
+	{% endfor %}
+</ul>
+
+{% endif %}
+<h4>{{user_info.fullName}}</h4>
+Email : {{ user_info.email }}<br><br>
+Role: {{ user_info.role }}<br><br>
+Courses taken:
+{% for cua in cu_assign %}
+	{% if user_info.email == cua.user_Id|stringformat:"s" %} 
+
+		{% for course in courses %}
+			{% if course.name == cua.course_Id|stringformat:"s" %}
+				<a href="/course_detail/{{ course.courseId }}">
+				{{cua.course_Id|stringformat:"s"}}</a>,
+			{% endif %}
+		{% endfor %}
+
+	{% endif %}
+{% endfor %}
+<br><br>
+<!-- only for admin -->
+<a href="edit" style="text-decoration: none; color: white"><button type="submit" class="save btn btn-info">Edit User</button></a>
+
+<a href="delete" style="text-decoration: none; color: white"><button type="submit" class="save btn btn-danger">Delete User</button></a>
+
+<br><br>
+</div>
+
+
+
+{% endblock %}

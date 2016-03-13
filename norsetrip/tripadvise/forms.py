@@ -5,6 +5,7 @@ from .models import Lodge
 from .models import Course
 from .models import Course_Lodge_Assignment
 from .models import User
+from .models import Course_User_Assignment
 
 
 class LodgeForm(forms.ModelForm):
@@ -44,6 +45,7 @@ class Course_Lodge_AssignmentForm(forms.ModelForm):
          fields = [
          'lodge_name',
          'course_name']
+
 class UserForm(forms.ModelForm):
     class Meta: 
         model = User
@@ -53,3 +55,12 @@ class UserForm(forms.ModelForm):
         'email',
         'role'
         ]
+
+class Course_User_AssignmentForm(forms.ModelForm):
+    class Meta:
+        model = Course_User_Assignment
+        fields = [
+        'user_Id',
+        'course_Id'
+        ]
+        
