@@ -1,11 +1,11 @@
 from django import forms
-from django import forms 
 
 from .models import Lodge
 from .models import Course
 from .models import Course_Lodge_Assignment
 from .models import User
 from .models import Course_User_Assignment
+from .models import Review
 
 
 class LodgeForm(forms.ModelForm):
@@ -20,7 +20,6 @@ class LodgeForm(forms.ModelForm):
         'country', 
         'lodge_url', 
         'lodge_descrip',
-        'average_rating',
         ]
         
 class CourseForm(forms.ModelForm):
@@ -62,5 +61,14 @@ class Course_User_AssignmentForm(forms.ModelForm):
         fields = [
         'user_Id',
         'course_Id'
+        ]
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = [
+        'rating',
+        'comment',
+        #'pub_date'
         ]
         

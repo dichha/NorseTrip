@@ -6,19 +6,22 @@ from django.views.generic import View
 from django.contrib.auth import (
 	logout as auth_logout, update_session_auth_hash,
 )
+from datetime import datetime
+from django.core.urlresolvers import reverse
 
 from .models import Lodge
 from .models import Course
 from .models import Course_Lodge_Assignment
 from .models import User
 from .models import Course_User_Assignment
+from .models import Review
 
 from .forms import LodgeForm
 from .forms import CourseForm
 from .forms import Course_Lodge_AssignmentForm
 from .forms import UserForm
 from .forms import Course_User_AssignmentForm
-
+from .forms import ReviewForm
 
 def home(request):
     return render(request, 'tripadvise/home.html')
@@ -78,20 +81,60 @@ def hotels(request):
     'title': 'Hotel'
     }
 
-    return render(request, 'tripadvise/hotels.html', context)
+    return render(request, 'tripadvise/hotels.html', 
+        context)
 
 
 def hotel_details(request,lodgeId):
-    lodge_info = get_object_or_404(Lodge,pk = lodgeId)
+    #hotel info  
     cl_assign = Course_Lodge_Assignment.objects.all()
-    courses = Course.objects.all()
+    courses = Course.objects.all()  
+    lodge_info = get_object_or_404(Lodge,pk = lodgeId)
+
+    #reviews = Review.objects.all()
+    reviews_list = Review.objects.filter(lodge_Id = lodge_info.lodgeId)
+
+    paginator = Paginator(reviews_list,6) # Show 6 lodges per page
+    page_request_var = "review_page"
+    page = request.GET.get(page_request_var)
+    try:
+        review_pag = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        review_pag = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        review_pag = paginator.page(paginator.num_pages)
+
+
+    form = ReviewForm(request.POST)
+    if form.is_valid():
+        rating = form.cleaned_data['rating']
+        comment = form.cleaned_data['comment']
+        review = Review()
+        review.lodge_Id = lodge_info
+        review.rating = rating
+        review.comment = comment
+        review.pub_date = datetime.now()
+        review.save()
+        #always return an HTTPResponseRedirect after successfully dealing with POST data.This prevents data from being posted twice if a user hits the back button
+
+        return HttpResponseRedirect(reverse('tripadvise.views.hotel_details', args = [str(lodge_info.lodgeId)]))
+
+    
     context = {
     'lodge_info':lodge_info,
     'cl_assign': cl_assign,
-    'courses' : courses
+    'courses' : courses,
+    # 'reviews' : reviews,
+    'form' : form,
+    'review_pag' : review_pag,
+    'page_request_var': page_request_var
     }
 
-    return render(request,'tripadvise/hotel_details.html',context)
+   
+    return render(request,'tripadvise/hotel_details.html', context)
+
     
 
 def post_lodge(request):
@@ -109,6 +152,8 @@ def post_lodge(request):
     else:
         form = LodgeForm()
     return render(request, 'tripadvise/post_lodge.html', {'form': form})
+
+    
 def clAssignment(request):
     if request.method == "POST":
     	form = Course_Lodge_AssignmentForm(request.POST)
@@ -190,7 +235,8 @@ def user_detail(request, userId):
     context = {
     'user_info': user_info,
     'cu_assign': cu_assign,
-    'courses' : courses
+    'courses' : courses,
+
     }
     return render(request, 'tripadvise/user_detail.html', context)
 
@@ -233,18 +279,7 @@ def cuAssignment(request):
     return render(request, 'tripadvise/cuAssignment.html',{'form':form})
 
 
-def hotel_details(request,lodgeId):
-    lodge_info = get_object_or_404(Lodge,pk = lodgeId)
-    cl_assign = Course_Lodge_Assignment.objects.all()
-    courses = Course.objects.all()
 
-    context = {
-    'lodge_info':lodge_info,
-    'cl_assign': cl_assign,
-    'courses' : courses
-    }
-
-    return render(request,'tripadvise/hotel_details.html',context)
 	
 def logout_view(request):
 	logger.debug("Logout called by user")

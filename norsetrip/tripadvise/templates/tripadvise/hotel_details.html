@@ -1,40 +1,37 @@
 
 {% extends 'tripadvise/base.html' %}
 
+
+
 {% block content %}
 
-
-<br><br>
-<div class="row">
-  <div class="col-md-1"></div>
-  <div class="col-md-3">
-  	<br>
-	{% if lodge_info.lodge_image.url %}
-		<img src="{{lodge_info.lodge_image.url }}" style=position:fixed top="150" left="950" class="img-responsive" width="500" height="400" border="0">
-		{% endif %}
-	</div>
-
-
-
-
-<div class="col-md-5 col-md-offset-6"  style=position:fixed>
 	{% if messages %}
 		<ul class="messages">
 		{% for message in messages %}
-		<p{% if message.tags == "success" %} class="alert alert-success" class="{{ message.tags }}"{% endif %}>{{message}} </p>
+		<p {% if message.tags == "success" %} class="alert alert-success" class="{{ message.tags }}"{% endif %}> {{message}} </p>
 
 		{% endfor %}
 		</ul>
 	{% endif %}
- <h1>{{lodge_info.lodge_name}}</h1><br>
 
-<b>Rating:</b> {{lodge_info.average_rating}} <br><br>
-<b>Address: </b>{{lodge_info.lodge_address}}   {{lodge_info.city}} , {{lodge_info.country}}<br><br>
+<div class="col-sm-12">
+<h1>{{lodge_info.lodge_name}}</h1>
+<b>Address: </b>{{lodge_info.lodge_address}}{{lodge_info.city}} , {{lodge_info.country}}<br>
+<b>Rating:</b>{{ lodge_info.review_set.count }} reviews 
+{% if lodge_info.review_set.count != 0 %}
+({{ lodge_info.mean_rating | floatformat }} average rating)
+{% endif %}
+
+{% if lodge_info.lodge_image.url %}
+	<center><img src="{{lodge_info.lodge_image.url }}" class="img-responsive" width="500" height="400" border="0"></center><br>
+{% endif %}
+	
+
 <b>URL:</b> <a href = "{{ lodge_info.lodge_url }}">{{ lodge_info.lodge_url }} </a> <br><br>
 <b>Description:</b> {{lodge_info.lodge_descrip}} <br><br>
 
 
-<b>Courses that used this accomodation: 
+<b>Courses that used this accomodation: </b>
 {% for cla in cl_assign %}
 	{% if lodge_info.lodge_name == cla.lodge_name|stringformat:"s" %} 
 		{% for course in courses %}
@@ -47,18 +44,58 @@
 	{% endif %}
 {% endfor %}
 <br><br>
+</div>
+
+<div class="col-sm-12">
+<h3>Reviews</h3>
+<!-- Review -->
+
+	{% for review in review_pag %} 
+
+		{% if review.lodge_Id|stringformat:"s" == lodge_info.lodge_name %}
+		<div class = "comment">
+		{{ review.comment }} <br>
+		</div>
+		<small>Rated {{ review.rating }} of 5 | 
+		{{ review.pub_date}}</small> <br><br>
+		
+
+		{% endif%}
+		
+
+	{% endfor %}
+</div>	
+
+
+<br>
+<div class="col-sm-12">
+<div class="pagination">
+    <span class="step-links">
+        {% if review_pag.has_previous %}
+            <a href="?{{ page_request_var }}={{ review_pag.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ review_pag.number }} of {{ review_pag.paginator.num_pages }}.
+        </span>
+
+        {% if review_pag.has_next %}
+            <a href="?{{ page_request_var }}={{ review_pag.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+	</div>
+<h3> Write Reviews </h3>
+<form method="POST" class="post-form">{% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="save btn btn-primary">Add</button>
+</form>
+<br>
+
 <!-- only for admin -->
 <a href="edit" style="text-decoration: none; color: white"><button type="submit" class="save btn btn-info">Edit Hotel</button></a>
 
 <a href="delete" style="text-decoration: none; color: white"><button type="submit" class="save btn btn-danger">Delete Hotel</button></a>
 
 <br><br>
-
-</div></div>
-
-
-
-
-
-
+</div>
 {% endblock %}

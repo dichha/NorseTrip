@@ -11,7 +11,7 @@ from .models import Course_User_Assignment
 #admin.site.register(Lodging)
 class LodgeAdmin(admin.ModelAdmin):
 	#fields = ["lodge_name", "Lodge_address", "City", "Country", "Pub_date" ]
-	list_display = ("lodgeId","lodge_name","country","average_rating");
+	list_display = ("lodgeId","lodge_name","country");
 	list_filter = ['country']
 	search_fields = ['city']
 	list_per_page = 50 #pagination
@@ -38,7 +38,7 @@ class UserAdmin(admin.ModelAdmin):
 admin.site.register(User, UserAdmin)
 
 class ReviewAdmin(admin.ModelAdmin):
-	list_display = ('reviewId','lodge_Id','user_Id','rating','cost','pub_date')
+	list_display = ('reviewId','lodge_Id','rating', 'pub_date')#'user_Id','rating','pub_date')
 admin.site.register(Review, ReviewAdmin)
 
 class Course_User_AssignmentAdmin(admin.ModelAdmin):

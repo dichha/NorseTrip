@@ -32,6 +32,8 @@ urlpatterns = [
     url(r'^cuAssignment', views.cuAssignment, name = 'cuAssignment'),
     url(r'^user_detail/(?P<userId>[0-9]+)/delete/$', views.user_delete, name = 'user_delete'),
 
+    # url(r'^post_review', views.post_review, name = 'post_review'),
+
 
 
     url(r'', include('social.apps.django_app.urls', namespace='social')),

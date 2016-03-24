@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django_countries.fields import CountryField
 from django.core.urlresolvers import reverse
+import numpy as np
 
 
 
@@ -19,13 +20,14 @@ class Lodge(models.Model):
 	country = CountryField(blank_label = 'Select Country')
 	lodge_url = models.URLField(db_column = "URL")
 	lodge_descrip = models.TextField(db_column = "Description")
-	average_rating = models.IntegerField(db_column = "Average Rating", default = 100)
+	
 
 	lodge_image = models.ImageField(null=True, blank = True,width_field = "width_field", 
 		height_field = "height_field")
 
 	height_field = models.IntegerField(default = 0)
 	width_field = models.IntegerField(default = 0)
+	#lodge_review_assignment = models.
 
 	def get_absolute_url(self):
 		return reverse('tripadvise.views.hotel_details', args=[str(self.lodgeId)])
@@ -34,8 +36,33 @@ class Lodge(models.Model):
 	class Meta:
 		ordering = ["-lodgeId"]
 		#preventing duplicates
-		unique_together = ["lodge_name", "lodge_address","city","country","lodge_url"]
+		unique_together = ["lodge_name","lodge_address","city","country","lodge_url"]
 
+	def mean_rating(self):
+		all_ratings = map(lambda x: x.rating, self.review_set.all())
+		return np.mean(all_ratings)
+
+class Review(models.Model):
+	def __int__(self):
+		return self.reviewId
+
+	RATING_CHOICES = ((1, '1'),
+					(2, '2'),
+					(3, '3'),
+					(4, '4'),
+					(5, '5'),
+                )
+	
+	reviewId = models.AutoField(primary_key = True, db_column = "ReviewId")
+	#many to one: many reviews to one lodge
+	lodge_Id = models.ForeignKey(Lodge,on_delete = models.CASCADE)
+	# user_Id = models.ForeignKey(User, db_column = "UserId FK")
+	rating = models.IntegerField(choices = RATING_CHOICES, db_column = "Rating")
+	comment = models.TextField(db_column = "Comment")
+	pub_date = models.DateTimeField("Date published")
+
+	class Meta:
+		ordering = ["-pub_date"]
 
 
 class Course(models.Model):
@@ -143,40 +170,8 @@ class User(models.Model):
 		return reverse('tripadvise.views.user_detail',args=[str(self.userId)])
 
 
-class Review(models.Model):
-	def __int__(self):
-		return self.reviewId
-	
-	reviewId = models.AutoField(primary_key = True, db_column = "ReviewId")
-	lodge_Id = models.ForeignKey(Lodge, db_column = "LodgeID FK")
-	user_Id = models.ForeignKey(User, db_column = "UserId FK")
-	ONE = '1'
-	TWO = '2'
-	THREE = '3'
-	FOUR = '4'
-	FIVE = '5'
-	
-	RATING_CHOICES = ((ONE,"1"),
-	                  (TWO,"2"),
-	                  (THREE,"3"),
-	                  (FOUR,"4"),
-	                  (FIVE,"5"),
-                )
-	rating = models.CharField(choices = RATING_CHOICES, db_column = "Rating", max_length = 1)
-	VC = '1'
-	PC = '2'
-	AVG = '3'
-	PE = '4'
-	VE = '5'
-	COST_CHOICES = ((VC, "Very Cheap"),
-	                (PC, "Pretty Cheap"),
-	                (AVG, "Average"),
-	                (PE, "Pretty Expensive"),
-	                (VE, "Very Expensive"),
-                )
-	cost = models.CharField(choices = COST_CHOICES, db_column = "Cost", max_length = 16)
-	comment = models.TextField(db_column = "Comment")
-	pub_date = models.DateTimeField(db_column = "Date")
+
+
 
 class Course_User_Assignment(models.Model):
 	def __int__(self):

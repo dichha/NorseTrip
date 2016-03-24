@@ -61,6 +61,7 @@ header.carousel .fill {
     font-style: italic;
 }
 
+
 /* Footer Styles */
 
 footer {
@@ -84,4 +85,8 @@ footer {
     header.carousel .carousel {
         height: 70%;
     }
+}
+.comment{
+    border: 1px solid lightgrey;
+    background-color: #e6eeff;
 }
