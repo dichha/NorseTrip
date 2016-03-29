@@ -62,6 +62,7 @@ header.carousel .fill {
 }
 
 
+
 /* Footer Styles */
 
 footer {
@@ -89,4 +90,38 @@ footer {
 .comment{
     border: 1px solid lightgrey;
     background-color: #e6eeff;
+}
+.review_timestamp{
+    color: #6E6E6E;
+}
+.btn-sm{
+    width: 100px;
+}
+.glyphicon-thumbs-up:hover{
+    background-color: #FA5882;
+
+}
+#likes{
+    text-decoration: none;
+    color:black;
+}
+
+#hotel_descrip{
+    border: 1px solid lightblue;
+    padding-right: 5px;
+    padding-left: 10px;
+ }
+
+#other_hotels{
+    border: 1px solid lightblue;
+    /*width: 520px;
+    height: 720px;*/
+}
+#other_hotels_header{
+    float: right
+}
+.hotel_stayed{
+    padding-left: 60px;
+    /*border: 1px solid lightblue;*/
+    /*height: 300px;*/
 }

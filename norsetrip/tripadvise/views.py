@@ -8,20 +8,13 @@ from django.contrib.auth import (
 )
 from datetime import datetime
 from django.core.urlresolvers import reverse
+from django_ajax.decorators import ajax
 
-from .models import Lodge
-from .models import Course
-from .models import Course_Lodge_Assignment
-from .models import User
-from .models import Course_User_Assignment
-from .models import Review
+from .models import Lodge, Course, Course_Lodge_Assignment, User, Course_User_Assignment, Review
 
-from .forms import LodgeForm
-from .forms import CourseForm
-from .forms import Course_Lodge_AssignmentForm
-from .forms import UserForm
-from .forms import Course_User_AssignmentForm
-from .forms import ReviewForm
+from .forms import LodgeForm, CourseForm, Course_Lodge_AssignmentForm, UserForm, Course_User_AssignmentForm, ReviewForm
+
+
 
 def home(request):
     return render(request, 'tripadvise/home.html')
@@ -88,7 +81,8 @@ def hotels(request):
 def hotel_details(request,lodgeId):
     #hotel info  
     cl_assign = Course_Lodge_Assignment.objects.all()
-    courses = Course.objects.all()  
+    courses = Course.objects.all()
+    lodges = Lodge.objects.all()  
     lodge_info = get_object_or_404(Lodge,pk = lodgeId)
 
     #reviews = Review.objects.all()
@@ -120,12 +114,15 @@ def hotel_details(request,lodgeId):
         #always return an HTTPResponseRedirect after successfully dealing with POST data.This prevents data from being posted twice if a user hits the back button
 
         return HttpResponseRedirect(reverse('tripadvise.views.hotel_details', args = [str(lodge_info.lodgeId)]))
-
+    #Trying using ajax
+    # if request.method == 'POST':
+    #     post_comment = request.POST.get('')
     
     context = {
     'lodge_info':lodge_info,
     'cl_assign': cl_assign,
     'courses' : courses,
+    'lodges' : lodges,
     # 'reviews' : reviews,
     'form' : form,
     'review_pag' : review_pag,
@@ -160,7 +157,7 @@ def clAssignment(request):
     	if form.is_valid():
     	    post = form.save(commit=False)
     	    post.save()
-            form = Course_Lodge_AssignmentForm()
+            #form = Course_Lodge_AssignmentForm()
             success = True
             #message success
             messages.success(request, "Successfully Assigned.")
@@ -343,4 +340,18 @@ def user_delete(request, userId = None):
     user.delete()
     messages.success(request, "Successfully deleted")
     return redirect("tripadvise.views.users")
+
+def add_like(request):
+    reviewid = None
+    if request.method == 'GET':
+        reviewid = request.GET['reviewId']
+
+    likes = 0
+    if reviewid:
+        review = Review.objects.get(pk = (int(reviewid)))
+        if review:
+            likes = review.likes + 1
+            review.likes = likes
+            review.save()
+    return HttpResponse(likes)
 

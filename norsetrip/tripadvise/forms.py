@@ -68,7 +68,18 @@ class ReviewForm(forms.ModelForm):
         model = Review
         fields = [
         'rating',
-        'comment',
-        #'pub_date'
+        'comment'
         ]
+        # widgets = {
+        # 'comment': Textarea(attrs = {'cols': 40, 'row': 15})
+        # }
+
+# class ReviewForm(forms.ModelForm):
+#     class Meta:
+#         model = Review
+#         fields = ['rating', 'comment']
+#         widgets = {
+#         'comment': forms.TextInput(
+#             attrs={'required': True})
+#         }
         

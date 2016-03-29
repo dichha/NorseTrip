@@ -4,7 +4,10 @@
 <div class = 'col-sm-6 col-sm-offset-3'>
     <h1>New Lodge</h1>
     <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
-        {{ form.as_p }}
+    	<table>
+    		{{ form.as_table}}
+    	</table>
+        
         <button type="submit" class="save btn btn-primary">Save</button>
     </form>
 </div>

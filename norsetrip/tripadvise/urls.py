@@ -33,7 +33,7 @@ urlpatterns = [
     url(r'^user_detail/(?P<userId>[0-9]+)/delete/$', views.user_delete, name = 'user_delete'),
 
     # url(r'^post_review', views.post_review, name = 'post_review'),
-
+    url(r'add_like/$', views.add_like, name = 'add_like'),
 
 
     url(r'', include('social.apps.django_app.urls', namespace='social')),

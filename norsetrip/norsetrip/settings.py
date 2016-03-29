@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'django_countries',
     'django.contrib.humanize',
     'social.apps.django_app.default',
+    'django_ajax',
 )
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '83536201782-ftd54feptc5nm4dj3l009bktu41uaaiq.apps.googleusercontent.com'

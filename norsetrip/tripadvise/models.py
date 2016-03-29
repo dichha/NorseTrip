@@ -3,7 +3,7 @@ from django.utils import timezone
 from django_countries.fields import CountryField
 from django.core.urlresolvers import reverse
 import numpy as np
-
+import datetime
 
 
 class Lodge(models.Model):
@@ -13,16 +13,14 @@ class Lodge(models.Model):
 	def __str__(self):
 		return self.lodge_name
 
-	lodgeId = models.AutoField(primary_key = True,db_column = "LodgeId")	
-	lodge_name = models.CharField(max_length = 200,db_column = "Name")
-	lodge_address = models.CharField(max_length = 200, db_column = "Address")
-	city = models.CharField(max_length = 100, db_column = "City")
-	country = CountryField(blank_label = 'Select Country')
-	lodge_url = models.URLField(db_column = "URL")
-	lodge_descrip = models.TextField(db_column = "Description")
-	
-
-	lodge_image = models.ImageField(null=True, blank = True,width_field = "width_field", 
+	lodgeId = models.AutoField("LodgeId", primary_key = True)	
+	lodge_name = models.CharField("Name", max_length = 200)
+	lodge_address = models.CharField("Address", max_length = 200)
+	city = models.CharField("City", max_length = 100)
+	country = CountryField("Country", blank_label = 'Select Country')
+	lodge_url = models.URLField("Lodge URL")
+	lodge_descrip = models.TextField("Lodge Description")
+	lodge_image = models.ImageField("Lodge Image", null=True, blank = True,width_field = "width_field", 
 		height_field = "height_field")
 
 	height_field = models.IntegerField(default = 0)
@@ -34,7 +32,7 @@ class Lodge(models.Model):
 
 	#newly added lodge in the beginning	
 	class Meta:
-		ordering = ["-lodgeId"]
+		ordering = ["lodge_name"]
 		#preventing duplicates
 		unique_together = ["lodge_name","lodge_address","city","country","lodge_url"]
 
@@ -53,13 +51,14 @@ class Review(models.Model):
 					(5, '5'),
                 )
 	
-	reviewId = models.AutoField(primary_key = True, db_column = "ReviewId")
+	reviewId = models.AutoField(primary_key = True)
 	#many to one: many reviews to one lodge
 	lodge_Id = models.ForeignKey(Lodge,on_delete = models.CASCADE)
 	# user_Id = models.ForeignKey(User, db_column = "UserId FK")
-	rating = models.IntegerField(choices = RATING_CHOICES, db_column = "Rating")
-	comment = models.TextField(db_column = "Comment")
-	pub_date = models.DateTimeField("Date published")
+	rating = models.IntegerField("Rating", choices = RATING_CHOICES)
+	comment = models.TextField("Comment")
+	pub_date = models.DateTimeField("Date Published")
+	likes = models.IntegerField(default=0)
 
 	class Meta:
 		ordering = ["-pub_date"]
@@ -70,7 +69,11 @@ class Course(models.Model):
 		return self.courseId
 
 	def __str__(self):
-		return self.name	
+		return self.name
+
+	YEAR_CHOICES = []
+	for r in range(1990, (datetime.datetime.now().year+4)):
+		YEAR_CHOICES.append((r,r))
 
 
 	TERM = (
@@ -114,19 +117,20 @@ class Course(models.Model):
 
                 )
 
-	courseId = models.IntegerField(primary_key = True, db_column = "CourseId")
-	name = models.CharField(max_length = 200, db_column = "Name")
+	courseId = models.IntegerField("Course Id", primary_key = True, )
+	name = models.CharField("Course Name", max_length = 200)
 	
-	dept = models.CharField(max_length = 200, db_column = "Department", choices = DEPT)
-	prof = models.CharField(max_length = 200, db_column = "Professor")
-	year_offered = models.IntegerField(db_column = "Year Offered")
+	dept = models.CharField("Department", max_length = 200,choices = DEPT)
+	prof = models.CharField("Professor", max_length = 200)
+	year_offered = models.IntegerField("Year Offered", choices = YEAR_CHOICES, default = datetime.datetime.now().year)
+
 	course_lodge_assignments = models.ManyToManyField(Lodge,through='Course_Lodge_Assignment')
-	term = models.CharField(max_length = 8, choices = TERM, default = 'JTERM')
-	course_description = models.TextField(db_column = "Desciption", null = True )
+	term = models.CharField("Term Offered", max_length = 8, choices = TERM, default = 'JTERM')
+	course_description = models.TextField("Course Description", null = True )
 
 	#newly added Course in the beginning
 	class Meta:
-		ordering = ["-courseId"]
+		ordering = ["name"]
 		# ordering = ["dept"]
 
 
@@ -154,15 +158,15 @@ class User(models.Model):
 		return self.email
 
 	userId =  models.AutoField(primary_key = True, db_column = "UserId")
-	fullName = models.CharField(max_length = 50, db_column = "Name")
-	email = models.EmailField(db_column = "Email", max_length = 24)
+	fullName = models.CharField("Full Name", max_length = 5)
+	email = models.EmailField("Email", max_length = 24)
 
 	ROLE_CHOICES = (('PROFESSOR', 'PROFESSOR'),
 	                ('STUDENT','STUDENT'),
 	                ('ALUMNI', 'ALUMNI'),
 	                ('FACULTY', 'FACULTY'),
                 )
-	role = models.CharField(max_length = 9, choices = ROLE_CHOICES, db_column = "ROLE")
+	role = models.CharField("Role",choices = ROLE_CHOICES, max_length = 9)
 
 	course_user_assignments = models.ManyToManyField(Course,through='Course_User_Assignment')
 
