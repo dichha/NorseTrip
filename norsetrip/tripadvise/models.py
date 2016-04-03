@@ -40,6 +40,8 @@ class Lodge(models.Model):
 		all_ratings = map(lambda x: x.rating, self.review_set.all())
 		return np.mean(all_ratings)
 
+	
+
 class Review(models.Model):
 	def __int__(self):
 		return self.reviewId

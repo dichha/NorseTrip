@@ -14,8 +14,13 @@
 	{% endif %}
 
 <div class="col-sm-12">
-<h1>{{lodge_info.lodge_name}}</h1>
+<h2>{{lodge_info.lodge_name|title}}</h2>
 
+
+<div class="row">
+
+<div class="col-sm-8">
+<div class="hotel_detail">
 <b>Address: </b>{{lodge_info.lodge_address}} | {{lodge_info.city}} , {{lodge_info.country}}<br>
 <b>Rating:</b>
 {% if lodge_info.review_set.count == 1 %}
@@ -25,19 +30,17 @@
 {% endif %}
 
 {% if lodge_info.review_set.count != 0 %}
-({{ lodge_info.mean_rating | floatformat }} average rating)
-{% endif %}<br><br>
-
-<div class="row">
-
-<div class="col-sm-8">
+({{ lodge_info.mean_rating | floatformat }} average rating)<br><br>
+{% endif %}
 
 {% if lodge_info.lodge_image.url %}
 <img src="{{lodge_info.lodge_image.url }}" class="img-responsive" width="500" height="400" border="0"><br>
 {% endif %}
 
+
+<b>Description:</b><br> <div id="hotel_descrip">{{lodge_info.lodge_descrip}}</div><br>
 <b>URL:</b> <a href = "{{ lodge_info.lodge_url }}">{{ lodge_info.lodge_url }} </a> <br><br>
-<b>Description:</b><br> <div id="hotel_descrip">{{lodge_info.lodge_descrip}}</div> <br><br>
+
 <b>Courses that used this accomodation: </b>
 {% for cla in cl_assign %}
 	{% if lodge_info.lodge_name == cla.lodge_name|stringformat:"s" %} 
@@ -54,6 +57,8 @@
 
 	{% endif %}
 {% endfor %}
+</div>
+<div class="review">
 
 <h3>Reviews</h3>
 <!-- Review -->
@@ -77,7 +82,7 @@
 {% else %}
 <p> No reviews are available. </p>
 {% endif %}
-	<br><br>
+
 	<div class="pagination">
     <span class="step-links">
         {% if review_pag.has_previous %}
@@ -93,7 +98,8 @@
         {% endif %}
    		 </span>
 	</div>
-	<h3> Write Reviews </h3>
+</div>
+<h3> Write Reviews </h3>
 
 <form method="POST" class="post-form">{% csrf_token %}
 	<table>
@@ -120,30 +126,35 @@
 </form> -->
 	
 
-</div><!--col-sm-8-->
+</div><!--.col-sm-8-->
 
 <div class="col-sm-4">
 <h4>Other Accomodations Used along with {{ lodge_info.lodge_name }}</h4>
 <div id="other_hotels">
-{% for cla in cl_assign %}
+<!-- {% for cla in cl_assign %} -->
 	<!-- {{ cla.lodge_name|stringformat:"s" }} -->
-	{% if lodge_info.lodge_name == cla.lodge_name|stringformat:"s" %} 
-		{% with cla.course_name|stringformat:"s"  as course_for_lodge  %}
+	<!-- {% if lodge_info.lodge_name == cla.lodge_name|stringformat:"s" %} 
+		{% with cla.course_name|stringformat:"s"  as course_for_lodge  %} -->
 
 		<!-- {{ course_for_lodge }}<br> -->
-			{% for course in courses %}
+			<!-- {% for course in courses %}
 				{% if course.name == course_for_lodge %}
 					{% for cla in cl_assign %}
-						{% if cla.course_name|stringformat:"s" == course.name %}
+						{% if cla.course_name|stringformat:"s" == course.name %} -->
 						<!-- {{ cla.lodge_name }}<br> -->
-							{% if cla.lodge_name|stringformat:"s" != lodge_info.lodge_name %}
+				<!-- 			{% if cla.lodge_name|stringformat:"s" != lodge_info.lodge_name %}
 								{% with cla.lodge_name|stringformat:"s" as hotel_stayed %}
-								  <!--{{ hotel_stayed }}<br> -->
-								  <!-- {% to_list hotel_stayed %} -->
+
+								
+								  								 
 								 {% for lodge in lodges %}
-								 	{% if lodge.lodge_name == hotel_stayed %}
+
+								 	{% if lodge.lodge_name == hotel_stayed and hotel_stayed not in unique_hotel_list %}
+
+
+								 		
 								 		<div class="hotel_stayed">
-								 		<h5><b><a href="/hotel_details/{{ lodge.lodgeId }}" width="200px" height="100px">{{ lodge.lodge_name }}</a></b></h5>
+								 		<h5><b><a href="/hotel_details/{{ lodge.lodgeId }}" width="200px" height="100px">{{ lodge.lodge_name }}</a></b><small> used by {{ course.name }}</small></h5>
 								 		<small> 
 								 		Address: {{lodge.lodge_address}} | {{lodge.city}} , {{lodge.country}}<br>
 
@@ -153,13 +164,16 @@
 										{% endif %}</small>
 										<div>
 										{% if lodge.lodge_image.url %}
-											<img src="{{lodge.lodge_image.url }}" class="img-responsive" border="0"><br>
+											<img src="{{lodge.lodge_image.url }}" class="img-responsive" border="0" height="250px" width="300px"><br>
 											{% endif %}
+										
 
 										</div>
 								 		</div>
+								 	{% to_list hotel_stayed as unique_hotel_list %}
 								 	{% endif %}
-								 {% endfor %}
+								 {% endfor %} 
+								
 
 								{% endwith %}
 							{% endif %}
@@ -175,7 +189,38 @@
 
 
 	{% endif %} 
+{% endfor %} -->
+{% for hotel in unique_hotel_list %}
+	{% for lodge in lodges %}
+		{% if lodge.lodge_name == hotel %}
+			<div class="hotel_stayed">
+	 		<h5><b><a href="/hotel_details/{{ lodge.lodgeId }}" width="200px" height="100px">{{ lodge.lodge_name }}</a></b></h5>
+	 		<small> 
+	 		Address: {{lodge.lodge_address}} | {{lodge.city}} , {{lodge.country}}<br>
+
+	 		Review: {{ lodge.review_set.count }} reviews 
+	 		{% if lodge.review_set.count != 0 %}
+			({{ lodge.mean_rating | floatformat }} average rating)
+			{% endif %}</small>
+			<div>
+			{% if lodge.lodge_image.url %}
+				<img src="{{lodge.lodge_image.url }}" class="img-responsive" border="0" height="250px" width="300px"><br>
+				{% endif %}
+			
+
+			</div>
+	 		</div>
+
+		{% endif %}
+
+	{% endfor %}
 {% endfor %}
+<!-- {% for key, val in unique_hotel_course_dict.items %}
+	{{key}}, {{val}}<br>
+{% endfor %} -->
+
+
+
 
 
 
@@ -188,6 +233,7 @@
 </div><!--.row-->
 
 <!-- only for admin -->
+<br>
 <a href="edit" style="text-decoration: none; color: white"><button type="submit" class="save btn btn-info">Edit Hotel</button></a>
 
 <a href="delete" style="text-decoration: none; color: white"><button type="submit" class="save btn btn-danger">Delete Hotel</button></a>

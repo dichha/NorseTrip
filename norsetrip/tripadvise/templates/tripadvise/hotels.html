@@ -5,32 +5,69 @@
 {% if messages %}
 <ul class="messages">
     {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}} </li>
+    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}} </li>
     {% endfor %}
 </ul>
 {% endif %}
 
-<h1>{{title}} </h1>
-<h1> 
-{{ hotels }}
-</h1>
 
-{% for lodge in lodge %}
-	<!-- <div class="col-sm-4 "> -->
-		<!-- <div class="thumbnail">
-			{% if lodge.lodge_image %}
-			<img src="{{lodge.lodge_image.url}}" class="img-responsive">
-			{% endif %}
-		</div> -->
-		<div>
-			<a href="{% url 'hotel_details' lodge.lodgeId %}">{{ lodge.lodge_name}}</a>
-			{{ lodge.lodge_address}}<br><br>
-		</div>
-	<!-- </div> -->
-{% endfor %}
+<h3 id="hotel_header"> {{title}} </h3><br>
+<div class="row">
+
+    <div class="col-sm-8 hotel_outer_div">
+    
+    {% for lodge in lodge %}
+    	<!-- <div class="col-sm-4 "> -->
+    		<!-- <div class="thumbnail">
+    			{% if lodge.lodge_image %}
+    			<img src="{{lodge.lodge_image.url}}" class="img-responsive">
+    			{% endif %}
+    		</div> -->
+    		<div class="col-sm-4 hotel_div">
+                
+    			<b>{{ lodge.lodge_name }}</b><br>
+                <p style="text-align:left;">
+    			<small>{{ lodge.lodge_address}} | {{ lodge.country }}</small>
+                 <span style="float:right"><small>{% if lodge.review_set.count != 0 %}
+                    Rating {{ lodge.mean_rating | floatformat }} of 5
+                {% endif %}</small></span>
+                <br>
+                </p>
+                
+                <a href="{% url 'hotel_details' lodge.lodgeId %}"><img class="hotel_image" src="{{lodge.lodge_image.url}}"></a>
+
+                    
+            
+              
+                
+    		</div>
+    	<!-- </div> -->
+    {% endfor %}
+    </div> 
+
+    <div class="col-sm-4 top_reviewed_div">
+        <h4 id="top_reviewed"> Overview of Accomodations </h4><br>
+        {% for lodge in lodge_list %}
+            <span style="margin-left: 10px"><a href="{% url 'hotel_details' lodge.lodgeId %}" style="text-decoration:none"><b>{{ lodge.lodge_name }}</b></a> <small> 
+            {% if lodge.review_set.count == 1 %}
+            &nbsp{{ lodge.review_set.count }} review
+            {% else %}
+            &nbsp{{ lodge.review_set.count }} reviews 
+            {% endif %}</small>
+
+            <small>{% if lodge.review_set.count != 0 %}
+            &nbsp({{ lodge.mean_rating | floatformat }} average rating)
+            {% endif %} </small><br><br></span>
+        {% endfor %}
+
+
+
+    </div>
+   
+   
+
+
 </div>
-				
-
 
 <div class="pagination">
     <span class="step-links">
@@ -47,6 +84,12 @@
         {% endif %}
     </span>
 </div>
+</div>
+
+				
+
+
+
 
 
 {% endblock %}

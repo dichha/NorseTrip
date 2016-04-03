@@ -1,6 +1,7 @@
 html,
 body {
     height: 100%;
+    background-color: rgb(241, 241, 241);
 }
 nav {
     background-color: blue;
@@ -8,6 +9,7 @@ nav {
 body {
     padding-top: 50px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
 }
+
 
 .img-portfolio {
     margin-bottom: 30px;
@@ -87,9 +89,21 @@ footer {
         height: 70%;
     }
 }
+.hotel_detail{
+ border: 1px solid lightgrey;
+ padding-top: 10px;
+ padding-left: 10px;
+ padding-right: 10px;
+ padding-bottom: 10px;  
+ margin-bottom: 10px;
+  
+}
 .comment{
     border: 1px solid lightgrey;
     background-color: #e6eeff;
+}
+.review{
+    border: 1px solid lightgrey;
 }
 .review_timestamp{
     color: #6E6E6E;
@@ -107,9 +121,9 @@ footer {
 }
 
 #hotel_descrip{
-    border: 1px solid lightblue;
-    padding-right: 5px;
-    padding-left: 10px;
+    /*border: 1px solid lightblue;*/
+    /*padding-right: 5px;*/
+    /*padding-left: 10px;*/
  }
 
 #other_hotels{
@@ -121,7 +135,144 @@ footer {
     float: right
 }
 .hotel_stayed{
-    padding-left: 60px;
+    padding-left: 20px;
     /*border: 1px solid lightblue;*/
     /*height: 300px;*/
+}
+#hotel_header{
+    margin-left: 12%;
+}
+.hotel_div{
+    width: 320px;
+    height: 300px;
+    border: 1px solid lightgrey;
+    padding: 5px 5px 5px 5px;
+    margin: 10px 10px 10px 10px;
+    background-color: #D6EAF8;
+}
+.hotel_div:hover{
+    box-shadow: 7px 7px 5px grey;
+}
+
+.top_reviewed_div{
+    /*width:290px;
+    height: 930px;*/
+    border: 1px solid lightgrey;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #D5F5E3;
+
+
+}
+.top_reviewed_div:hover{
+     box-shadow: 7px 7px 5px grey;
+}
+#top_reviewed{
+   text-align: center;
+}
+
+#hotel_subtitle{
+    text-align: left;
+}
+#hotel_subtitle_rate{
+    text-align: right;
+}
+.hotel_image{
+    width: 300px;
+    height:235px;
+    margin-left: 2%;
+
+   /* margin-top: 7%;*/
+}
+.jterm_course{
+    border: 1px solid lightgrey;
+    width:337px;
+    height: 500px;
+    margin: 10px 10px 10px 10px;
+    background-color: #D6EAF8;
+
+    /*padding-top: 10px;
+    padding-bottom: 10px;*/
+
+}
+.semester_course{
+    border: 1px solid lightgrey;
+    width:337px;
+    height: 500px;
+    margin: 10px 10px 10px 10px;
+    background-color: #D5F5E3;
+
+}
+.year_course{
+    border: 1px solid lightgrey;
+    width:337px;
+    height: 500px;
+    margin: 10px 10px 10px 10px;
+    background-color: #F2D7D5;
+}
+#course_header{
+    text-align: center;
+}
+#jterm_header{
+    text-align: center;
+    /*padding-bottom: 10px;*/
+    padding-top: 4px;
+}
+#semester_header{
+    text-align: center;
+    padding-top: 4px;
+    /*padding-bottom: 10px;*/
+}
+#year_header{
+    text-align: center;
+    padding-top: 4px;
+    /*padding-bottom: 10px;*/
+}
+#course_name{
+    font-size: 15px;
+}
+.year_course:hover{
+    box-shadow: 7px 7px 5px grey;
+}
+.semester_course:hover{
+    box-shadow: 7px 7px 5px grey;
+
+}
+.jterm_course:hover{
+    box-shadow: 7px 7px 5px grey;
+
+}
+.jcourse_name{
+    color: #1A5276;
+}
+.scourse_name{
+    color: #0E6655;
+}
+.ycourse_name{
+    color: #922B21;
+}
+.course_detail{
+    height: 500px;
+    width: 720px;
+    border: 1px solid lightgrey;
+    margin: 10px 10px 10px 10px;
+}
+.course_hotel_use{
+    border: 1px solid lightgrey;
+    width:337px;
+    height: 500px;
+    margin: 10px 10px 10px 10px;
+    background-color: #FDEBD0;
+}
+.course_hotel_use:hover{
+    box-shadow: 7px 7px 5px grey;
+}
+#course_title{
+    margin-left: 22%;
+}
+#course_descrip{
+    padding-top: 10px;
+}
+#course_hotel_use_list{
+    color: #B9770E;
 }

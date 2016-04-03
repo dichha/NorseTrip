@@ -5,20 +5,56 @@
 {% if messages %}
 <ul class="messages">
     {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}} </li>
+    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}} </li>
     {% endfor %}
 </ul>
 {% endif %}
+<h3 id="course_header">{{ title }}</h3>
+<div class="row">
+<div class="col-sm-4 jterm_course">
+<h4 id="jterm_header">J-Term Courses </h4>
+<hr style="border-color:lightgrey">
+{% for course in courses %}
+    {% if course.term == "JTERM" %}    
+        <b><a href="{% url 'course_detail' course.courseId %}" style="text-decoration:none" class="jcourse_name"> {{ course.name }}</a></b> |
+        <small>{{ course.dept|lower|capfirst}}</small><br><br>
+    {% endif %}
+{% endfor %}
+</div>
 
-<h1> Courses </h1>
+<div class="col-sm-4 semester_course">
+<h4 id="semester_header">Semester or Summer Courses </h4>
+<hr style="border-color:lightgrey">
+{% for course in courses %}
+    {% if course.term == "SEMESTER" or course.term == "SUMMER" %}
+        <b><a href="{% url 'course_detail' course.courseId %}" style="text-decoration:none" class="scourse_name">{{ course.name|title }}</a></b> |
+        <small>{{ course.dept |lower|capfirst }}  |
+        {{ course.term |lower|capfirst }}</small><br><br>
+    {% endif %}
+{% endfor %}
+    
+</div>
+<div class="col-sm-4 year_course">
+<h4 id="year_header">Year Long Courses </h4>
+<hr style="border-color:lightgrey">
+{% for course in courses %}
+    {% if course.term == "YEAR" %}
+        <b><a href="{% url 'course_detail' course.courseId %}" style="text-decoration:none" class="ycourse_name">{{ course.name }}</a></b> | 
+        <small>{{ course.dept |lower|capfirst }}</small><br><br>
+    {% endif %}
+{% endfor %}
+    
+</div>
+<!-- <h1> Courses </h1>
  {% for course in course %}
 <a href="{% url 'course_detail' course.courseId %}"> {{ course.name}}</a>
 {{ course.dept}}<br><br>
+</div>
 	
 
-{% endfor %}
+{% endfor %} -->
 </div>
-<div class="pagination">
+<!-- <div class="pagination">
     <span class="step-links">
         {% if course.has_previous %}
             <a href="?{{ page_request_var }}={{ course.previous_page_number }}">previous</a>
@@ -32,6 +68,7 @@
             <a href="?{{ page_request_var }}={{ course.next_page_number }}">next</a>
         {% endif %}
     </span>
+</div> -->
 </div>
 
 {% endblock %}

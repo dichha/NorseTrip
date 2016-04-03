@@ -14,7 +14,7 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/tripadvise.css' %}">
-<!--     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet"> -->
+
     
     
   <title>Norse Trip Advisor</title>
@@ -23,7 +23,7 @@
 
 <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
-  <div class="container-fluid">
+    <div class="container-fluid">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
         <span class="icon-bar"></span>
@@ -82,19 +82,29 @@
     }
     </script>
 
+    <div class="container">
     {% block content %}
     {% endblock %}
+    </div>
    <!--  {% block extrahead %}
     {% endblock %} -->
 
    <!--  <script src="{% static 'js/jquery.js' %}"></script>
     <script src="https://apis.google.com/js/ platform.js" async defer></script>-->
+  
+  
+
   <script src="{% static 'js/jquery.js' %}"></script>
   <script src="{% static 'js/bootstrap.min.js' %}"></script>
-  </body>
    <script type="text/javascript" src="/static/js/main.js"></script>
-  
-  <!-- django ajax on client side -->
+   <!-- django ajax on client side -->
   <script type="text/javascript" src = "{% static 'django_ajax/js/jquery.ajax.min.js' %}"></script>
- 
+
+  <footer class="footer">
+    <div class="container">
+      
+    </div>
+    
+  </footer>
+  </body>
 </html>

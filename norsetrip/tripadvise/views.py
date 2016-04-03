@@ -13,6 +13,8 @@ from django_ajax.decorators import ajax
 from .models import Lodge, Course, Course_Lodge_Assignment, User, Course_User_Assignment, Review
 
 from .forms import LodgeForm, CourseForm, Course_Lodge_AssignmentForm, UserForm, Course_User_AssignmentForm, ReviewForm
+import collections
+
 
 
 
@@ -21,22 +23,27 @@ def home(request):
 
 
 def courses(request):
-    course_list = Course.objects.all()
-    paginator = Paginator(course_list, 6) # Show 6 lodges per page
-    page_request_var = "course_page"
-    page = request.GET.get(page_request_var)
-    try:
-        course = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        course = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        course = paginator.page(paginator.num_pages)
+    courses = Course.objects.all()
+
+
+    # paginator = Paginator(course_list, 6) # Show 6 lodges per page
+    # page_request_var = "course_page"
+    # page = request.GET.get(page_request_var)
+    # try:
+    #     course = paginator.page(page)
+    # except PageNotAnInteger:
+    #     # If page is not an integer, deliver first page.
+    #     course = paginator.page(1)
+    # except EmptyPage:
+    #     # If page is out of range (e.g. 9999), deliver last page of results.
+    #     course = paginator.page(paginator.num_pages)
 
     context = {
-    'course' : course,
-    'page_request_var': page_request_var
+    'courses' : courses,
+    # 'page_request_var': page_request_var,
+    'title':'Courses For Study Abroad Program',
+  
+   
 
     }
     return render(request, 'tripadvise/courses.html', context )
@@ -45,10 +52,27 @@ def course_detail(request, courseId):
     course_info = get_object_or_404(Course, pk = courseId)
     cl_assign = Course_Lodge_Assignment.objects.all()
     lodges = Lodge.objects.all()
+
+    class_color=""
+    course_name=""
+    if course_info.term == "JTERM":
+        class_color = "jterm_course"
+        course_name = "jcourse_name"
+    elif course_info.term == "YEAR":
+        class_color = "year_course"
+        course_name = "ycourse_name"
+    else:
+        class_color = "semester_course"
+        course_name = "scourse_name"
+    
+
+
     context = {
     'course_info':course_info,
     'cl_assign': cl_assign,
-    'lodges' : lodges
+    'lodges' : lodges,
+    'class_color' : class_color,
+    'course_name': course_name
     }
     return render(request, 'tripadvise/course_detail.html', context)
 
@@ -56,6 +80,17 @@ def course_detail(request, courseId):
 	
 def hotels(request):
     lodge_list = Lodge.objects.all()
+    review_list = Review.objects.all()
+    # lodge_review_dict = {}
+    # review_count = []
+
+    # for lodge in lodge_list:
+    #     lodge_review_dict[lodge.lodge_name] = lodge.review_set.count
+
+    # sorted_hotels = collections.OrderedDict(sorted(lodge_review_dict.items(),key = lambda x: x[0]))
+
+   
+
     paginator = Paginator(lodge_list, 6) # Show 6 lodges per page
     page_request_var = "lodge_page"
     page = request.GET.get(page_request_var)
@@ -71,7 +106,10 @@ def hotels(request):
     context = {
     'lodge': lodge, 
     'page_request_var': page_request_var,
-    'title': 'Hotel'
+    'title': 'Accomodations Used in Study Abroad Courses',
+    'lodge_list': lodge_list
+    # 'sorted_hotels': sorted_hotels
+
     }
 
     return render(request, 'tripadvise/hotels.html', 
@@ -84,6 +122,7 @@ def hotel_details(request,lodgeId):
     courses = Course.objects.all()
     lodges = Lodge.objects.all()  
     lodge_info = get_object_or_404(Lodge,pk = lodgeId)
+    unique_hotel_list=[]
 
     #reviews = Review.objects.all()
     reviews_list = Review.objects.filter(lodge_Id = lodge_info.lodgeId)
@@ -117,6 +156,26 @@ def hotel_details(request,lodgeId):
     #Trying using ajax
     # if request.method == 'POST':
     #     post_comment = request.POST.get('')
+    unique_hotel_list=[]
+    unique_hotel_course_dict = {}
+
+    for cla in cl_assign:
+        if lodge_info.lodge_name == str(cla.lodge_name):
+            course_for_lodge = str(cla.course_name)
+            for course in courses:
+                if course.name == course_for_lodge:
+                    for cla in cl_assign:
+                        if(str(cla.course_name) == course.name):
+                            if (str(cla.lodge_name) != lodge_info.lodge_name):
+                                hotel_stayed = str(cla.lodge_name)
+                                for lodge in lodges:
+                                    if ((lodge.lodge_name == hotel_stayed) and (hotel_stayed not in unique_hotel_list)):
+                                        unique_hotel_list.append(lodge.lodge_name)
+                                        unique_hotel_course_dict[str(cla.course_name)] = lodge.lodge_name
+
+
+
+
     
     context = {
     'lodge_info':lodge_info,
@@ -124,9 +183,12 @@ def hotel_details(request,lodgeId):
     'courses' : courses,
     'lodges' : lodges,
     # 'reviews' : reviews,
+    'unique_hotel_list': unique_hotel_list,
     'form' : form,
     'review_pag' : review_pag,
-    'page_request_var': page_request_var
+    'page_request_var': page_request_var,
+    'unique_hotel_list': unique_hotel_list,
+    'unique_hotel_course_dict': unique_hotel_course_dict
     }
 
    
@@ -180,8 +242,7 @@ def post_course(request):
             post.save()
             messages.success(request, "Successfully Created")
             return HttpResponseRedirect(post.get_absolute_url())
-        else:
-            messages.error(request, "Not Successfully Created")
+        
     else:
     	form = CourseForm()
     return render(request, 'tripadvise/post_course.html', {'form': form})	
@@ -312,9 +373,7 @@ def course_update(request, courseId = None):
         courses.save()
         messages.success(request, "Successfully Updated")
         return HttpResponseRedirect(courses.get_absolute_url())
-    else:
-        messages.error(request, "Not Successfully Updated")
-      
+    
     context = {
       "courses": courses,
       "form": form

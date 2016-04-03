@@ -1,4 +1,3 @@
-
 {% extends 'tripadvise/base.html' %}
 
 {% block content%}
@@ -6,15 +5,52 @@
 {% if messages %}
 <ul class="messages">
 	{% for message in messages %}
-	<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}} </li>
+	<li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}} </li>
 	{% endfor %}
 </ul>
 {% endif %}
-<h1>{{course_info.name}}</h1>
-Department : {{course_info.dept}}<br><br>
+<h2 id="course_title" class="{{course_name}}">{{course_info.name|title}}</h2>
+<div class="row">
+
+
+<div class="col-sm-8 course_detail {{class_color}}" >
+	<p style="text-align:left; padding-top: 15px;"><b>Department </b> : <span class="{{course_name}}"> {{course_info.dept|lower|capfirst }}</span>
+	<span style="float:right"><b>Year Offered </b> : <span class="{{course_name}}">{{course_info.year_offered}}</span></span></p>
+	<p style="text-align:left"><b>Professor</b>: <span class="{{course_name}}">{{course_info.prof}}</span>
+	<span style="float:right"><b>Term </b>: <span class="{{course_name}}">{{ course_info.term|lower|capfirst}}</span></span></p><br><br>
+	<b>Description:</b>
+	<div id="course_descrip" class="{{course_name}}" >
+		{{ course_info.course_description }}
+	</div>
+</div>
+
+
+<div class="col-sm-4 course_hotel_use">
+<h4 id="year_header">Accomodations Used in {{course_info.name|title}} </h4>
+<hr style="border-color:lightgrey">
+{% for cla in cl_assign %}
+	{% if course_info.name == cla.course_name|stringformat:"s" %} 
+
+		{% for lodge in lodges %}
+			{% if lodge.lodge_name == cla.lodge_name|stringformat:"s" %}
+				<a href="/hotel_details/{{ lodge.lodgeId }}" style="text-decoration:none" id="course_hotel_use_list">
+				{{cla.lodge_name|stringformat:"s"}}</a><small> &nbsp {{lodge.review_set.count}} reviews</small><br><br>
+			{% endif %}
+		{% endfor %}
+
+	{% endif %}
+{% endfor %} 
+
+
+	
+</div>
+
+
+
+<!-- Department : {{course_info.dept|lower|capfirst }}<br><br>
 Year Offered: {{course_info.year_offered}}<br><br>
 Professor: {{course_info.prof}}<br><br>
-Term: {{ course_info.term}}<br><br>
+Term: {{ course_info.term|lower|capfirst}}<br><br>
 Description: {{ course_info.course_description}} <br><br>
 Hotels Stayed: 
 {% for cla in cl_assign %}
@@ -28,8 +64,9 @@ Hotels Stayed:
 		{% endfor %}
 
 	{% endif %}
-{% endfor %}
-<br><br>
+{% endfor %} -->
+</div>
+<br><br><br>
 <!-- only for admin -->
 <a href="edit" style="text-decoration: none; color: white"><button type="submit" class="save btn btn-info">Edit Course</button></a>
 
