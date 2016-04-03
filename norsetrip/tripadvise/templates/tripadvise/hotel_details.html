@@ -61,6 +61,7 @@
 <div class="review">
 
 <h3>Reviews</h3>
+<hr style="border-color:lightgrey">
 <!-- Review -->
 {% if review_pag %}
 	{% for review in review_pag %} 
@@ -99,7 +100,9 @@
    		 </span>
 	</div>
 </div>
+<div class="write_review">
 <h3> Write Reviews </h3>
+<hr style="border-color:lightgrey">
 
 <form method="POST" class="post-form">{% csrf_token %}
 	<table>
@@ -108,6 +111,7 @@
     
 <button type="submit" class="save btn btn-primary">Add</button>
 </form>
+</div>
 <!-- 
 <form action="hotel_details/{{lodge_info.lodgeId}}/" method="POST" id = "post_review">
 {% csrf_token %}
@@ -129,8 +133,10 @@
 </div><!--.col-sm-8-->
 
 <div class="col-sm-4">
-<h4>Other Accomodations Used along with {{ lodge_info.lodge_name }}</h4>
+
 <div id="other_hotels">
+<h4 id="other_acco">Other Accomodations Used along with {{ lodge_info.lodge_name }}</h4>
+<hr style="border-color:lightgrey">
 <!-- {% for cla in cl_assign %} -->
 	<!-- {{ cla.lodge_name|stringformat:"s" }} -->
 	<!-- {% if lodge_info.lodge_name == cla.lodge_name|stringformat:"s" %} 
@@ -194,7 +200,7 @@
 	{% for lodge in lodges %}
 		{% if lodge.lodge_name == hotel %}
 			<div class="hotel_stayed">
-	 		<h5><b><a href="/hotel_details/{{ lodge.lodgeId }}" width="200px" height="100px">{{ lodge.lodge_name }}</a></b></h5>
+	 		<h5><b>{{ lodge.lodge_name }}</b></h5>
 	 		<small> 
 	 		Address: {{lodge.lodge_address}} | {{lodge.city}} , {{lodge.country}}<br>
 
@@ -204,7 +210,7 @@
 			{% endif %}</small>
 			<div>
 			{% if lodge.lodge_image.url %}
-				<img src="{{lodge.lodge_image.url }}" class="img-responsive" border="0" height="250px" width="300px"><br>
+				<a href="/hotel_details/{{ lodge.lodgeId }}" style="text-decoration:none"><img src="{{lodge.lodge_image.url }}" class="img-responsive" border="0" height="250px" width="300px"></a><br>
 				{% endif %}
 			
 
