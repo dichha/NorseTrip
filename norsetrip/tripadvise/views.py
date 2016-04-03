@@ -139,20 +139,22 @@ def hotel_details(request,lodgeId):
         # If page is out of range (e.g. 9999), deliver last page of results.
         review_pag = paginator.page(paginator.num_pages)
 
+    if request.method == "POST":
+        form = ReviewForm(request.POST or None)
+        if form.is_valid():
+            rating = form.cleaned_data['rating']
+            comment = form.cleaned_data['comment']
+            review = Review()
+            review.lodge_Id = lodge_info
+            review.rating = rating
+            review.comment = comment
+            review.pub_date = datetime.now()
+            review.save()
+            #always return an HTTPResponseRedirect after successfully dealing with POST data.This prevents data from being posted twice if a user hits the back button
 
-    form = ReviewForm(request.POST)
-    if form.is_valid():
-        rating = form.cleaned_data['rating']
-        comment = form.cleaned_data['comment']
-        review = Review()
-        review.lodge_Id = lodge_info
-        review.rating = rating
-        review.comment = comment
-        review.pub_date = datetime.now()
-        review.save()
-        #always return an HTTPResponseRedirect after successfully dealing with POST data.This prevents data from being posted twice if a user hits the back button
-
-        return HttpResponseRedirect(reverse('tripadvise.views.hotel_details', args = [str(lodge_info.lodgeId)]))
+            return HttpResponseRedirect(reverse('tripadvise.views.hotel_details', args = [str(lodge_info.lodgeId)]))
+    else: 
+        form = ReviewForm()
     #Trying using ajax
     # if request.method == 'POST':
     #     post_comment = request.POST.get('')

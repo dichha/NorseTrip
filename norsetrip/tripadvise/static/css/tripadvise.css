@@ -91,6 +91,7 @@ footer {
 }
 .hotel_detail{
  border: 1px solid lightgrey;
+ 
  padding-top: 10px;
  padding-left: 10px;
  padding-right: 10px;
@@ -98,15 +99,39 @@ footer {
  margin-bottom: 10px;
   
 }
+.hotel_detail:hover{
+    box-shadow: 7px 7px 5px grey;
+}
+
 .comment{
     border: 1px solid lightgrey;
     background-color: #e6eeff;
+    padding: 5px 5px 5px 5px;
 }
 .review{
     border: 1px solid lightgrey;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+}
+.review:hover{
+     box-shadow: 7px 7px 5px grey;
 }
 .review_timestamp{
     color: #6E6E6E;
+}
+.write_review{
+    border: 1px solid lightgrey;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    margin-top: 10px;
+
+}
+.write_review:hover{
+    box-shadow: 7px 7px 5px grey;
 }
 .btn-sm{
     width: 100px;
@@ -127,9 +152,14 @@ footer {
  }
 
 #other_hotels{
-    border: 1px solid lightblue;
+    border: 1px solid lightgrey;
+    padding: 10px 10px  10px 10px;
+    b
     /*width: 520px;
     height: 720px;*/
+}
+#other_hotels:hover{
+    box-shadow: 7px 7px 5px grey;
 }
 #other_hotels_header{
     float: right
@@ -275,4 +305,7 @@ footer {
 }
 #course_hotel_use_list{
     color: #B9770E;
+}
+#other_acco{
+    text-align: center;
 }
