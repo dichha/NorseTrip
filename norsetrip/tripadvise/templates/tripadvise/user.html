@@ -1,37 +1,97 @@
 {% extends 'tripadvise/base.html' %}
 
 {% block content %}
-<div class="col-sm-12">
-{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}} </li>
-    {% endfor %}
-</ul>
-{% endif %}
-
-<h1> Users </h1>
- {% for user in user %}
-<a href="{% url 'user_detail' user.userId %}"> {{ user.fullName}}</a>
-{{ user.role}}<br><br>
-	
-
-{% endfor %}
-</div>
-<div class="pagination">
-    <span class="step-links">
-        {% if user.has_previous %}
-            <a href="?{{ page_request_var }}={{ user.previous_page_number }}">previous</a>
+<div class="container">
+    <div class="col-sm-12">
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}} </li>
+            {% endfor %}
+        </ul>
         {% endif %}
+        <h3 id="user_header">{{title}}</h3>
+        <div class="row">    
+        <div class="col-sm-4 student">
+        <h4 id="user_stu_header">Students</h4>
+        <hr style="border-color:lightgrey">
+        {% for user in students %}
+            <a href="{% url 'user_detail' user.userId %}" style="text-decoration:none" class="stu_name">{{user.fullName}}</a><br>
+        {% endfor %}
+        <div class="pagination user_pag">
+            <span class="step-links">
+                {% if students.has_previous %}
+                    <a href="?{{ page_request_var1 }}={{ students.previous_page_number }}">previous</a>
+                {% endif %}
 
-        <span class="current">
-            Page {{ user.number }} of {{ user.paginator.num_pages }}.
-        </span>
+                <span class="current">
+                    Page {{ students.number }} of {{ students.paginator.num_pages }}.
+                </span>
 
-        {% if user.has_next %}
-            <a href="?{{ page_request_var }}={{ user.next_page_number }}">next</a>
-        {% endif %}
-    </span>
+                {% if students.has_next %}
+                    <a href="?{{ page_request_var1 }}={{ students.next_page_number }}">next</a>
+                {% endif %}
+            </span>
+        </div><!--.pagination-->
+
+        </div><!--.student-->
+
+        <div class="col-sm-4 professor">
+        <h4 id="user_prof_header">Professors</h4>
+        <hr style="border-color:lightgrey"> 
+        {% for user in profs %}
+            <a href="{% url 'user_detail' user.userId %}" style="text-decoration:none" class="prof_name">{{user.fullName}}</a><br>
+        {% endfor %}
+        <div class="pagination user_pag">
+            <span class="step-links">
+                {% if profs.has_previous %}
+                    <a href="?{{ page_request_var2 }}={{ profs.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ profs.number }} of {{ profs.paginator.num_pages }}.
+                </span>
+
+                {% if profs.has_next %}
+                    <a href="?{{ page_request_var2 }}={{ profs.next_page_number }}">next</a>
+                {% endif %}
+            </span>
+        </div><!--.pagination-->       
+        </div>
+        
+        <div class="col-sm-4 faculty">
+        <h4 id="user_fac_header">Faculty</h4>
+        <hr style="border-color:lightgrey">
+        {% for user in facs %}
+            <a href="{% url 'user_detail' user.userId %}" style="text-decoration:none" class="fac_name">{{user.fullName}}</a><br>
+        {% endfor %}  
+        <div class="pagination user_pag">
+            <span class="step-links">
+                {% if facs.has_previous %}
+                    <a href="?{{ page_request_var3 }}={{ facs.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ facs.number }} of {{ facs.paginator.num_pages }}.
+                </span>
+
+                {% if facs.has_next %}
+                    <a href="?{{ page_request_var3 }}={{ facs.next_page_number }}">next</a>
+                {% endif %}
+            </span>
+        </div><!--.pagination-->  
+        </div>
+       
+       <!--  {% for user in users %}
+        <a href="{% url 'user_detail' user.userId %}"> {{ user.fullName}}</a>
+        {{ user.role}}<br><br> 
+        	
+
+        {% endfor %} -->
+        </div>
+        
+        
+        </div>
+    
 </div>
-
 {% endblock %}

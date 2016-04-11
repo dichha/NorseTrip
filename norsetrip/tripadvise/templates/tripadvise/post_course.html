@@ -1,6 +1,7 @@
 {% extends 'tripadvise/base.html' %}
 
 {% block content %}
+<div class="container">
 <div class="col-sm-12">
     <h1>New Course</h1>
     <form method="POST" class="post-form">{% csrf_token %}
@@ -9,5 +10,6 @@
         </table>
         <button type="submit" class="save btn btn-primary">Save</button>
     </form>
+ </div>
  </div>
 {% endblock %}

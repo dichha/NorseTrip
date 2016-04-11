@@ -5,51 +5,63 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description" content="NorseTrip">
+    <meta name="author" content="NorseTrip">
     <meta name="google-signin-scope" content="profile email">
     <meta name="google-signin-client_id" content="83536201782-ftd54feptc5nm4dj3l009bktu41uaaiq.apps.googleusercontent.com">
     <!-- Bootstrap Core CSS -->
      <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{% static 'css/tripadvise.css' %}">
-
+    <link rel="stylesheet" href="{% static 'css/tripadvise.css' %}">   
     
-    
-  <title>Norse Trip Advisor</title>
+  <title>NorseTrip</title>
 </head>
 
 
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>                        
-      </button>
-      <a class="navbar-brand" href="/">Norse Trip Advisor</a>
-    </div>
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>                        
+        </button>
+        <a class="navbar-brand" href="/">NorseTrip</a>
+      </div>
     <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav">
-        <ul class="nav navbar-nav navbar-right">
-                    <li> <a href="/courses.html">Courses</a> </li>
-                    <li> <a href="/hotels.html">Hotels</a> </li>
-                    <li><a href="{% url 'users' %}" class="top_menu">Users</a></li>
-                    <li> <a href="http://www.luther.edu/global-learning/">GLearning</a> </li>
-        <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" >Admin<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="{% url 'tripadvise.views.post_course' %}"class="top-menu">Enter Course</a></li>
-                            <li> <a href="{% url 'tripadvise.views.post_lodge' %}"class="top-menu">Enter Lodge</a> </li>
-                            <li><a href="{% url 'tripadvise.views.clAssignment' %}"class="top_menu">C&L Assign</a></li>
-                            <li><a href="{% url 'post_user' %}" class="top_menu">User Registration</a></li> 
-                             <li><a href="{% url 'tripadvise.views.cuAssignment' %}"class="top_menu">C&U Assign</a></li>
-                        </ul>
-                    </li>
-        </ul>
+      <ul class="nav navbar-nav" id="navbar">
+        <!-- <ul class="nav navbar-nav navbar-right"> -->
+          <li class="tab-pane active" id="home">
+            <a href="/">Home</a>
+          </li>
+          <li>
+          <a href="{% url 'tripadvise.views.courses' %}">Courses</a>
+           </li>
+          <li>
+          <a href="{% url 'tripadvise.views.hotels' %}">Hotels</a> 
+          </li>
+          <li>
+          <a href="http://www.luther.edu/global-learning/">CGLearning</a>
+          </li>
+          <li>
+          <a href="{% url 'tripadvise.views.users' %}">Users</a>
+          </li>
+          <li class="dropdown navbar-right">
+              <a class="dropdown-toggle" data-toggle="dropdown">Admin<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                  <li><a href="{% url 'tripadvise.views.post_course' %}"class="top-menu">Enter Course</a></li>
+                  <li> <a href="{% url 'tripadvise.views.post_lodge' %}"class="top-menu">Enter Lodge</a> </li>
+                  <li><a href="{% url 'tripadvise.views.clAssignment' %}"class="top_menu">C&L Assign</a></li>
+                  <li><a href="{% url 'post_user' %}" class="top_menu">User Registration</a></li> 
+                   <li><a href="{% url 'tripadvise.views.cuAssignment' %}"class="top_menu">C&U Assign</a></li>
+              </ul>
+          </li> 
+        <!-- </ul> -->
+        
+      </ul>
+      <ul>
         
       </ul>
       
@@ -58,9 +70,15 @@
 </nav>
 
 
-    <script>
+
+    <!-- <div class="container"> -->
+    {% block content %}
+    {% endblock %}
+  <!--   </div> -->
+
+  <script>
     var SignedIn = false;
-    function onSignIn(googleUser) {
+    function onSignIn(googleUser){
         // Useful data for your client-side scripts:
         var profile = googleUser.getBasicProfile();
         SignedIn = true;
@@ -79,32 +97,36 @@
           SignedIn = false;
           location.reload();
         });
-    }
+      }
     </script>
-
-    <div class="container">
-    {% block content %}
-    {% endblock %}
-    </div>
-   <!--  {% block extrahead %}
-    {% endblock %} -->
-
-   <!--  <script src="{% static 'js/jquery.js' %}"></script>
-    <script src="https://apis.google.com/js/ platform.js" async defer></script>-->
-  
   
 
   <script src="{% static 'js/jquery.js' %}"></script>
   <script src="{% static 'js/bootstrap.min.js' %}"></script>
-   <script type="text/javascript" src="/static/js/main.js"></script>
-   <!-- django ajax on client side -->
-  <script type="text/javascript" src = "{% static 'django_ajax/js/jquery.ajax.min.js' %}"></script>
+  <script type="text/javascript" src="/static/js/main.js"></script>
 
+   <!-- django ajax on client side -->
+   <!-- <script type="text/javascript" src = "{% static 'django_ajax/js/jquery.ajax.min.js' %}"></script> -->
+
+  <!--<script>
+    $(".nav a").on("click", function(e){
+    $(".nav").find(".active").removeClass("active");
+    $(this).parent().addClass("active");
+    });
+  </script>-->
+<script type="text/javascript">
+  $(document).ready(function () {
+    $.each($('#navbar').find('li'), function() {
+        $(this).toggleClass('active',
+            $(this).find('a').attr('href') == window.location.pathname);
+      });
+  });
+
+  </script>
+  
+  
   <footer class="footer">
-    <div class="container">
-      
-    </div>
-    
+  <span style="padding-left:20px; color:white">&copy <script type="text/javascript">document.write(new Date().getFullYear());</script> | NorseTrip</span>
   </footer>
   </body>
 </html>

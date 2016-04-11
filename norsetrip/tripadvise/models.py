@@ -4,6 +4,7 @@ from django_countries.fields import CountryField
 from django.core.urlresolvers import reverse
 import numpy as np
 import datetime
+from multiselectfield import MultiSelectField
 
 
 class Lodge(models.Model):
@@ -77,6 +78,23 @@ class Course(models.Model):
 	for r in range(1990, (datetime.datetime.now().year+4)):
 		YEAR_CHOICES.append((r,r))
 
+	REQUIREMENTS = (('INTCL', 'INTERCULTURAL'),
+					('HB', 'HUMAN BEHAVIOR'),
+					('HBSSM','HUMAN EXPRESSION SOCIAL SCIENCE METHODS'),
+					('HEPT', 'HUMAN EXPRESSION PRIMARY TEXT'),
+					('HIST','HISTORICAL'),
+					('JTERM II', 'SECOND JTERM'),
+					('NOTTINGHAM','NOTTINGHAM'),
+					('NWL','NATURAL WORLD LAB'),
+					('NWNL','NATURAL WORLD NON LAB'),
+					('QUANT','QUANTTITAVE'),
+					('REL II', 'RELIGION II'),
+					('ROCHESTER', 'ROCHESTER'),	
+					('PAID 450', 'PAIDIEA 450'),
+					('WASHINGTON', 'WASHINGTON')
+					)
+
+		
 
 	TERM = (
         ('JTERM','JTERM'),
@@ -128,6 +146,8 @@ class Course(models.Model):
 
 	course_lodge_assignments = models.ManyToManyField(Lodge,through='Course_Lodge_Assignment')
 	term = models.CharField("Term Offered", max_length = 8, choices = TERM, default = 'JTERM')
+	# rqmt = models.CharField("Requirement(s) Filled", max_length = 41, choices=REQUIREMENTS, default = 'INTCL')
+	rqmt = MultiSelectField("Requirement(s) Filled", max_length = 41, choices=REQUIREMENTS, default = 'INTCL')
 	course_description = models.TextField("Course Description", null = True )
 
 	#newly added Course in the beginning
@@ -160,7 +180,7 @@ class User(models.Model):
 		return self.email
 
 	userId =  models.AutoField(primary_key = True, db_column = "UserId")
-	fullName = models.CharField("Full Name", max_length = 5)
+	fullName = models.CharField("Full Name", max_length = 50)
 	email = models.EmailField("Email", max_length = 24)
 
 	ROLE_CHOICES = (('PROFESSOR', 'PROFESSOR'),
@@ -174,6 +194,8 @@ class User(models.Model):
 
 	def get_absolute_url(self):
 		return reverse('tripadvise.views.user_detail',args=[str(self.userId)])
+	class Meta:
+		ordering = ["fullName"]
 
 
 
@@ -189,6 +211,7 @@ class Course_User_Assignment(models.Model):
 
 	class Meta:
 		unique_together = ["course_Id", "user_Id"]
+
 
 
 

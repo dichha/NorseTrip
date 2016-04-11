@@ -2,7 +2,8 @@
 {% extends 'tripadvise/base.html' %}
 
 {% block content%}
-<div class="col-sm-12">
+<div class="container">
+<div class="col-sm-12 user_detail">
 
 {% if messages %}
 <ul class="messages">
@@ -14,7 +15,7 @@
 {% endif %}
 <h4>{{user_info.fullName}}</h4>
 Email : {{ user_info.email }}<br><br>
-Role: {{ user_info.role }}<br><br>
+Role: {{ user_info.role|lower|capfirst }}<br><br>
 Courses taken:
 {% for cua in cu_assign %}
 	{% if user_info.email == cua.user_Id|stringformat:"s" %} 
@@ -35,6 +36,7 @@ Courses taken:
 <a href="delete" style="text-decoration: none; color: white"><button type="submit" class="save btn btn-danger">Delete User</button></a>
 
 <br><br>
+</div>
 </div>
 
 

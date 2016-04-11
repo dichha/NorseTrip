@@ -18,8 +18,8 @@ import collections
 
 
 
-def home(request):
-    return render(request, 'tripadvise/home.html')
+def index(request):
+    return render(request, 'tripadvise/index.html')
 
 
 def courses(request):
@@ -64,15 +64,17 @@ def course_detail(request, courseId):
     else:
         class_color = "semester_course"
         course_name = "scourse_name"
+    requirements = course_info.rqmt
     
 
 
     context = {
-    'course_info':course_info,
+    'course_info': course_info,
     'cl_assign': cl_assign,
-    'lodges' : lodges,
-    'class_color' : class_color,
-    'course_name': course_name
+    'lodges': lodges,
+    'class_color': class_color,
+    'course_name': course_name,
+    'requirements': course_info.rqmt
     }
     return render(request, 'tripadvise/course_detail.html', context)
 
@@ -88,9 +90,6 @@ def hotels(request):
     #     lodge_review_dict[lodge.lodge_name] = lodge.review_set.count
 
     # sorted_hotels = collections.OrderedDict(sorted(lodge_review_dict.items(),key = lambda x: x[0]))
-
-   
-
     paginator = Paginator(lodge_list, 6) # Show 6 lodges per page
     page_request_var = "lodge_page"
     page = request.GET.get(page_request_var)
@@ -265,23 +264,62 @@ def post_user(request):
     return render(request, 'tripadvise/post_user.html', {'form':form})
 
 def users(request):
-    user_list = User.objects.all()
-    paginator = Paginator(user_list, 6) # Show 6 lodges per page
-    page_request_var = "lodge_page"
-    page = request.GET.get(page_request_var)
+    #user_list = User.objects.all()
+    student_list = User.objects.filter(role = "STUDENT")
+    prof_list = User.objects.filter(role = "PROFESSOR")
+    fac_list = User.objects.filter(role = "FACULTY")
+
+
+    # pagination for students
+    paginator = Paginator(student_list, 12) # Show 6 lodges per page
+    page_request_var1 = "stu_page"
+    page1 = request.GET.get(page_request_var1)
     try:
-        user = paginator.page(page)
+        students = paginator.page(page1)
     except PageNotAnInteger:
         # If page is not an integer, deliver first page.
-        user = paginator.page(1)
+        students = paginator.page(1)
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
-        user = paginator.page(paginator.num_pages)
+        students = paginator.page(paginator.num_pages)
+
+    # pagination for professors
+    paginator = Paginator(prof_list, 12) # Show 6 lodges per page
+    page_request_var2 = "prof_page"
+    page2 = request.GET.get(page_request_var2)
+    try:
+        profs = paginator.page(page2)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        profs = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        profs = paginator.page(paginator.num_pages)
+
+    # pagination for faculty
+    paginator = Paginator(fac_list, 12) # Show 6 lodges per page
+    page_request_var3 = "fac_page"
+    page3 = request.GET.get(page_request_var3)
+    try:
+        facs = paginator.page(page3)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        facs = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        facs = paginator.page(paginator.num_pages)
+
+
 
     context = {
-    'user': user, 
-    'page_request_var': page_request_var,
-    'title': 'User'
+    # 'users': users,
+    'students': students,
+    'profs': profs,
+    'facs': facs, 
+    'page_request_var1': page_request_var1,
+    'page_request_var2': page_request_var2,
+    'page_request_var3': page_request_var3,
+    'title': 'Registered Users'
     }
 
     return render(request, 'tripadvise/user.html', context)
@@ -308,8 +346,6 @@ def user_update(request, courseId = None):
         user.save()
         messages.success(request, "Successfully Updated")
         return HttpResponseRedirect(user.get_absolute_url())
-    else:
-        messages.error(request, "Not Successfully Updated")
       
     context = {
       "user": user,

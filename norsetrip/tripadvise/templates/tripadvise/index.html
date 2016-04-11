@@ -1,0 +1,31 @@
+{% extends 'tripadvise/base.html' %}
+{% block content %}
+<div class="container-fluid">
+ 
+<img src="static/images/NGM_Saraguro.jpg" alt="home_image" class=" img-responsive bg">
+<h1 id="welcome"> Welcome to NorseTrip!</h1>
+<h4 id="welcome_sub">Explore what is to come in your exciting study abroad trip ...</h4>
+
+<div class="row explore_btn">
+<div class="col-sm-3"></div>
+<div class="col-sm-1"></div>
+<div class="col-sm-2 explore" type="button">
+	<a href="{% url 'tripadvise.views.courses' %}" class="explore_sub">Courses</a>	
+</div>
+
+<div class="col-sm-3 explore_acc" type="button">
+	<a href="{% url 'tripadvise.views.hotels' %}" class="explore_sub">Accomodations</a>
+</div>
+<div class="col-sm-3"></div>
+
+	
+</div>
+
+	
+<!-- </div> -->
+
+
+{% endblock %}
+
+
+

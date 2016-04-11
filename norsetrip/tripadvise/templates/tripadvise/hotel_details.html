@@ -4,6 +4,7 @@
 
 
 {% block content %}
+<div class="container">
 	{% if messages %}
 		<ul class="messages">
 		{% for message in messages %}
@@ -73,7 +74,7 @@
 		{{ review.pub_date}}</small> <br>
 		</div>
 		
-		<p>Helpful? <button class="btn btn-default btn-sm glyphicon glyphicon-thumbs-up" id="likes" reviewid = "{{ review.reviewId }}"> </button><small id="like_count">{{review.likes}} likes </small></p>
+		<p><span id="helpful">Helpful?</span>&nbsp;&nbsp;<button class="btn btn-default btn-sm glyphicon glyphicon-thumbs-up" id="likes" reviewid = "{{ review.reviewId }}"> </button>&nbsp;<small id="like_count">{{review.likes}} likes </small></p>
 		
 
 		{% endif%}
@@ -246,6 +247,7 @@
 
 <br><br>
 </div><!--.col-sm-12 -->
+</div>
 {% endblock %}
 
 

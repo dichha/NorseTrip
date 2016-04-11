@@ -1,6 +1,7 @@
 {% extends 'tripadvise/base.html' %}
 
 {% block content %}
+<div class="container">
 <div class="col-sm-12">
 {% if messages %}
 <ul class="messages">
@@ -42,8 +43,7 @@
         <b><a href="{% url 'course_detail' course.courseId %}" style="text-decoration:none" class="ycourse_name">{{ course.name }}</a></b> | 
         <small>{{ course.dept |lower|capfirst }}</small><br><br>
     {% endif %}
-{% endfor %}
-    
+{% endfor %}    
 </div>
 <!-- <h1> Courses </h1>
  {% for course in course %}
@@ -69,6 +69,7 @@
         {% endif %}
     </span>
 </div> -->
+</div>
 </div>
 
 {% endblock %}

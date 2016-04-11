@@ -6,7 +6,7 @@ from . import views
 #urlresolver
 urlpatterns = [
     
-    url(r'^$', views.home, name ='home'),
+    url(r'^$', views.index, name ='index'),
     url(r'^courses', views.courses, name = 'courses'),
     url(r'^course_detail/(?P<courseId>[0-9]+)/$', views.course_detail, name = "course_detail"),
     # url(r'^sample', views.sample, name = 'sample'),
@@ -21,7 +21,7 @@ urlpatterns = [
     url(r'^post_course', views.post_course, name = 'post_course'),
     url(r'^clAssignment', views.clAssignment, name = 'clAssignment'),
 
-    url(r'^course_detail/(?P<courseId>[0-9]+)/delete/$', views.course_delete, name = 'course_delete'),
+    url(r'^course/course_detail/(?P<courseId>[0-9]+)/delete/$', views.course_delete, name = 'course_delete'),
 
     url(r'^hotel_details/(?P<lodgeId>[0-9]+)/delete/$', views.hotel_delete, name = 'hotel_delete'),
 

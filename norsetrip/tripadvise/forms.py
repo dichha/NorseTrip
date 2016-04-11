@@ -32,6 +32,7 @@ class CourseForm(forms.ModelForm):
         'dept',
         'prof', 
         'term', 
+        'rqmt',
         'year_offered',
         'course_description']
         #course_lodge_assignments']
