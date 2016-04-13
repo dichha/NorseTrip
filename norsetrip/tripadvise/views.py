@@ -185,7 +185,7 @@ def hotel_details(request,lodgeId):
             if request.user and request.user.is_active:
             	try:
             		localemail = get_object_or_404(User, email = request.user.email)
-            		localuser = CustomUser.object.get(email = localemail)
+            		localuser = CustomUser.objects.get(email=localemail)
             	except CustomUser.DoesNotExist:
             		return render(request, 'tripadvise/notauser.html')
             		permission = Permission.objects.get(codename = 'can_review', content_type = reviewcontenttype)
