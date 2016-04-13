@@ -4,7 +4,7 @@ from django.contrib import admin
 from .models import Lodge
 from .models import Course
 from .models import Course_Lodge_Assignment
-from .models import User
+from .models import CustomUser
 from .models import Review
 from .models import Course_User_Assignment
 
@@ -33,9 +33,9 @@ class Course_Lodge_AssignmentAdmin(admin.ModelAdmin):
 	
 admin.site.register(Course_Lodge_Assignment, Course_Lodge_AssignmentAdmin)
 
-class UserAdmin(admin.ModelAdmin):
+class CustomUserAdmin(admin.ModelAdmin):
 	list_display = ('userId','fullName','email','role')
-admin.site.register(User, UserAdmin)
+admin.site.register(CustomUser, CustomUserAdmin)
 
 class ReviewAdmin(admin.ModelAdmin):
 	list_display = ('reviewId','likes','lodge_Id','rating', 'pub_date')#'user_Id','rating','pub_date')

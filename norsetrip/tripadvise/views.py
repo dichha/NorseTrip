@@ -1,4 +1,5 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.conf import settings
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render,get_object_or_404, HttpResponseRedirect, redirect
@@ -6,20 +7,51 @@ from django.views.generic import View
 from django.contrib.auth import (
 	logout as auth_logout, update_session_auth_hash,
 )
+from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from django.core.urlresolvers import reverse
 from django_ajax.decorators import ajax
 
-from .models import Lodge, Course, Course_Lodge_Assignment, User, Course_User_Assignment, Review
+from tripadvise.models import Lodge, Course, Course_Lodge_Assignment, CustomUser, Course_User_Assignment, Review
 
-from .forms import LodgeForm, CourseForm, Course_Lodge_AssignmentForm, UserForm, Course_User_AssignmentForm, ReviewForm
+from .forms import LodgeForm, CourseForm, Course_Lodge_AssignmentForm, CustomUserForm, Course_User_AssignmentForm, ReviewForm
 import collections
+from django.contrib.auth.models import Permission, User
+from django.contrib.contenttypes.models import ContentType
+from django.core.mail import send_mail
 
-
+content_type = ContentType.objects.get_for_model(Review)
 
 
 def index(request):
-    return render(request, 'tripadvise/index.html')
+    reviewcontenttype = content_type
+    if request.user and request.user.is_active:
+        hello = 'hello'
+        
+        try:
+            localemail = get_object_or_404(User, email = request.user.email)
+            localuser = CustomUser.objects.get(email=localemail)
+        except CustomUser.DoesNotExist:
+            #localuser = CustomUser.objects.get(email=localemail)
+            hello = 'hello'
+        #permission = Permission.objects.get(codename='can_review', name = 'Can Review Lodges', content_type = reviewcontenttype)
+        
+        #localemail.user_permissions.add(permission)
+        
+        context = {
+                    'localemail': localemail,
+                    #'localuser': localuser,
+                    'reviewcontenttype': reviewcontenttype,
+                    }
+                    
+        return render(request, 'tripadvise/index.html')
+    else:
+        goodbye = 'goodbye'
+        context = {
+                    'reviewcontenttype': reviewcontenttype,
+                    'goodbye': goodbye,
+                }
+        return render(request, 'tripadvise/index.html', context)
 
 
 def courses(request):
@@ -145,9 +177,22 @@ def hotel_details(request,lodgeId):
             comment = form.cleaned_data['comment']
             review = Review()
             review.lodge_Id = lodge_info
+            review.author = request.user
             review.rating = rating
             review.comment = comment
             review.pub_date = datetime.now()
+            reviewcontenttype = content_type
+            if request.user and request.user.is_active:
+            	try:
+            		localemail = get_object_or_404(User, email = request.user.email)
+            		localuser = CustomUser.object.get(email = localemail)
+            	except CustomUser.DoesNotExist:
+            		return render(request, 'tripadvise/notauser.html')
+            		permission = Permission.objects.get(codename = 'can_review', content_type = reviewcontenttype)
+            		localemail.user_permissions.add(permission)
+            else:
+            	return render(request, 'tripadvise/notauser.html')
+            	
             review.save()
             #always return an HTTPResponseRedirect after successfully dealing with POST data.This prevents data from being posted twice if a user hits the back button
 
@@ -233,7 +278,7 @@ def clAssignment(request):
 
     return render(request, 'tripadvise/clAssignment.html',{'form':form})
 
-
+@login_required
 def post_course(request):
     if request.method == "POST":
         #request.POST or None is builtin validation
@@ -248,10 +293,10 @@ def post_course(request):
     	form = CourseForm()
     return render(request, 'tripadvise/post_course.html', {'form': form})	
 
-
+@login_required
 def post_user(request):
     if request.method == "POST":
-        form = UserForm(request.POST or None)
+        form = CustomUserForm(request.POST or None)
         if form.is_valid():
             user = form.save(commit=False)
             user.save()
@@ -260,14 +305,15 @@ def post_user(request):
         else:
             messages.error(request, "Not Successfully Created")
     else:
-        form = UserForm()
+        form = CustomUserForm()
     return render(request, 'tripadvise/post_user.html', {'form':form})
 
+@login_required
 def users(request):
     #user_list = User.objects.all()
-    student_list = User.objects.filter(role = "STUDENT")
-    prof_list = User.objects.filter(role = "PROFESSOR")
-    fac_list = User.objects.filter(role = "FACULTY")
+    student_list = CustomUser.objects.filter(role = "STUDENT")
+    prof_list = CustomUser.objects.filter(role = "PROFESSOR")
+    fac_list = CustomUser.objects.filter(role = "FACULTY")
 
 
     # pagination for students
@@ -325,9 +371,8 @@ def users(request):
     return render(request, 'tripadvise/user.html', context)
 
 
-
 def user_detail(request, userId):
-    user_info = get_object_or_404(User,pk = userId)
+    user_info = get_object_or_404(CustomUser,pk = userId)
     cu_assign = Course_User_Assignment.objects.all()
     courses = Course.objects.all()
     context = {
@@ -339,16 +384,16 @@ def user_detail(request, userId):
     return render(request, 'tripadvise/user_detail.html', context)
 
 def user_update(request, courseId = None):
-    user = get_object_or_404(User, pk = courseId)
-    form = UserForm(request.POST or None, instance = user)
+    customuser = get_object_or_404(CustomUser, pk = courseId)
+    form = CustomUserForm(request.POST or None, instance = customuser)
     if form.is_valid():
-        user = form.save(commit=False)
-        user.save()
+        customuser = form.save(commit=False)
+        customuser.save()
         messages.success(request, "Successfully Updated")
         return HttpResponseRedirect(user.get_absolute_url())
       
     context = {
-      "user": user,
+      "customuser": customuser,
       "form": form
 
     }
@@ -433,7 +478,7 @@ def hotel_delete(request, lodgeId = None):
     return redirect("tripadvise.views.hotels")
 
 def user_delete(request, userId = None):
-    user = get_object_or_404(User, pk = userId)
+    user = get_object_or_404(CustomUser, pk = userId)
     user.delete()
     messages.success(request, "Successfully deleted")
     return redirect("tripadvise.views.users")

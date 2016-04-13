@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django_countries.fields import CountryField
 from django.core.urlresolvers import reverse
+from django.contrib.auth.models import User
 import numpy as np
 import datetime
 from multiselectfield import MultiSelectField
@@ -172,7 +173,7 @@ class Course_Lodge_Assignment(models.Model):
 		unique_together = ['lodge_name', 'course_name']
 
 	
-class User(models.Model):
+class CustomUser(models.Model):
 	def __int__(self):
 		return self.userId
 
@@ -207,7 +208,7 @@ class Course_User_Assignment(models.Model):
 
 	courseAssignId = models.AutoField(primary_key = True, db_column = "Course_AssignmentId")
 	course_Id = models.ForeignKey(Course, db_column = "CourseId FK", on_delete=models.CASCADE)
-	user_Id = models.ForeignKey(User, db_column = "UserId FK", on_delete=models.CASCADE)
+	user_Id = models.ForeignKey(CustomUser, db_column = "UserId FK", on_delete=models.CASCADE)
 
 	class Meta:
 		unique_together = ["course_Id", "user_Id"]

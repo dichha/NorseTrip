@@ -3,7 +3,7 @@ from django import forms
 from .models import Lodge
 from .models import Course
 from .models import Course_Lodge_Assignment
-from .models import User
+from .models import CustomUser
 from .models import Course_User_Assignment
 from .models import Review
 
@@ -46,9 +46,9 @@ class Course_Lodge_AssignmentForm(forms.ModelForm):
          'lodge_name',
          'course_name']
 
-class UserForm(forms.ModelForm):
+class CustomUserForm(forms.ModelForm):
     class Meta: 
-        model = User
+        model = CustomUser
         fields = [
         'userId',
         'fullName',

@@ -15,8 +15,8 @@
         <div class="col-sm-4 student">
         <h4 id="user_stu_header">Students</h4>
         <hr style="border-color:lightgrey">
-        {% for user in students %}
-            <a href="{% url 'user_detail' user.userId %}" style="text-decoration:none" class="stu_name">{{user.fullName}}</a><br>
+        {% for customuser in students %}
+            <a href="{% url 'user_detail' customuser.userId %}" style="text-decoration:none" class="stu_name">{{customuser.fullName}}</a><br>
         {% endfor %}
         <div class="pagination user_pag">
             <span class="step-links">
@@ -39,8 +39,8 @@
         <div class="col-sm-4 professor">
         <h4 id="user_prof_header">Professors</h4>
         <hr style="border-color:lightgrey"> 
-        {% for user in profs %}
-            <a href="{% url 'user_detail' user.userId %}" style="text-decoration:none" class="prof_name">{{user.fullName}}</a><br>
+        {% for customuser in profs %}
+            <a href="{% url 'user_detail' customuser.userId %}" style="text-decoration:none" class="prof_name">{{customuser.fullName}}</a><br>
         {% endfor %}
         <div class="pagination user_pag">
             <span class="step-links">
@@ -62,8 +62,8 @@
         <div class="col-sm-4 faculty">
         <h4 id="user_fac_header">Faculty</h4>
         <hr style="border-color:lightgrey">
-        {% for user in facs %}
-            <a href="{% url 'user_detail' user.userId %}" style="text-decoration:none" class="fac_name">{{user.fullName}}</a><br>
+        {% for customuser in facs %}
+            <a href="{% url 'user_detail' customuser.userId %}" style="text-decoration:none" class="fac_name">{{customuser.fullName}}</a><br>
         {% endfor %}  
         <div class="pagination user_pag">
             <span class="step-links">

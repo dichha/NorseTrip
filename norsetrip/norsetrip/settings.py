@@ -27,6 +27,18 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'norsetrip@gmail.com'
+EMAIL_HOST_PASSWORD = 'Norsetrip1'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+'''
+If using gmail, a good idea is to unlock
+Captcha so Django can auto send emails
+this can be done at following link:
+https://accounts.google.com/displayunlockcaptcha
+'''
 
 # Application definition
 
@@ -47,6 +59,7 @@ INSTALLED_APPS = (
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '83536201782-ftd54feptc5nm4dj3l009bktu41uaaiq.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '1_bay7l8w6CP7JJlQlmVlOWs'
+SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True #Makes username for User class Full Email
 
 LOGIN_REDIRECT_URL = '/'
 
@@ -75,6 +88,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+            	'django.core.context_processors.request',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',

@@ -12,7 +12,7 @@ urlpatterns = [
     # url(r'^sample', views.sample, name = 'sample'),
     url(r'^hotels', views.hotels, name = 'hotels'),
     url(r'^hotel_details/(?P<lodgeId>[0-9]+)/$', views.hotel_details, name ='hotel_details'),
-
+	url(r'^hotel_details/(?P<lodgeId>[0-9]+)/edit/$',views.lodge_update, name= "lodge_update"),
     url(r'^post_lodge', views.post_lodge, name = 'post_lodge'),
     url(r'^hotel_details/(?P<lodgeId>[0-9]+)/edit/$',views.lodge_update, name= "lodge_update"),
 
