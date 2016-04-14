@@ -36,6 +36,48 @@ Courses taken:
 <a href="delete" style="text-decoration: none; color: white"><button type="submit" class="save btn btn-danger">Delete User</button></a>
 
 <br><br>
+<h3>Reviews written by {{ user_info.fullName }}</h3>
+<hr style="border-color:lightgrey">
+<!-- Review -->
+{{ reviews_list }}
+{% if review_pag %}
+	{% for review in review_pag %} 
+		{% if review.lodge_Id|stringformat:"s" == lodge_info.lodge_name %}
+		<div class = "comment">
+		{{ review.comment }} 
+		<br>
+		<small class = "review_timestamp">Rated {{ review.rating }} of 5 | 
+		{{ review.pub_date}}</small> <br>
+		<small class = "review_author"> {{ review.author }} </small> 
+		</div>
+		
+		<p><span id="helpful">Helpful?</span>&nbsp;&nbsp;<button class="btn btn-default btn-sm glyphicon glyphicon-thumbs-up" id="likes" reviewid = "{{ review.reviewId }}"> </button>&nbsp;<small id="like_count">{{review.likes}} likes </small></p>
+		
+
+		{% endif%}
+		
+
+	{% endfor %}
+{% else %}
+<p> No reviews are available. </p>
+{% endif %}
+
+	<div class="pagination">
+    <span class="step-links">
+        {% if review_pag.has_previous %}
+            <a href="?{{ page_request_var }}={{ review_pag.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ review_pag.number }} of {{ review_pag.paginator.num_pages }}.
+        </span>
+
+        {% if review_pag.has_next %}
+            <a href="?{{ page_request_var }}={{ review_pag.next_page_number }}">next</a>
+        {% endif %}
+   		 </span>
+	</div>
+</div>
 </div>
 </div>
 

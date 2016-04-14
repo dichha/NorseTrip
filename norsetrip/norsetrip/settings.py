@@ -25,7 +25,7 @@ SECRET_KEY = 'awfibx)luwp@u536ms@l#6h))9(&cz8rq456+c)_05lfji$maz'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'norsetrip@gmail.com'
@@ -60,8 +60,11 @@ INSTALLED_APPS = (
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '83536201782-ftd54feptc5nm4dj3l009bktu41uaaiq.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '1_bay7l8w6CP7JJlQlmVlOWs'
 SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True #Makes username for User class Full Email
+SOCIAL_AUTH_GOOGLE_OAUTH2_WHITELISTED_DOMAINS = ['luther.edu']
+SOCIAL_AUTH_LOGIN_ERROR_URL = '/login-error/'
 
 LOGIN_REDIRECT_URL = '/'
+LOGIN_ERROR_URL = '/login-error/'
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -72,6 +75,10 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'social.apps.django_app.middleware.SocialAuthExceptionMiddleware',
+    
+    #Custom Middleware Classes
+    #'norsetrip.middleware.social_auth_exception_middleware.SocialAuthExceptionMiddleware',
 )
 
 ROOT_URLCONF = 'norsetrip.urls'

@@ -42,7 +42,7 @@ class Lodge(models.Model):
 		all_ratings = map(lambda x: x.rating, self.review_set.all())
 		return np.mean(all_ratings)
 
-	
+
 
 class Review(models.Model):
 	def __int__(self):
@@ -58,7 +58,8 @@ class Review(models.Model):
 	reviewId = models.AutoField(primary_key = True)
 	#many to one: many reviews to one lodge
 	lodge_Id = models.ForeignKey(Lodge,on_delete = models.CASCADE)
-	# user_Id = models.ForeignKey(User, db_column = "UserId FK")
+	user_Id = models.ForeignKey('CustomUser', db_column = "UserId FK", on_delete = models.CASCADE)
+	author = models.EmailField("Author", max_length=24)
 	rating = models.IntegerField("Rating", choices = RATING_CHOICES)
 	comment = models.TextField("Comment")
 	pub_date = models.DateTimeField("Date Published")

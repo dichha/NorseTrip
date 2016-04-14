@@ -154,6 +154,11 @@ def hotel_details(request,lodgeId):
     lodges = Lodge.objects.all()  
     lodge_info = get_object_or_404(Lodge,pk = lodgeId)
     unique_hotel_list=[]
+    
+    if request.user.is_active:
+    	author = request.user.email
+    	customuser = CustomUser.objects.get(email = author)
+    	userid = customuser.userId
 
     #reviews = Review.objects.all()
     reviews_list = Review.objects.filter(lodge_Id = lodge_info.lodgeId)
@@ -177,7 +182,8 @@ def hotel_details(request,lodgeId):
             comment = form.cleaned_data['comment']
             review = Review()
             review.lodge_Id = lodge_info
-            review.author = request.user
+            review.user_Id = customuser
+            review.author = author
             review.rating = rating
             review.comment = comment
             review.pub_date = datetime.now()
@@ -373,12 +379,31 @@ def users(request):
 
 def user_detail(request, userId):
     user_info = get_object_or_404(CustomUser,pk = userId)
+    customuser = CustomUser.objects.get(userId = userId)
     cu_assign = Course_User_Assignment.objects.all()
     courses = Course.objects.all()
+
+
+    reviews_list = Review.objects.filter(user_Id = customuser.userId)
+
+    paginator = Paginator(reviews_list,6) # Show 6 lodges per page
+    page_request_var = "review_page"
+    page = request.GET.get(page_request_var)
+    try:
+        review_pag = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        review_pag = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        review_pag = paginator.page(paginator.num_pages)
+    
     context = {
     'user_info': user_info,
     'cu_assign': cu_assign,
     'courses' : courses,
+    'reviews_list' : reviews_list,
+    'review_pag': review_pag,
 
     }
     return render(request, 'tripadvise/user_detail.html', context)
@@ -419,7 +444,9 @@ def cuAssignment(request):
 
     return render(request, 'tripadvise/cuAssignment.html',{'form':form})
 
-
+def login_error(request):
+	logger.debug("Login Error")
+	return HttpResponseRedirect("/login-error.html")
 
 	
 def logout_view(request):
