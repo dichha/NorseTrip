@@ -30,7 +30,7 @@
 {% endif %}
 
 {% if lodge_info.review_set.count != 0 %}
-<!-- ({{ lodge_info.mean_rating | floatformat }} average rating)<br><br> -->
+({{ lodge_info.mean_rating | floatformat }} average rating)<br><br>
 {% endif %}
 
 {% if lodge_info.lodge_image.url %}
@@ -69,9 +69,11 @@
 		<div class = "comment">
 		{{ review.comment }} 
 		<br>
-		<small class = "review_timestamp">Rated {{ review.rating }} of 5 | 
+		<small class = "review_timestamp">{% with review.author|split:"@" as splitted_email %} 
+		<small class = "review_author"> {{ splitted_email|first }}</small> 
+		{% endwith %} rated {{ review.rating }} of 5 | 
 		{{ review.pub_date}}</small> <br>
-		<small class = "review_author"> {{ review.author }} </small> 
+		
 		</div>
 		
 		<p><span id="helpful">Helpful?</span>&nbsp;&nbsp;<button class="btn btn-default btn-sm glyphicon glyphicon-thumbs-up" id="likes" reviewid = "{{ review.reviewId }}"> </button>&nbsp;<small id="like_count">{{review.likes}} likes </small></p>

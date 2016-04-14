@@ -384,26 +384,26 @@ def user_detail(request, userId):
     courses = Course.objects.all()
 
 
-    reviews_list = Review.objects.filter(user_Id = customuser.userId)
+    reviews_list = Review.objects.filter(user_Id = user_info.userId)
 
     paginator = Paginator(reviews_list,6) # Show 6 lodges per page
     page_request_var = "review_page"
     page = request.GET.get(page_request_var)
     try:
-        review_pag = paginator.page(page)
+        user_review = paginator.page(page)
     except PageNotAnInteger:
         # If page is not an integer, deliver first page.
-        review_pag = paginator.page(1)
+        user_review = paginator.page(1)
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
-        review_pag = paginator.page(paginator.num_pages)
+        user_review = paginator.page(paginator.num_pages)
     
     context = {
     'user_info': user_info,
     'cu_assign': cu_assign,
     'courses' : courses,
     'reviews_list' : reviews_list,
-    'review_pag': review_pag,
+    'user_review': user_review
 
     }
     return render(request, 'tripadvise/user_detail.html', context)

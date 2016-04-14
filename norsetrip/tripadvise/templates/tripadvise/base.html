@@ -49,7 +49,7 @@
           <a href="{% url 'tripadvise.views.users' %}">Users</a>
           </li>
           {% if user and not user.is_anonymous %}
-          	<li> <a>Hello {{user.get_full_name|default:user.username }}</a> </li>
+          	<li> <a>Hello {{user.first_name|default:user.username }}</a> </li>
           	<li id="sign-out"><a href="{% url 'auth:logout' %}?next={{ request.path }}">Logout</a> </li>
           {% else %}
           	<li> <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}"> Login with Norse Key </a> </li>
