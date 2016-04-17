@@ -54,6 +54,7 @@
           {% else %}
           	<li> <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}"> Login with Norse Key </a> </li>
           {% endif %}
+          {% if user.is_superuser %}
           <li class="dropdown navbar-right">
               <a class="dropdown-toggle" data-toggle="dropdown">Admin<span class="caret"></span></a>
               <ul class="dropdown-menu">
@@ -64,6 +65,7 @@
                    <li><a href="{% url 'tripadvise.views.cuAssignment' %}"class="top_menu">C&U Assign</a></li>
               </ul>
           </li> 
+          {% endif %}
         <!-- </ul> -->
         
       </ul>
