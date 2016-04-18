@@ -191,7 +191,15 @@ def hotel_details(request,lodgeId):
             if request.user and request.user.is_active:
             	try:
             		localemail = get_object_or_404(User, email = request.user.email)
-            		localuser = Course_User_Assignment.objects.get(user_Id__email=localemail)
+			lodgecheck = Lodge.objects.get(lodge_name__icontains = review.lodge_Id)
+			coursecheck = Course_Lodge_Assignment.objects.filter(lodge_name=lodgecheck)
+			getclid = Course_Lodge_Assignment.objects.filter(clAssignId=coursecheck)			
+			
+			getcourse = Course.objects.get(course_lodge_assignment__clAssignId=getclid)
+			#getcoursenow = 
+			getcoursenow = Course_Lodge_Assignment.objects.filter(course_name = getcourse)	
+			localuser = Course_User_Assignment.objects.get(user_Id__email=localemail,course_Id__name__icontains=getcourse)
+			#localcourse = Course_User_Assignment.objects.get(course_Id__name=getcourse)
             	except Course_User_Assignment.DoesNotExist:
             		return render(request, 'tripadvise/notauser.html')
             		permission = Permission.objects.get(codename = 'can_review', content_type = reviewcontenttype)
