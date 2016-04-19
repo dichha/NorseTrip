@@ -66,6 +66,7 @@ Hotels Stayed:
 	{% endif %}
 {% endfor %} -->
 </div>
+{% if user.is_superuser %}
 <br><br><br>
 <!-- only for admin -->
 <a href="edit" style="text-decoration: none; color: white"><button type="submit" class="save btn btn-info">Edit Course</button></a>
@@ -73,6 +74,7 @@ Hotels Stayed:
 <a href="delete" style="text-decoration: none; color: white"><button type="submit" class="save btn btn-danger">Delete Course</button></a>
 
 <br><br>
+{% endif %}
 </div>
 </div>
 

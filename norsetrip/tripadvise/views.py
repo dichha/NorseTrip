@@ -8,6 +8,7 @@ from django.contrib.auth import (
 	logout as auth_logout, update_session_auth_hash,
 )
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from datetime import datetime
 from django.core.urlresolvers import reverse
 from django_ajax.decorators import ajax
@@ -19,6 +20,7 @@ import collections
 from django.contrib.auth.models import Permission, User
 from django.contrib.contenttypes.models import ContentType
 from django.core.mail import send_mail
+
 
 content_type = ContentType.objects.get_for_model(Review)
 
@@ -53,7 +55,7 @@ def index(request):
                 }
         return render(request, 'tripadvise/index.html', context)
 
-
+@login_required
 def courses(request):
     courses = Course.objects.all()
 
@@ -80,6 +82,7 @@ def courses(request):
     }
     return render(request, 'tripadvise/courses.html', context )
 
+@login_required
 def course_detail(request, courseId):
     course_info = get_object_or_404(Course, pk = courseId)
     cl_assign = Course_Lodge_Assignment.objects.all()
@@ -111,7 +114,7 @@ def course_detail(request, courseId):
     return render(request, 'tripadvise/course_detail.html', context)
 
 
-	
+@login_required	
 def hotels(request):
     lodge_list = Lodge.objects.all()
     review_list = Review.objects.all()
@@ -146,7 +149,7 @@ def hotels(request):
     return render(request, 'tripadvise/hotels.html', 
         context)
 
-
+@login_required
 def hotel_details(request,lodgeId):
     #hotel info  
     cl_assign = Course_Lodge_Assignment.objects.all()
@@ -255,7 +258,7 @@ def hotel_details(request,lodgeId):
     return render(request,'tripadvise/hotel_details.html', context)
 
     
-
+@staff_member_required
 def post_lodge(request):
     if request.method == "POST":
 
@@ -272,7 +275,7 @@ def post_lodge(request):
         form = LodgeForm()
     return render(request, 'tripadvise/post_lodge.html', {'form': form})
 
-    
+@staff_member_required    
 def clAssignment(request):
     if request.method == "POST":
     	form = Course_Lodge_AssignmentForm(request.POST)
@@ -292,7 +295,7 @@ def clAssignment(request):
 
     return render(request, 'tripadvise/clAssignment.html',{'form':form})
 
-@login_required
+@staff_member_required
 def post_course(request):
     if request.method == "POST":
         #request.POST or None is builtin validation
@@ -307,7 +310,7 @@ def post_course(request):
     	form = CourseForm()
     return render(request, 'tripadvise/post_course.html', {'form': form})	
 
-@login_required
+@staff_member_required
 def post_user(request):
     if request.method == "POST":
         form = CustomUserForm(request.POST or None)
@@ -322,7 +325,7 @@ def post_user(request):
         form = CustomUserForm()
     return render(request, 'tripadvise/post_user.html', {'form':form})
 
-@login_required
+@staff_member_required
 def users(request):
     #user_list = User.objects.all()
     student_list = CustomUser.objects.filter(role = "STUDENT")
@@ -384,7 +387,7 @@ def users(request):
 
     return render(request, 'tripadvise/user.html', context)
 
-
+@staff_member_required
 def user_detail(request, userId):
     user_info = get_object_or_404(CustomUser,pk = userId)
     customuser = CustomUser.objects.get(userId = userId)
@@ -416,6 +419,7 @@ def user_detail(request, userId):
     }
     return render(request, 'tripadvise/user_detail.html', context)
 
+@staff_member_required
 def user_update(request, courseId = None):
     customuser = get_object_or_404(CustomUser, pk = courseId)
     form = CustomUserForm(request.POST or None, instance = customuser)
@@ -423,7 +427,7 @@ def user_update(request, courseId = None):
         customuser = form.save(commit=False)
         customuser.save()
         messages.success(request, "Successfully Updated")
-        return HttpResponseRedirect(user.get_absolute_url())
+        return HttpResponseRedirect(customuser.get_absolute_url())
       
     context = {
       "customuser": customuser,
@@ -433,6 +437,7 @@ def user_update(request, courseId = None):
     
     return render(request, 'tripadvise/post_user.html', context)
 
+@staff_member_required
 def cuAssignment(request):
     if request.method == "POST":
         form = Course_User_AssignmentForm(request.POST)
@@ -462,7 +467,7 @@ def logout_view(request):
 	logout(request)
 	return HttpResponseRedirect("/")
 
-
+@staff_member_required
 def lodge_update(request, lodgeId = None):
     lodges = get_object_or_404(Lodge, pk = lodgeId)
     form = LodgeForm(request.POST or None, instance = lodges)
@@ -482,7 +487,7 @@ def lodge_update(request, lodgeId = None):
     
     return render(request, 'tripadvise/post_lodge.html', context)
 
-
+@staff_member_required
 def course_update(request, courseId = None):
     courses = get_object_or_404(Course, pk = courseId)
     form = CourseForm(request.POST or None, instance = courses)
@@ -500,23 +505,27 @@ def course_update(request, courseId = None):
     
     return render(request, 'tripadvise/post_course.html', context)
 
+@staff_member_required
 def course_delete(request, courseId = None):
     course = get_object_or_404(Course, pk = courseId)
     course.delete()
     messages.success(request, "Successfully deleted")
     return redirect("tripadvise.views.courses")
 
+@staff_member_required
 def hotel_delete(request, lodgeId = None):
     lodge = get_object_or_404(Lodge, pk = lodgeId)
     lodge.delete()
     messages.success(request, "Successfully deleted")
     return redirect("tripadvise.views.hotels")
 
+@staff_member_required
 def user_delete(request, userId = None):
     user = get_object_or_404(CustomUser, pk = userId)
     user.delete()
     messages.success(request, "Successfully deleted")
     return redirect("tripadvise.views.users")
+
 
 def add_like(request):
     reviewid = None
