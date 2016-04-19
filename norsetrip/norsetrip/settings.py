@@ -63,9 +63,11 @@ SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True #Makes username for User class Full Em
 SOCIAL_AUTH_GOOGLE_OAUTH2_WHITELISTED_DOMAINS = ['luther.edu']
 SOCIAL_AUTH_GOOGLE_OAUTH2_WHITELISTED_EMAILS = ['norsetrip@gmail.com']
 SOCIAL_AUTH_LOGIN_ERROR_URL = '/login-error/'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/logged-in/'
+SOCIAL_AUTH_LOGIN_URL = '/'
+LOGIN_URL = '/login/google-oauth2/'
 
 LOGIN_REDIRECT_URL = '/'
-LOGIN_ERROR_URL = '/login-error/'
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -101,6 +103,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social.apps.django_app.context_processors.backends',
+                'social.apps.django_app.context_processors.login_redirect',
             ],
         },
     },

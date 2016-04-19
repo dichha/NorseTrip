@@ -7,7 +7,6 @@ from . import views
 urlpatterns = [
     
     url(r'^$', views.index, name ='index'),
-    url(r'^login-error/$', views.login_error, name ='login_error'),
     url(r'^courses', views.courses, name = 'courses'),
     url(r'^course_detail/(?P<courseId>[0-9]+)/$', views.course_detail, name = "course_detail"),
     # url(r'^sample', views.sample, name = 'sample'),
