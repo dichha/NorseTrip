@@ -22,16 +22,18 @@
 <div class="col-sm-8">
 <div class="hotel_detail">
 <b>Address: </b>{{lodge_info.lodge_address}} | {{lodge_info.city}} , {{lodge_info.country}}<br>
-<b>Rating:</b>
+<b>Rating:</b><div class='rating_bar'>
+    <!-- div element that contains full stars with percentage width, 
+    which represents rating -->
+    <div  class='rating' style='width:{{lodge_info.mean_rating}}%;'>
+    </div>
+</div>
 {% if lodge_info.review_set.count == 1 %}
 {{ lodge_info.review_set.count }} review
 {% else %}
 {{ lodge_info.review_set.count }} reviews 
 {% endif %}
 
-{% if lodge_info.review_set.count != 0 %}
-({{ lodge_info.mean_rating | floatformat }} average rating)<br><br>
-{% endif %}
 
 {% if lodge_info.lodge_image.url %}
 <img src="{{lodge_info.lodge_image.url }}" class="img-responsive" width="500" height="400" border="0"><br>
@@ -207,10 +209,12 @@
 	 		<small> 
 	 		Address: {{lodge.lodge_address}} | {{lodge.city}} , {{lodge.country}}<br>
 
-	 		Review: {{ lodge.review_set.count }} reviews 
-	 		{% if lodge.review_set.count != 0 %}
-			({{ lodge.mean_rating | floatformat }} average rating)
-			{% endif %}</small>
+	 		Review: <div class='rating_bar'>
+    <!-- div element that contains full stars with percentage width, 
+    which represents rating -->
+    <div  class='rating' style='width:{{lodge.mean_rating}}%;'>
+    </div>
+</div></small>
 			<div>
 			{% if lodge.lodge_image.url %}
 				<a href="/hotel_details/{{ lodge.lodgeId }}" style="text-decoration:none"><img src="{{lodge.lodge_image.url }}" class="img-responsive" border="0" height="250px" width="300px"></a><br>
@@ -241,7 +245,6 @@
 	
 </div><!--.row-->
 
-{% if user.is_superuser %}
 <!-- only for admin -->
 <br>
 <a href="edit" style="text-decoration: none; color: white"><button type="submit" class="save btn btn-info">Edit Hotel</button></a>
@@ -249,7 +252,6 @@
 <a href="delete" style="text-decoration: none; color: white"><button type="submit" class="save btn btn-danger">Delete Hotel</button></a>
 
 <br><br>
-{% endif %}
 </div><!--.col-sm-12 -->
 </div>
 {% endblock %}
