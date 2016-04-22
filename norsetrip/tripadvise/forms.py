@@ -6,6 +6,8 @@ from .models import Course_Lodge_Assignment
 from .models import CustomUser
 from .models import Course_User_Assignment
 from .models import Review
+from .models import Food
+from .models import FoodReview
 
 
 class LodgeForm(forms.ModelForm):
@@ -71,6 +73,26 @@ class ReviewForm(forms.ModelForm):
         'rating',
         'comment'
         ]
+
+class FoodForm(forms.ModelForm):
+    class Meta:
+        model = Food
+        fields = [
+            'name',
+            'address',
+            'city',
+            'country',
+            'url',
+            'descrip',
+            'image',
+            ]
+class FoodReviewForm(forms.ModelForm):
+    class Meta:
+        model = FoodReview
+        fields = [
+            'rating',
+            'comment',
+            ] 
         # widgets = {
         # 'comment': Textarea(attrs = {'cols': 40, 'row': 15})
         # }

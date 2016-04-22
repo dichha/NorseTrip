@@ -213,6 +213,63 @@ class Course_User_Assignment(models.Model):
 
 	class Meta:
 		unique_together = ["course_Id", "user_Id"]
+		
+class Food(models.Model):
+	def __int__(self):
+		return self.foodId	
+	def __str__(self):
+		return self.name	
+	
+	foodId = models.AutoField(primary_key = True, db_column = "FoodId")
+	
+	name = models.CharField("Name", max_length = 200)
+	address = models.CharField("Address", max_length = 200)
+	city = models.CharField("City", max_length = 100)
+	country = CountryField("Country", blank_label = 'Select Country')
+	url = models.URLField("Food URL", null = True, blank = True)
+	descrip = models.TextField("Food Description")
+	image = models.ImageField("Food Image", null=True, blank = True,width_field = "width_field", 
+                height_field = "height_field")
+
+	height_field = models.IntegerField(default = 0)
+	width_field = models.IntegerField(default = 0)
+	
+	def get_absolute_url(self):
+		return reverse('tripadvise.views.food_detail', args=[str(self.foodId)])	
+	
+	class Meta:
+		ordering = ["name"]
+		#preventing duplicates
+		unique_together = ["name","address","city","country", "url"]
+
+	def mean_rating(self):
+		all_ratings = map(lambda x: x.rating, self.foodreview_set.all())
+		return np.mean(all_ratings)
+	
+	
+class FoodReview(models.Model):
+	#def __init__(self):
+	#	return self.reviewId
+	
+	RATING_CHOICES = ((1,'1'),
+                          (2,'2'),
+                          (3, '3'),
+                          (4, '4'),
+                          (5, '5'),
+        )
+	
+	reviewId = models.AutoField(primary_key = True)
+	
+	food_Id = models.ForeignKey(Food,on_delete  = models.CASCADE)
+	user_Id = models.ForeignKey('CustomUser', db_column = "UserId FK", on_delete = models.CASCADE)
+	author = models.EmailField("Author", max_length=24)
+	rating = models.IntegerField("Rating", choices = RATING_CHOICES)
+	comment = models.TextField("Comment")
+	pub_date = models.DateTimeField("Date Published")
+	likes = models.IntegerField(default=0)
+	
+	class Meta:
+		ordering = ["-pub_date"]
 
 
 

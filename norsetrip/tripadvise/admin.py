@@ -7,6 +7,8 @@ from .models import Course_Lodge_Assignment
 from .models import CustomUser
 from .models import Review
 from .models import Course_User_Assignment
+from .models import Food
+from .models import FoodReview
 
 #admin.site.register(Lodging)
 class LodgeAdmin(admin.ModelAdmin):
@@ -44,3 +46,11 @@ admin.site.register(Review, ReviewAdmin)
 class Course_User_AssignmentAdmin(admin.ModelAdmin):
 	list_display = ('courseAssignId','course_Id','user_Id')
 admin.site.register(Course_User_Assignment, Course_User_AssignmentAdmin)
+
+class FoodAdmin(admin.ModelAdmin):
+	list_display = ('foodId','name','address','city')
+admin.site.register(Food, FoodAdmin)
+
+class FoodReviewAdmin(admin.ModelAdmin):
+	list_display = ('reviewId','likes','food_Id','rating', 'pub_date')#'user_Id','rating','pub_date')
+admin.site.register(FoodReview, FoodReviewAdmin)

@@ -13,9 +13,9 @@ from datetime import datetime
 from django.core.urlresolvers import reverse
 from django_ajax.decorators import ajax
 
-from tripadvise.models import Lodge, Course, Course_Lodge_Assignment, CustomUser, Course_User_Assignment, Review
+from tripadvise.models import Lodge, Course, Course_Lodge_Assignment, CustomUser, Course_User_Assignment, Review, Food, FoodReview
 
-from .forms import LodgeForm, CourseForm, Course_Lodge_AssignmentForm, CustomUserForm, Course_User_AssignmentForm, ReviewForm
+from .forms import LodgeForm, CourseForm, Course_Lodge_AssignmentForm, CustomUserForm, Course_User_AssignmentForm, ReviewForm, FoodForm, FoodReviewForm
 import collections
 from django.contrib.auth.models import Permission, User
 from django.contrib.contenttypes.models import ContentType
@@ -55,7 +55,7 @@ def index(request):
                 }
         return render(request, 'tripadvise/index.html', context)
 
-@login_required
+#@login_required
 def courses(request):
     courses = Course.objects.all()
 
@@ -82,7 +82,7 @@ def courses(request):
     }
     return render(request, 'tripadvise/courses.html', context )
 
-@login_required
+#@login_required
 def course_detail(request, courseId):
     course_info = get_object_or_404(Course, pk = courseId)
     cl_assign = Course_Lodge_Assignment.objects.all()
@@ -114,7 +114,7 @@ def course_detail(request, courseId):
     return render(request, 'tripadvise/course_detail.html', context)
 
 
-@login_required	
+#@login_required	
 def hotels(request):
     lodge_list = Lodge.objects.all()
     review_list = Review.objects.all()
@@ -149,19 +149,103 @@ def hotels(request):
     return render(request, 'tripadvise/hotels.html', 
         context)
 
-@login_required
+def food_detail(request, foodId):
+    
+    food_info = get_object_or_404(Food, pk = foodId)
+    foodreview = FoodReview.objects.all()
+    
+    if request.user.is_active:
+	author = request.user.email
+	customuser = CustomUser.objects.get(email = author)
+	userid = customuser.userId  
+	
+    reviews_list = FoodReview.objects.filter(food_Id = food_info.foodId)
+	
+    paginator = Paginator(reviews_list,6) # Show 6 lodges per page
+    page_request_var = "review_page"
+    page = request.GET.get(page_request_var)
+    try:
+	review_pag = paginator.page(page)
+    except PageNotAnInteger:
+	# If page is not an integer, deliver first page.
+	review_pag = paginator.page(1)
+    except EmptyPage:
+	# If page is out of range (e.g. 9999), deliver last page of results.
+	review_pag = paginator.page(paginator.num_pages)
+
+    if request.method == "POST":
+	form = FoodReviewForm(request.POST or None)
+	if form.is_valid():
+		rating = form.cleaned_data['rating']
+		comment = form.cleaned_data['comment']
+		review = FoodReview()
+		review.food_Id = food_info
+		review.user_Id = customuser
+		review.author = author
+		review.rating = rating
+		review.comment = comment
+		review.pub_date = datetime.now()
+		reviewcontenttype = content_type
+		if request.user and request.user.is_active:
+		    try:
+			localemail = get_object_or_404(User, email = request.user.email)
+			foodcheck = Course_Lodge_Assignment.objects.filter(lodge_name__city = review.food_Id.city)
+			#citycheck = Lodge.objects.get(city = foodcheck)
+			getlodgeId = Course_Lodge_Assignment.objects.get(clAssignId = foodcheck)
+			#getlodge = Lodge.objects.filter(lodgeId = citycheck)
+			#getclId = Course_Lodge_Assignment.objects.filter(clAssignId = getlodge)
+			getcourse = Course.objects.get(course_lodge_assignment__clAssignId = getlodgeId)
+			
+			localuser = Course_User_Assignment.objects.get(user_Id__email=localemail,course_Id__name__icontains=getcourse)
+			#get the city that is in lodge that is the same in food
+			#then get the courses that is with that lodge
+			#then make sure that this user is assigned that same course
+			#then this user can write the review
+			#foodcheck = Food.objects.get(name__icontains = foodreview.food_Id)
+		    except Course_User_Assignment.DoesNotExist:
+			return render(request, 'tripadvise/notauser.html')
+		        permission = Permission.objects.get(codename = 'can_review', content_type = foodreviewcontenttype)
+		        localemail.user_permissions.add(permission)
+		else:
+		    return render(request, 'tripadvise/notauser.html')
+					
+		review.save()
+		return HttpResponseRedirect(reverse('tripadvise.views.food_detail', args = [str(food_info.foodId)]))
+    else: 
+	form = FoodReviewForm() 	    
+		
+    context = {
+        'food_info': food_info,
+        'form': form,
+        #'foodreviews_list': foodreviews_list,
+        
+        'page_request_var': page_request_var,
+        'review_pag' : review_pag,
+        
+        }
+    return render(request, 'tripadvise/food_detail.html', context)
+
+#@login_required	
+
 def hotel_details(request,lodgeId):
     #hotel info  
     cl_assign = Course_Lodge_Assignment.objects.all()
     courses = Course.objects.all()
+    foods = Food.objects.all()
+    
     lodges = Lodge.objects.all()  
     lodge_info = get_object_or_404(Lodge,pk = lodgeId)
     unique_hotel_list=[]
     
     if request.user.is_active:
-    	author = request.user.email
-    	customuser = CustomUser.objects.get(email = author)
-    	userid = customuser.userId
+    	try:
+	    author = request.user.email
+	    customuser = CustomUser.objects.get(email = author)
+	    userid = customuser.userId
+	except CustomUser.DoesNotExist:
+	    pass
+    else:
+	pass
 
     #reviews = Review.objects.all()
     reviews_list = Review.objects.filter(lodge_Id = lodge_info.lodgeId)
@@ -194,9 +278,11 @@ def hotel_details(request,lodgeId):
             if request.user and request.user.is_active:
             	try:
             		localemail = get_object_or_404(User, email = request.user.email)
-			lodgecheck = Lodge.objects.get(lodge_name__icontains = review.lodge_Id)
-			coursecheck = Course_Lodge_Assignment.objects.filter(lodge_name=lodgecheck)
-			getclid = Course_Lodge_Assignment.objects.filter(clAssignId=coursecheck)			
+			#lodgecheck = Lodge.objects.get(lodge_name__icontains = review.lodge_Id)
+			lodgecheck = Course_Lodge_Assignment.objects.filter(lodge_name = review.lodge_Id)
+			#coursecheck = Course_Lodge_Assignment.objects.filter(lodge_name=lodgecheck)
+			getclid = Course_Lodge_Assignment.objects.filter(clAssignId = lodgecheck)
+			#getclid = Course_Lodge_Assignment.objects.filter(clAssignId=coursecheck)			
 			
 			getcourse = Course.objects.get(course_lodge_assignment__clAssignId=getclid)
 			#getcoursenow = 
@@ -245,6 +331,7 @@ def hotel_details(request,lodgeId):
     'cl_assign': cl_assign,
     'courses' : courses,
     'lodges' : lodges,
+    'foods' : foods,
     # 'reviews' : reviews,
     'unique_hotel_list': unique_hotel_list,
     'form' : form,
@@ -308,7 +395,56 @@ def post_course(request):
         
     else:
     	form = CourseForm()
-    return render(request, 'tripadvise/post_course.html', {'form': form})	
+    return render(request, 'tripadvise/post_course.html', {'form': form})
+
+def post_food(request):
+    foods = Food.objects.all()
+    
+    #food_info = get_object_or_404(Food,pk = foodId)
+    
+    if request.method == "POST":
+	#request.POST or None is builtin validation
+	form = FoodForm(request.POST or None)
+	if form.is_valid():
+	    #food = Food()
+	    #food.city = city 
+	    post = form.save(commit=False)
+	    #food = get_object_or_404(Food, foodId = city)
+	    #review.lodge_Id = lodge_info
+	    #review.user_Id = customuser
+	    #review.author = author
+	    #review.rating = rating
+	    #review.comment = comment.city = city
+	    if request.user and request.user.is_active:
+		try:
+		    localemail = get_object_or_404(User, email = request.user.email)
+		    
+		    localuser = CustomUser.objects.get(email = localemail)
+		except CustomUser.DoesNotExist:
+		    return render(request, 'tripadvise/notauser.html')
+		#try:
+		    #localemail = get_object_or_404(User, email = request.user.email)
+		    #getcity = Course_Lodge_Assignment.objects.get(lodge_name__city = city)
+		    #getclid = Course_Lodge_Assignment.objects.get(clAssignId = getcity)
+		    #getcourse = Course.objects.get(course_lodge_assignment__course_name = getclid)
+		    
+		    #localtruth = Course_User_Assignment.objects.get(user_Id__email=localemail,course_Id__name__icontains=getcourse)
+		#except Course_User_Assignment.DoesNotExist:
+		    #return render(request, 'tripadvise/notavalidfood.html')
+	    else:
+		return render(request, 'tripadvise/notauser.html')
+	    post.save()
+	    messages.success(request, "Successfully Created")
+	    return HttpResponseRedirect(post.get_absolute_url())
+	    
+    else:
+	form = FoodForm()
+    context = {
+        #'food': food,
+        #'food_info': food_info,
+        'form' : form,
+        }
+    return render(request, 'tripadvise/post_food.html', context) 
 
 @staff_member_required
 def post_user(request):
