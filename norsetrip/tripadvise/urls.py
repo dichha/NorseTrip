@@ -13,10 +13,12 @@ urlpatterns = [
     url(r'^hotels', views.hotels, name = 'hotels'),
     url(r'^hotel_details/(?P<lodgeId>[0-9]+)/$', views.hotel_details, name ='hotel_details'),
 	url(r'^hotel_details/(?P<lodgeId>[0-9]+)/edit/$',views.lodge_update, name= "lodge_update"),
+
     url(r'^post_lodge', views.post_lodge, name = 'post_lodge'),
     url(r'^hotel_details/(?P<lodgeId>[0-9]+)/edit/$',views.lodge_update, name= "lodge_update"),
     url(r'^food_detail/(?P<foodId>[0-9]+)/$', views.food_detail, name = "food_detail"),
-
+	url(r'^food_detail/(?P<foodId>[0-9]+)/edit/$',views.food_update, name= "food_update"),
+    url(r'^food_detail/(?P<foodId>[0-9]+)/delete/$', views.food_delete, name = 'food_delete'),
 
     url(r'^course_detail/(?P<courseId>[0-9]+)/edit/$',views.course_update, name= "course_update"),
     

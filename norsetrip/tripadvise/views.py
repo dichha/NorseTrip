@@ -446,6 +446,28 @@ def post_food(request):
         }
     return render(request, 'tripadvise/post_food.html', context) 
 
+def food_update(request, foodId = None):
+    foods = get_object_or_404(Food, pk = foodId)
+    form = FoodForm(request.POST or None, instance = foods)
+    if form.is_valid():
+        foods = form.save(commit=False)
+        foods.save()
+        messages.success(request, "Successfully Updated")
+        return HttpResponseRedirect(foods.get_absolute_url())
+    
+    context = {
+      "foods": foods,
+      "form": form
+
+    }
+    
+    return render(request, 'tripadvise/post_food.html', context)
+def food_delete(request, foodId = None):
+    food = get_object_or_404(Food, pk = foodId)
+    food.delete()
+    messages.success(request, "Successfully deleted")
+    return redirect("tripadvise.views.hotels")
+
 @staff_member_required
 def post_user(request):
     if request.method == "POST":

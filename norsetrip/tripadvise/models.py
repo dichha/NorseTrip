@@ -271,17 +271,3 @@ class FoodReview(models.Model):
 	class Meta:
 		ordering = ["-pub_date"]
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
