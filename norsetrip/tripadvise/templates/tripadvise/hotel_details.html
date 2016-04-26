@@ -122,22 +122,25 @@
    		 </span>
 	</div>
 </div>
-{% if user and not user.is_anonymous %}
-<div class="write_review">
-<h3> Write Reviews </h3>
-<hr style="border-color:lightgrey">
+{%if user and not user.is_anonymous %}	
 
-<form method="POST" class="post-form">{% csrf_token %}
-	<table>
-	{{ form.as_table }}
-	</table>
+			<div class="write_review">
+			
+			<h3> Write Reviews </h3>
+			<hr style="border-color:lightgrey">
+
+				<form method="POST" class="post-form">{% csrf_token %}
+					<table>
+						{{ form.as_table }}
+					</table>
     
-<button type="submit" class="save btn btn-primary">Add</button>
-</form>
-</div>
-{% endif %}
+					<button type="submit" class="save btn btn-primary">Add</button>
+				</form>
+				
+			</div>
 
 
+{%endif%}
 
 <!-- 
 <form action="hotel_details/{{lodge_info.lodgeId}}/" method="POST" id = "post_review">

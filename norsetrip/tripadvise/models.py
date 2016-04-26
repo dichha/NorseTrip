@@ -165,8 +165,7 @@ class Course(models.Model):
 class Course_Lodge_Assignment(models.Model):
 	def __int__(self):
 		return self.clAssignId
-	def __unicode__(self):
-		return '%s' % (self.lodge_name)	
+	
 	def __unicode__(self):
 			return '%s' % (self.course_name)		
 
@@ -210,6 +209,9 @@ class CustomUser(models.Model):
 class Course_User_Assignment(models.Model):
 	def __int__(self):
 		return self.courseAssignId
+	def __unicode__(self):
+		return '%s' % (self.course_Id)	
+	
 
 	courseAssignId = models.AutoField(primary_key = True, db_column = "Course_AssignmentId")
 	course_Id = models.ForeignKey(Course, db_column = "CourseId FK", on_delete=models.CASCADE)

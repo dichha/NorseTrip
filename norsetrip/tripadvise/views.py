@@ -232,10 +232,14 @@ def hotel_details(request,lodgeId):
     cl_assign = Course_Lodge_Assignment.objects.all()
     courses = Course.objects.all()
     foods = Food.objects.all()
-    
+    cu_assign = Course_User_Assignment.objects.all()
     lodges = Lodge.objects.all()  
     lodge_info = get_object_or_404(Lodge,pk = lodgeId)
     unique_hotel_list=[]
+    localemail = get_object_or_404(User, email = request.user.email)
+    #localuser = Course_User_Assignment.objects.get(user_Id__email=localemail)
+    coursecheck = Course_Lodge_Assignment.objects.filter(lodge_name=lodge_info)
+    
     
     if request.user.is_active:
     	try:
@@ -281,30 +285,23 @@ def hotel_details(request,lodgeId):
 			lodgecheck = Lodge.objects.get(lodge_name = review.lodge_Id)
 			#lodgecheck = Course_Lodge_Assignment.objects.filter(lodge_name = review.lodge_Id)
 			coursecheck = Course_Lodge_Assignment.objects.filter(lodge_name=lodgecheck)
+			#if item in coursecheck == Course
+			#keep = coursecheck.values_list('id', flat = True)
+			keep = [item.pk for item in coursecheck]
+			#get = Course_Lodge_Assignment.objects.only(keep)
+			#get = Course_Lodge_Assignment.objects.filter(pk=keep).values_list('course_name', flat=True)
+			#q = Course_Lodge_Assignment.objects
+			#for course in keep:
+			 #   q = q.filter(course_name = course)
+			#return q.all()
+			#get = [item.fk for item in keep]
+			courses = Course_Lodge_Assignment.objects.filter(clAssignId__in=keep).values_list('course_name', flat=True)
 			
-			getclid = Course_Lodge_Assignment.objects.filter(clAssignId = coursecheck)
-			getcourse = Course.objects.get(course_lodge_assignment__clAssignId=coursecheck)
-			localuser = Course_User_Assignment.objects.filter(user_Id__email=localemail)
-			local = CustomUser.objects.get(course_user_assignment__email = localuser)
-			localcourse = Course_User_Assignment.objects.get(course_Id=getcourse)
+			local= Course_User_Assignment.objects.filter(user_Id__email = localemail, course_Id = courses).values_list('courseAssignId', flat=True)
+			finalget = Course_User_Assignment.objects.get(courseAssignId = local)
+			    
+			    
 			
-			#context = {
-			            #'localemail' : localemail,
-			            #'coursecheck' : coursecheck,
-			            #'getcourse':getcourse,
-			            #'getclid' : getclid,
-			            #'localuser':localuser,
-			            #'localcourse':localcourse,
-			            ##'found': found
-			            #}
-			
-				
-			#git = Course.objects.get(course_lodge_assignment__course_name = getcoursenow)
-			
-			#localuser = Course_User_Assignment.objects.get(user_Id__email=localemail,course_Id__name__icontains=getcourse)
-			#localuser = Course_User_Assignment.objects.get(user_Id__email=localemail,course_Id=getcourse)
-			
-			#localcourse = Course_User_Assignment.objects.get(course_Id__name=getcourse)
             	except Course_User_Assignment.DoesNotExist:
             		return render(request, 'tripadvise/notauser.html')
             		permission = Permission.objects.get(codename = 'can_review', content_type = reviewcontenttype)
@@ -345,8 +342,12 @@ def hotel_details(request,lodgeId):
     context = {
     'lodge_info':lodge_info,
     'cl_assign': cl_assign,
+    'cu_assign': cu_assign,
     'courses' : courses,
     'lodges' : lodges,
+    'localemail':localemail,
+    #'localuser' : localuser,
+    'coursecheck': coursecheck,
     'foods' : foods,
     #'getclid' : getclid,
     # 'reviews' : reviews,
