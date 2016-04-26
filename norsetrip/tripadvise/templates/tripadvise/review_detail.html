@@ -1,0 +1,22 @@
+{% extends 'tripadvise/base.html' %}
+
+{% block content %}
+{%if user and not user.is_anonymous %}	
+			<div class="write_review">
+			
+			<h3> Write Reviews </h3>
+			<hr style="border-color:lightgrey">
+
+				<form method="POST" class="post-form">{% csrf_token %}
+					<table>
+						{{ form.as_table }}
+					</table>
+    
+					<button type="submit" class="save btn btn-primary">Add</button>
+				</form>
+				
+			</div>
+
+
+{%endif%}
+{% endblock %}

@@ -47,6 +47,8 @@ class Lodge(models.Model):
 class Review(models.Model):
 	def __int__(self):
 		return self.reviewId
+	def __unicode__(self):
+		return '%s' % (self.reviewId)	
 
 	RATING_CHOICES = ((1, '1'),
 					(2, '2'),
@@ -67,6 +69,9 @@ class Review(models.Model):
 
 	class Meta:
 		ordering = ["-pub_date"]
+	
+	def get_absolute_url(self):
+		return reverse('tripadvise.views.review_detail',args=[str(self.reviewId)])	
 
 
 class Course(models.Model):

@@ -114,6 +114,8 @@ def course_detail(request, courseId):
     return render(request, 'tripadvise/course_detail.html', context)
 
 
+
+
 #@login_required	
 def hotels(request):
     lodge_list = Lodge.objects.all()
@@ -480,6 +482,9 @@ def food_update(request, foodId = None):
     }
     
     return render(request, 'tripadvise/post_food.html', context)
+
+    
+    
 def food_delete(request, foodId = None):
     food = get_object_or_404(Food, pk = foodId)
     food.delete()
@@ -662,6 +667,58 @@ def lodge_update(request, lodgeId = None):
     }
     
     return render(request, 'tripadvise/post_lodge.html', context)
+
+def review_update(request, lodgeId = None):
+    lodges = get_object_or_404(Lodge, pk = lodgeId)
+    localemail = get_object_or_404(User, email = request.user.email)
+    fine = Review.objects.filter(lodge_Id = lodges)
+    keep = [item.pk for item in fine]
+    if request.user.is_active:
+	    try:
+		author = request.user.email
+		customuser = CustomUser.objects.get(email = author)
+		userid = customuser.userId
+	    except CustomUser.DoesNotExist:
+		pass
+    else:
+	pass    
+    
+    reviews = Review.objects.filter(user_Id__email = localemail, reviewId__in=keep).values_list('reviewId', flat = True)
+    review = Review.objects.get(reviewId = reviews)
+    
+    
+    form = ReviewForm(request.POST or None, instance = review)
+    if form.is_valid():
+        review = form.save(commit=False)
+	
+	rating = form.cleaned_data['rating']
+	comment = form.cleaned_data['comment']
+	#review = Review()
+	review.lodge_Id 
+	review.user_Id
+	review.author 
+	review.rating 
+	review.comment 
+	review.pub_date = datetime.now()	
+        messages.success(request, "Successfully Updated")
+	#return render(request,'tripadvise/review_detail.html', context)
+        #return HttpResponseRedirect(lodges.get_absolute_url())
+	review.save()
+	
+	return HttpResponseRedirect(reverse('tripadvise.views.hotel_details',args = [str(lodges.lodgeId)]))
+    
+    else:
+        messages.error(request, "Not Successfully Updated")
+      
+    context = {
+        "review": review,
+      "lodges": lodges,
+      "form": form
+
+    }
+    
+    return render(request,'tripadvise/review_detail.html', context)
+    
 
 @staff_member_required
 def course_update(request, courseId = None):
