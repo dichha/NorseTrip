@@ -30,8 +30,21 @@
 	<div id="course_descrip" class="{{course_name}}" >
 		{{ course_info.course_description }}
 	</div>
+<div style="float:right">
+{% if course_info.term|lower|capfirst == "Jterm" %}
+	<img src="../../static/images/NTWINTER.png" width="150px">
+	{% endif %}
+{% if  course_info.term|lower|capfirst == "Summer" %}
+	<img src="../../static/images/NTSUMMER.png" width="150px">
+	{% endif %}
+{% if  course_info.term|lower|capfirst == "Semester" %}
+	<img src="../../static/images/NTSUMMER.png" width="150px">
+	{% endif %}
+{% if  course_info.term|lower|capfirst == "Year" %}
+	<img src="../../static/images/NTbraid.png" width="150px">
+	{% endif %}
 </div>
-
+</div>
 
 <div class="col-sm-4 course_hotel_use">
 <h4 id="year_header">Accomodations Used in {{course_info.name|title}} </h4>
@@ -81,3 +94,6 @@ Hotels Stayed:
 
 
 {% endblock %}
+
+
+
