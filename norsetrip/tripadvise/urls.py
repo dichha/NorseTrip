@@ -49,7 +49,8 @@ urlpatterns = [
 
     url(r'', include('social.apps.django_app.urls', namespace='social')),
     url('', include('django.contrib.auth.urls', namespace='auth')),
-    url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}) # views.logout, name = 'logout'),
+    url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}), # views.logout, name = 'logout'),
+    url(r'^social-login-error', views.social_login_error, name = 'login_error'),
 
     
     ]

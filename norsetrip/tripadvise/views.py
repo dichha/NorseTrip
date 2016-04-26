@@ -238,7 +238,7 @@ def hotel_details(request,lodgeId):
     lodges = Lodge.objects.all()  
     lodge_info = get_object_or_404(Lodge,pk = lodgeId)
     unique_hotel_list=[]
-    localemail = get_object_or_404(User, email = request.user.email)
+    #localemail = get_object_or_404(User, email = request.user.email)
     #localuser = Course_User_Assignment.objects.get(user_Id__email=localemail)
     coursecheck = Course_Lodge_Assignment.objects.filter(lodge_name=lodge_info)
     
@@ -246,6 +246,7 @@ def hotel_details(request,lodgeId):
     if request.user.is_active:
     	try:
 	    author = request.user.email
+	    localemail = get_object_or_404(User, email = request.user.email)
 	    customuser = CustomUser.objects.get(email = author)
 	    userid = customuser.userId
 	except CustomUser.DoesNotExist:
@@ -347,7 +348,7 @@ def hotel_details(request,lodgeId):
     'cu_assign': cu_assign,
     'courses' : courses,
     'lodges' : lodges,
-    'localemail':localemail,
+    #'localemail':localemail,
     #'localuser' : localuser,
     'coursecheck': coursecheck,
     'foods' : foods,
@@ -638,9 +639,12 @@ def cuAssignment(request):
 
     return render(request, 'tripadvise/cuAssignment.html',{'form':form})
 
-def login_error(request):
-	logger.debug("Login Error")
-	return HttpResponseRedirect("/login-error.html")
+def social_login_error(request):
+	sorry = 'sorry'
+	context = {
+                    'sorry': sorry,
+                }
+	return render(request, "tripadvise/login-error.html", context)
 
 	
 def logout_view(request):
