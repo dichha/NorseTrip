@@ -18,6 +18,8 @@ urlpatterns = [
     url(r'^hotel_details/(?P<lodgeId>[0-9]+)/edit/$',views.lodge_update, name= "lodge_update"),
     
     url(r'^hotel_details/(?P<lodgeId>[0-9]+)/editreview/$',views.review_update, name= "review_update"),
+    url(r'^hotel_details/(?P<lodgeId>[0-9]+)/deletereview/$',views.review_delete, name= "review_delete"),
+
     url(r'^food_detail/(?P<foodId>[0-9]+)/$', views.food_detail, name = "food_detail"),
 	url(r'^food_detail/(?P<foodId>[0-9]+)/edit/$',views.food_update, name= "food_update"),
     url(r'^food_detail/(?P<foodId>[0-9]+)/delete/$', views.food_delete, name = 'food_delete'),

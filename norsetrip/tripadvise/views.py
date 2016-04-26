@@ -718,7 +718,27 @@ def review_update(request, lodgeId = None):
     }
     
     return render(request,'tripadvise/review_detail.html', context)
+def review_delete(request, lodgeId = None):
+    lodges = get_object_or_404(Lodge, pk = lodgeId)
+    localemail = get_object_or_404(User, email = request.user.email)
+    fine = Review.objects.filter(lodge_Id = lodges)
+    keep = [item.pk for item in fine]
+    if request.user.is_active:
+	    try:
+		author = request.user.email
+		customuser = CustomUser.objects.get(email = author)
+		userid = customuser.userId
+	    except CustomUser.DoesNotExist:
+		pass
+    else:
+	pass    
     
+    reviews = Review.objects.filter(user_Id__email = localemail, reviewId__in=keep).values_list('reviewId', flat = True)
+    review = Review.objects.get(reviewId = reviews)
+    review.delete()
+    messages.success(request, "Successfully deleted")
+    #return redirect("tripadvise.views.courses")
+    return HttpResponseRedirect(reverse('tripadvise.views.hotel_details',args = [str(lodges.lodgeId)]))
 
 @staff_member_required
 def course_update(request, courseId = None):
