@@ -1,10 +1,12 @@
 {% extends 'tripadvise/base.html' %}
 
 {% block content %}
+<div class="container">
 {%if user and not user.is_anonymous %}	
+
 			<div class="write_review">
 			
-			<h3> Write Reviews </h3>
+			<h3> Edit Review </h3>
 			<hr style="border-color:lightgrey">
 
 				<form method="POST" class="post-form">{% csrf_token %}
@@ -19,4 +21,5 @@
 
 
 {%endif%}
+</div>
 {% endblock %}
