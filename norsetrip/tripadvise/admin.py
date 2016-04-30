@@ -48,7 +48,7 @@ class Course_User_AssignmentAdmin(admin.ModelAdmin):
 admin.site.register(Course_User_Assignment, Course_User_AssignmentAdmin)
 
 class FoodAdmin(admin.ModelAdmin):
-	list_display = ('foodId','name','address','city')
+	list_display = ('foodId','name','address','city', 'image',)
 admin.site.register(Food, FoodAdmin)
 
 class FoodReviewAdmin(admin.ModelAdmin):

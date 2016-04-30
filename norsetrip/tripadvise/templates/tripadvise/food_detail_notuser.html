@@ -97,12 +97,6 @@
 		{% endwith %} rated {{ review.rating }} of 5 | 
 		{{ review.pub_date}}</small> <br>
 		
-		{% if user.username == review.author %}
-
-		<a href="editreview" style="text-decoration: none; color: #086A87">Edit</a>
-		&nbsp;<a href="deletereview" style="text-decoration: none; color: #B40404">Delete</a>
-
-		{% endif %}
 		
 		</div>
 		
@@ -133,61 +127,10 @@
    		 </span>
 	</div>
 </div>
-{%if user and not user.is_anonymous %}	
-{% if review < 1 %}
-<div class="write_review">
-<h3> Write Reviews </h3>
-<hr style="border-color:lightgrey">
 
-<form method="POST" class="post-form">{% csrf_token %}
-	<table>
-	{{ form.as_table }}
-	</table>
-    
-<button type="submit" class="save btn btn-primary">Add</button>
-</form>
-</div>
-{% endif %}
-{% endif %}
-
-
-
-<!-- 
-<form action="hotel_details/{{lodge_info.lodgeId}}/" method="POST" id = "post_review">
-{% csrf_token %}
-<label for="rate">Rating:</label>
-<select id="rate">
-<option>1</option>
-<option>2</option>
-<option>3</option>
-<option>4</option>
-<option>5</option>
-</select><br/>
-<label for="comment">Review:</label>
-<input id="comment" placeholder ="Enter your comment"/><br/>
-
-<input type="submit" value="Add" type="button" />
-</form> -->
 	
 
 </div><!--.col-sm-8-->
-<!--<div class="col-sm-9">
-	<div class="add_restaurant">
-		<h3> Add Restaurant </h3>
-		<hr style="border-color:lightgrey">
-		<form method="POST" class="post-form">{% csrf_token %}
-			<table>
-			{{ foodform.as_table }}
-			</table>
-			    
-			<button type="submit" class="save btn btn-primary">Add</button>
-		</form>
-	</div>	
-</div>	-->	
-
-
-
-
 
 
 
@@ -201,22 +144,7 @@
 </div><!--.row-->
 
 <!-- only for admin -->
-{% if user.username == food_info.author %}
-<br>
-<a href="edit" style="text-decoration: none; color: white"><button type="submit" class="save btn btn-info">Edit Restaurant</button></a>
 
-<a href="delete" style="text-decoration: none; color: white"><button type="submit" class="save btn btn-danger">Delete Restaurant</button></a>
-
-<br><br>
-{% endif %}
-{% if user.is_superuser %}
-<br>
-<a href="edit" style="text-decoration: none; color: white"><button type="submit" class="save btn btn-info">Edit Restaurant</button></a>
-
-<a href="delete" style="text-decoration: none; color: white"><button type="submit" class="save btn btn-danger">Delete Restaurant</button></a>
-
-<br><br>
-{% endif %}
 </div><!--.col-sm-12 -->
 </div>
 {% endblock %}

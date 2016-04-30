@@ -59,7 +59,9 @@
 
 	{% endif %}
 {% endfor %}
+
 <b> Restaurants that in the same city as hotel </b>
+
 {% for food in foods %}
 	{% if lodge_info.city == food.city|stringformat:"s" %}
 	<ul>
@@ -72,7 +74,6 @@
 {% endfor %} 
 
 </div>
-{{getfood}}
 <div class="review">
 
 <h3>Reviews</h3>
@@ -148,22 +149,7 @@
 
 {%endif%}
 
-<!-- 
-<form action="hotel_details/{{lodge_info.lodgeId}}/" method="POST" id = "post_review">
-{% csrf_token %}
-<label for="rate">Rating:</label>
-<select id="rate">
-<option>1</option>
-<option>2</option>
-<option>3</option>
-<option>4</option>
-<option>5</option>
-</select><br/>
-<label for="comment">Review:</label>
-<input id="comment" placeholder ="Enter your comment"/><br/>
 
-<input type="submit" value="Add" type="button" />
-</form> -->
 	
 
 </div><!--.col-sm-8-->

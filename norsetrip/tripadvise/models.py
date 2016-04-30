@@ -232,18 +232,31 @@ class Food(models.Model):
 		return self.name	
 	
 	foodId = models.AutoField(primary_key = True, db_column = "FoodId")
-	
+	user_Id = models.ForeignKey('CustomUser', db_column = "UserId FK", on_delete = models.CASCADE, null = True)
 	name = models.CharField("Name", max_length = 200)
+	author = models.EmailField("Author", max_length=24, null = True)	
+	
 	address = models.CharField("Address", max_length = 200)
 	city = models.CharField("City", max_length = 100)
 	country = CountryField("Country", blank_label = 'Select Country')
 	url = models.URLField("Food URL", null = True, blank = True)
 	descrip = models.TextField("Food Description")
+	pub_date = models.DateTimeField("Date Published", null = True)
 	image = models.ImageField("Food Image", null=True, blank = True,width_field = "width_field", 
-                height_field = "height_field")
+		height_field = "height_field")
+	#def save(self,force_insert=False, force_update=False, *args, **kwargs):
+		#super(Food, self).save(force_insert, force_update)
+		#if self.image:
+			#if self.image.width > 300 or self.image.height > 300:
+				#resize_image(self.image)	
 
 	height_field = models.IntegerField(default = 0)
 	width_field = models.IntegerField(default = 0)
+	#def save(self,force_insert=False, force_update=False, *args, **kwargs):
+		#super(Food, self).save(force_insert, force_update)
+		#if self.image:
+			#if self.image.width > 300 or self.image.height > 300:
+				#resize_image(self.image)	
 	
 	def get_absolute_url(self):
 		return reverse('tripadvise.views.food_detail', args=[str(self.foodId)])	

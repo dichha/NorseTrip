@@ -157,11 +157,18 @@ def food_detail(request, foodId):
     foodreview = FoodReview.objects.all()
     
     if request.user.is_active:
-	author = request.user.email
-	customuser = CustomUser.objects.get(email = author)
-	userid = customuser.userId  
+	try:
+	    author = request.user.email
+	    customuser = CustomUser.objects.get(email = author)
+	    userid = customuser.userId  
+	except CustomUser.DoesNotExist:
+	    pass
+    else:
+	pass
 	
     reviews_list = FoodReview.objects.filter(food_Id = food_info.foodId)
+    
+    review = FoodReview.objects.filter(food_Id = food_info.foodId, user_Id__email = request.user.email).values_list('reviewId', flat = True).count()
 	
     paginator = Paginator(reviews_list,6) # Show 6 lodges per page
     page_request_var = "review_page"
@@ -191,14 +198,22 @@ def food_detail(request, foodId):
 		if request.user and request.user.is_active:
 		    try:
 			localemail = get_object_or_404(User, email = request.user.email)
-			foodcheck = Course_Lodge_Assignment.objects.filter(lodge_name__city = review.food_Id.city)
-			#citycheck = Lodge.objects.get(city = foodcheck)
-			getlodgeId = Course_Lodge_Assignment.objects.get(clAssignId = foodcheck)
-			#getlodge = Lodge.objects.filter(lodgeId = citycheck)
-			#getclId = Course_Lodge_Assignment.objects.filter(clAssignId = getlodge)
-			getcourse = Course.objects.get(course_lodge_assignment__clAssignId = getlodgeId)
+			#foodcheck = Lodge.objects.filter(city = review.food_Id.city)
+			foodcheck = Course_Lodge_Assignment.objects.filter(lodge_name__city = review.food_Id.city).values_list('course_name', flat = True)
 			
-			localuser = Course_User_Assignment.objects.get(user_Id__email=localemail,course_Id__name__icontains=getcourse)
+			#keep = [item.pk for item in foodcheck]
+			#citycheck = Lodge.objects.get(city = foodcheck)
+			
+			local = Course_User_Assignment.objects.filter(user_Id__email = localemail, course_Id__in=foodcheck).values_list('courseAssignId', flat = True)
+			finalget = Course_User_Assignment.objects.get(courseAssignId = local)
+			#localuser = Course_User_Assignment.objects.get(user_Id__email=localemail,course_Id__name__icontains=getcourse)
+			#context = {
+			    #'foodcheck': foodcheck,
+			    #'local' : local,
+			    #'finalget' : finalget,
+			    ##'keep': keep,
+			    #}
+			#return render(request, 'tripadvise/notauser.html', context)
 			#get the city that is in lodge that is the same in food
 			#then get the courses that is with that lodge
 			#then make sure that this user is assigned that same course
@@ -220,6 +235,7 @@ def food_detail(request, foodId):
         'food_info': food_info,
         'form': form,
         #'foodreviews_list': foodreviews_list,
+        'review': review,
         
         'page_request_var': page_request_var,
         'review_pag' : review_pag,
@@ -428,20 +444,27 @@ def post_food(request):
     foods = Food.objects.all()
     
     #food_info = get_object_or_404(Food,pk = foodId)
+    if request.user.is_active:
+	try:
+	    author = request.user.email
+	    customuser = CustomUser.objects.get(email = author)
+	    userid = customuser.userId
+	except CustomUser.DoesNotExist:
+	    pass
+    else:
+	pass    
     
     if request.method == "POST":
 	#request.POST or None is builtin validation
-	form = FoodForm(request.POST or None)
+	form = FoodForm(request.POST or None, request.FILES)
 	if form.is_valid():
-	    #food = Food()
-	    #food.city = city 
-	    post = form.save(commit=False)
-	    #food = get_object_or_404(Food, foodId = city)
-	    #review.lodge_Id = lodge_info
-	    #review.user_Id = customuser
-	    #review.author = author
-	    #review.rating = rating
-	    #review.comment = comment.city = city
+	    new = form.save(commit=False)
+	    new.author = request.user
+	    new.user_Id = customuser
+	    #name = form.cleaned_data['name']
+	    #address = form.cleaned_data['address']
+	    #city = form.cleaned_data['city']
+	   
 	    if request.user and request.user.is_active:
 		try:
 		    localemail = get_object_or_404(User, email = request.user.email)
@@ -460,12 +483,12 @@ def post_food(request):
 		    #return render(request, 'tripadvise/notavalidfood.html')
 	    else:
 		return render(request, 'tripadvise/notauser.html')
-	    post.save()
+	    new.save()
 	    messages.success(request, "Successfully Created")
-	    return HttpResponseRedirect(post.get_absolute_url())
+	    return HttpResponseRedirect(new.get_absolute_url())
 	    
     else:
-	form = FoodForm()
+	form = FoodForm(request.POST or None)
     context = {
         #'food': food,
         #'food_info': food_info,
@@ -678,6 +701,81 @@ def lodge_update(request, lodgeId = None):
     
     return render(request, 'tripadvise/post_lodge.html', context)
 
+def foodreview_update(request, foodId = None):
+    foods = get_object_or_404(Food, pk = foodId)
+    localemail = get_object_or_404(User, email = request.user.email)
+    fine = FoodReview.objects.filter(food_Id = foods)
+    keep = [item.pk for item in fine]
+    if request.user.is_active:
+	    try:
+		author = request.user.email
+		customuser = CustomUser.objects.get(email = author)
+		userid = customuser.userId
+	    except CustomUser.DoesNotExist:
+		pass
+    else:
+	pass    
+    
+    reviews = FoodReview.objects.filter(user_Id__email = localemail, reviewId__in=keep).values_list('reviewId', flat = True)
+    review = FoodReview.objects.get(reviewId = reviews)
+    
+    
+    form = FoodReviewForm(request.POST or None, instance = review)
+    if form.is_valid():
+        review = form.save(commit=False)
+	
+	rating = form.cleaned_data['rating']
+	comment = form.cleaned_data['comment']
+	#review = Review()
+	review.food_Id 
+	review.user_Id
+	review.author 
+	review.rating 
+	review.comment 
+	review.pub_date = datetime.now()	
+        messages.success(request, "Successfully Updated")
+	#return render(request,'tripadvise/review_detail.html', context)
+        #return HttpResponseRedirect(lodges.get_absolute_url())
+	review.save()
+	
+	return HttpResponseRedirect(reverse('tripadvise.views.food_detail',args = [str(foods.foodId)]))
+    
+    else:
+	pass
+        #messages.error(request, "Not Successfully Updated")
+      
+    context = {
+        "review": review,
+      "foods": foods,
+      "form": form
+
+    }
+    
+    return render(request,'tripadvise/review_detail.html', context)
+
+def foodreview_delete(request, foodId = None):
+    foods = get_object_or_404(Food, pk = foodId)
+    localemail = get_object_or_404(User, email = request.user.email)
+    fine = FoodReview.objects.filter(food_Id = foods)
+    keep = [item.pk for item in fine]
+    if request.user.is_active:
+	    try:
+		author = request.user.email
+		customuser = CustomUser.objects.get(email = author)
+		userid = customuser.userId
+	    except CustomUser.DoesNotExist:
+		pass
+    else:
+	pass    
+    
+    reviews = FoodReview.objects.filter(user_Id__email = localemail, reviewId__in=keep).values_list('reviewId', flat = True)
+    review = FoodReview.objects.get(reviewId = reviews)
+    review.delete()
+    messages.success(request, "Successfully deleted")
+    #return redirect("tripadvise.views.courses")
+    return HttpResponseRedirect(reverse('tripadvise.views.food_detail',args = [str(foods.foodId)]))
+    
+
 def review_update(request, lodgeId = None):
     lodges = get_object_or_404(Lodge, pk = lodgeId)
     localemail = get_object_or_404(User, email = request.user.email)
@@ -875,4 +973,42 @@ def hotel_details_notuser(request,lodgeId):
 
    
     return render(request,'tripadvise/hotel_details_notuser.html', context)
+
+
+def food_detail_notuser(request, foodId):
+    
+    food_info = get_object_or_404(Food, pk = foodId)
+    foodreview = FoodReview.objects.all()
+    
+    	
+    reviews_list = FoodReview.objects.filter(food_Id = food_info.foodId)
+    
+    
+	
+    paginator = Paginator(reviews_list,6) # Show 6 lodges per page
+    page_request_var = "review_page"
+    page = request.GET.get(page_request_var)
+    try:
+	review_pag = paginator.page(page)
+    except PageNotAnInteger:
+	# If page is not an integer, deliver first page.
+	review_pag = paginator.page(1)
+    except EmptyPage:
+	# If page is out of range (e.g. 9999), deliver last page of results.
+	review_pag = paginator.page(paginator.num_pages)
+
+     	    
+		
+    context = {
+        'food_info': food_info,
+        
+        #'form': form,
+        #'foodreviews_list': foodreviews_list,
+        #'review': review,
+        
+        'page_request_var': page_request_var,
+        'review_pag' : review_pag,
+        
+        }
+    return render(request, 'tripadvise/food_detailnotuser.html', context)
 
