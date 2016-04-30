@@ -46,6 +46,23 @@
 </div>
 </div>
 
+{% if user.is_anonymous %}
+<div class="col-sm-4 course_hotel_use">
+<h4 id="year_header">Accomodations Used in {{course_info.name|title}} </h4>
+<hr style="border-color:lightgrey">
+{% for cla in cl_assign %}
+	{% if course_info.name == cla.course_name|stringformat:"s" %} 
+		{% for lodge in lodges %}
+			{% if lodge.lodge_name == cla.lodge_name|stringformat:"s" %}
+				<a href="/hotel_details_notuser/{{ lodge.lodgeId }}" style="text-decoration:none" id="course_hotel_use_list">
+				{{cla.lodge_name|stringformat:"s"}}</a><small> &nbsp {{lodge.review_set.count}} reviews</small><br><br>
+			{% endif %}
+		{% endfor %}
+	{% endif %}
+{% endfor %} 	
+</div>
+{% endif %}
+{% if user and not user.is_anonymous %}
 <div class="col-sm-4 course_hotel_use">
 <h4 id="year_header">Accomodations Used in {{course_info.name|title}} </h4>
 <hr style="border-color:lightgrey">
@@ -60,6 +77,7 @@
 	{% endif %}
 {% endfor %} 	
 </div>
+{% endif %}
 <!-- Department : {{course_info.dept|lower|capfirst }}<br><br>
 Year Offered: {{course_info.year_offered}}<br><br>
 Professor: {{course_info.prof}}<br><br>

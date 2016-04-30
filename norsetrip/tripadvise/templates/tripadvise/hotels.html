@@ -27,10 +27,15 @@
                 <div class='rating_bar'>
                     <div  class='rating' style='width:{{lodge.mean_rating}}%;'></div>
                 </div>
+                {% if user.is_anonymous %}
+				
+				<a href="{% url 'hotel_details_notuser' lodge.lodgeId %}"><img class="hotel_image" src="{{lodge.lodge_image.url}}"></a>
                 
-                <a href="{% url 'hotel_details' lodge.lodgeId %}"><img class="hotel_image" src="{{lodge.lodge_image.url}}"></a>
-
-                    
+                {% endif %}
+                
+				{%if user and not user.is_anonymous %}	                
+				<a href="{% url 'hotel_details' lodge.lodgeId %}"><img class="hotel_image" src="{{lodge.lodge_image.url}}"></a>
+				{% endif %}
             
               
                 
@@ -42,12 +47,22 @@
     <div class="col-sm-4 top_reviewed_div">
         <h4 id="top_reviewed"> Overview of Accomodations </h4><br>
         {% for lodge in lodge_list %}
+        {%if user.is_anonymous %}	
+            <span style="margin-left: 10px"><a href="{% url 'hotel_details_notuser' lodge.lodgeId %}" style="text-decoration:none"><b>{{ lodge.lodge_name }}</b></a> <small> 
+            {% if lodge.review_set.count == 1 %}
+            &nbsp{{ lodge.review_set.count }} review
+            {% else %}
+            &nbsp{{ lodge.review_set.count }} reviews 
+            {% endif %}</small>
+            {% endif %}
+        {%if user and not user.is_anonymous %}	
             <span style="margin-left: 10px"><a href="{% url 'hotel_details' lodge.lodgeId %}" style="text-decoration:none"><b>{{ lodge.lodge_name }}</b></a> <small> 
             {% if lodge.review_set.count == 1 %}
             &nbsp{{ lodge.review_set.count }} review
             {% else %}
             &nbsp{{ lodge.review_set.count }} reviews 
             {% endif %}</small>
+            {% endif %}
 
             <div class='rating_bar'>
     <!-- div element that contains full stars with percentage width, 

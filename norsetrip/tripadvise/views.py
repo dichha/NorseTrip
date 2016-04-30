@@ -245,6 +245,8 @@ def hotel_details(request,lodgeId):
     
     if request.user.is_active:
     	try:
+	    #review = Review.objects.filter(lodge_Id = lodge_info.lodgeId, user_Id__email = request.user.email).values_list('reviewId', flat = True).count()
+	    
 	    author = request.user.email
 	    localemail = get_object_or_404(User, email = request.user.email)
 	    customuser = CustomUser.objects.get(email = author)
@@ -256,6 +258,9 @@ def hotel_details(request,lodgeId):
 
     #reviews = Review.objects.all()
     reviews_list = Review.objects.filter(lodge_Id = lodge_info.lodgeId)
+    
+    #this is allowing for one review per user per hotel
+    review = Review.objects.filter(lodge_Id = lodge_info.lodgeId, user_Id__email = request.user.email).values_list('reviewId', flat = True).count()
 
     paginator = Paginator(reviews_list,6) # Show 6 lodges per page
     page_request_var = "review_page"
@@ -348,6 +353,7 @@ def hotel_details(request,lodgeId):
     'cu_assign': cu_assign,
     'courses' : courses,
     'lodges' : lodges,
+    'review' : review,
     #'localemail':localemail,
     #'localuser' : localuser,
     'coursecheck': coursecheck,
@@ -712,7 +718,8 @@ def review_update(request, lodgeId = None):
 	return HttpResponseRedirect(reverse('tripadvise.views.hotel_details',args = [str(lodges.lodgeId)]))
     
     else:
-        messages.error(request, "Not Successfully Updated")
+	pass
+        #messages.error(request, "Not Successfully Updated")
       
     context = {
         "review": review,
@@ -797,4 +804,75 @@ def add_like(request):
             review.likes = likes
             review.save()
     return HttpResponse(likes)
+
+def hotel_details_notuser(request,lodgeId):
+    cl_assign = Course_Lodge_Assignment.objects.all()
+    courses = Course.objects.all()
+    foods = Food.objects.all()
+    cu_assign = Course_User_Assignment.objects.all()
+    lodges = Lodge.objects.all()  
+    lodge_info = get_object_or_404(Lodge,pk = lodgeId)
+    unique_hotel_list=[]
+   
+    
+    reviews_list = Review.objects.filter(lodge_Id = lodge_info.lodgeId)
+    
+
+    paginator = Paginator(reviews_list,6) # Show 6 lodges per page
+    page_request_var = "review_page"
+    page = request.GET.get(page_request_var)
+    try:
+        review_pag = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        review_pag = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        review_pag = paginator.page(paginator.num_pages)
+
+    #Trying using ajax
+    # if request.method == 'POST':
+    #     post_comment = request.POST.get('')
+    unique_hotel_list=[]
+    unique_hotel_course_dict = {}
+
+    for cla in cl_assign:
+        if lodge_info.lodge_name == str(cla.lodge_name):
+            course_for_lodge = str(cla.course_name)
+            for course in courses:
+                if course.name == course_for_lodge:
+                    for cla in cl_assign:
+                        if(str(cla.course_name) == course.name):
+                            if (str(cla.lodge_name) != lodge_info.lodge_name):
+                                hotel_stayed = str(cla.lodge_name)
+                                for lodge in lodges:
+                                    if ((lodge.lodge_name == hotel_stayed) and (hotel_stayed not in unique_hotel_list)):
+                                        unique_hotel_list.append(lodge.lodge_name)
+                                        unique_hotel_course_dict[str(cla.course_name)] = lodge.lodge_name
+
+
+
+
+    
+    context = {
+    'lodge_info':lodge_info,
+    'cl_assign': cl_assign,
+    'cu_assign': cu_assign,
+    'courses' : courses,
+    'lodges' : lodges,
+    
+    #'coursecheck': coursecheck,
+    'foods' : foods,
+    #'getclid' : getclid,
+    # 'reviews' : reviews,
+    'unique_hotel_list': unique_hotel_list,
+    #'form' : form,
+    'review_pag' : review_pag,
+    'page_request_var': page_request_var,
+    'unique_hotel_list': unique_hotel_list,
+    'unique_hotel_course_dict': unique_hotel_course_dict
+    }
+
+   
+    return render(request,'tripadvise/hotel_details_notuser.html', context)
 

@@ -11,7 +11,10 @@ urlpatterns = [
     url(r'^course_detail/(?P<courseId>[0-9]+)/$', views.course_detail, name = "course_detail"),
     # url(r'^sample', views.sample, name = 'sample'),
     url(r'^hotels', views.hotels, name = 'hotels'),
+    url(r'^hotel_details_notuser/(?P<lodgeId>[0-9]+)/$', views.hotel_details_notuser, name ='hotel_details_notuser'),
+
     url(r'^hotel_details/(?P<lodgeId>[0-9]+)/$', views.hotel_details, name ='hotel_details'),
+
 	url(r'^hotel_details/(?P<lodgeId>[0-9]+)/edit/$',views.lodge_update, name= "lodge_update"),
 
     url(r'^post_lodge', views.post_lodge, name = 'post_lodge'),
@@ -24,11 +27,13 @@ urlpatterns = [
 	url(r'^food_detail/(?P<foodId>[0-9]+)/edit/$',views.food_update, name= "food_update"),
     url(r'^food_detail/(?P<foodId>[0-9]+)/delete/$', views.food_delete, name = 'food_delete'),
 	#url(r'^review_detail/(?P<reviewId>[0-9]+)/$', views.review_detail, name ="review_detail"),
+   
 
     url(r'^course_detail/(?P<courseId>[0-9]+)/edit/$',views.course_update, name= "course_update"),
     
     url(r'^post_course', views.post_course, name = 'post_course'),
     url(r'^post_food', views.post_food, name = 'post_food'),
+    
 
     url(r'^clAssignment', views.clAssignment, name = 'clAssignment'),
 
