@@ -268,7 +268,7 @@ class Food(models.Model):
 
 	def mean_rating(self):
 		all_ratings = map(lambda x: x.rating, self.foodreview_set.all())
-		return np.mean(all_ratings)
+		return (np.mean(all_ratings)*20)
 	
 	
 class FoodReview(models.Model):
