@@ -193,12 +193,12 @@ class CustomUser(models.Model):
 	fullName = models.CharField("Full Name", max_length = 50)
 	email = models.EmailField("Email", max_length = 24)
 
-	ROLE_CHOICES = (('PROFESSOR', 'PROFESSOR'),
-	                ('STUDENT','STUDENT'),
+	ROLE_CHOICES = (('STUDENT','STUDENT'),
+					('PROFESSOR', 'PROFESSOR'),
 	                ('ALUMNI', 'ALUMNI'),
 	                ('FACULTY', 'FACULTY'),
                 )
-	role = models.CharField("Role",choices = ROLE_CHOICES, max_length = 9)
+	role = models.CharField("Role",choices = ROLE_CHOICES, max_length = 9, default='STUDENT')
 
 	course_user_assignments = models.ManyToManyField(Course,through='Course_User_Assignment')
 
