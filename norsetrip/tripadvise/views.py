@@ -331,7 +331,12 @@ def hotel_details(request,lodgeId):
             		permission = Permission.objects.get(codename = 'can_review', content_type = reviewcontenttype)
             		localemail.user_permissions.add(permission)
             else:
-            	return render(request, 'tripadvise/notauser.html')
+
+                lodge_info = get_object_or_404(Lodge,pk = lodgeId)
+                context = {
+                'lodge_info': lodge_info,
+                }
+            	return render(request, 'tripadvise/notauser.html', context)
             	
             review.save()
             #always return an HTTPResponseRedirect after successfully dealing with POST data.This prevents data from being posted twice if a user hits the back button
@@ -471,6 +476,7 @@ def post_food(request):
 		    
 		    localuser = CustomUser.objects.get(email = localemail)
 		except CustomUser.DoesNotExist:
+
 		    return render(request, 'tripadvise/notauser.html')
 		#try:
 		    #localemail = get_object_or_404(User, email = request.user.email)
