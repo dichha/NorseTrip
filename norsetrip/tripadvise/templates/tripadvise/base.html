@@ -57,7 +57,7 @@
           	<li> <a>Hello {{user.first_name|default:user.username }}</a> </li>
           	<li id="logout"><a href="{% url 'auth:logout' %}?next=/">Logout</a> </li>
           {% else %}
-          	<li> <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}"> Login with Norse Key </a> </li>
+          	<li> <a href="{% url 'social:begin' 'google-oauth2' %}"> Login with Norse Key </a> </li>
           {% endif %}
           {% if user.is_superuser %}
           <li class="dropdown navbar-right">
