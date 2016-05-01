@@ -99,9 +99,15 @@ Hotels Stayed:
 {% if user.is_superuser %}
 <br><br><br>
 <!-- only for admin -->
-<a href="edit" style="text-decoration: none; color: white"><button type="submit" class="save btn btn-info">Edit Course</button></a>
+<a href="edit"><span class='fa-stack fa-3x'>
+<i class='fa fa-square fa-stack-2x'></i>
+<i class="fa fa-pencil-square-o fa-stack-1x fa-inverse"></i></span>
+</a>
 
-<a href="delete" style="text-decoration: none; color: white"><button type="submit" class="save btn btn-danger">Delete Course</button></a>
+<a href="delete"><span class='fa-stack fa-3x'>
+<i class='fa fa-square fa-stack-2x'></i>
+<i class="fa fa-trash fa-stack-1x fa-inverse"></i></span>
+</a> 
 
 <br><br>
 {% endif %}

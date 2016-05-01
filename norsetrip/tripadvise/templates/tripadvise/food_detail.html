@@ -99,8 +99,14 @@
 		
 		{% if user.username == review.author %}
 
-		<a href="editreview" style="text-decoration: none; color: #086A87">Edit</a>
-		&nbsp;<a href="deletereview" style="text-decoration: none; color: #B40404">Delete</a>
+		<a href="editreview"><span class='fa-stack fa-1x'>
+		<i class='fa fa-square fa-stack-2x'></i>
+		<i class="fa fa-pencil-square-o fa-stack-1x fa-inverse"></i></span>
+		</a>
+		&nbsp;<a href="deletereview"><span class='fa-stack fa-1x'>
+		<i class='fa fa-square fa-stack-2x'></i>
+		<i class="fa fa-trash fa-stack-1x fa-inverse"></i></span>
+		</a> 
 
 		{% endif %}
 		
@@ -197,26 +203,36 @@
 	
 </div><!--.col-sm-4-->
 
-	
-</div><!--.row-->
-
-<!-- only for admin -->
 {% if user.username == food_info.author %}
 <br>
-<a href="edit" style="text-decoration: none; color: white"><button type="submit" class="save btn btn-info">Edit Restaurant</button></a>
-
-<a href="delete" style="text-decoration: none; color: white"><button type="submit" class="save btn btn-danger">Delete Restaurant</button></a>
-
+<a href="edit"><span class='fa-stack fa-3x'>
+<i class='fa fa-square fa-stack-2x'></i>
+<i class="fa fa-pencil-square-o fa-stack-1x fa-inverse"></i></span>
+</a>
+<a href="delete"><span class='fa-stack fa-3x'>
+<i class='fa fa-square fa-stack-2x'></i>
+<i class="fa fa-trash fa-stack-1x fa-inverse"></i></span>
+</a> 
 <br><br>
 {% endif %}
 {% if user.is_superuser %}
 <br>
-<a href="edit" style="text-decoration: none; color: white"><button type="submit" class="save btn btn-info">Edit Restaurant</button></a>
-
-<a href="delete" style="text-decoration: none; color: white"><button type="submit" class="save btn btn-danger">Delete Restaurant</button></a>
-
+<a href="edit"><span class='fa-stack fa-3x'>
+<i class='fa fa-square fa-stack-2x'></i>
+<i class="fa fa-pencil-square-o fa-stack-1x fa-inverse"></i></span>
+</a>
+<a href="delete"><span class='fa-stack fa-3x'>
+<i class='fa fa-square fa-stack-2x'></i>
+<i class="fa fa-trash fa-stack-1x fa-inverse"></i></span>
+</a> 
 <br><br>
 {% endif %}
+
+	
+</div><!--.row-->
+
+<!-- only for admin -->
+
 </div><!--.col-sm-12 -->
 </div>
 {% endblock %}

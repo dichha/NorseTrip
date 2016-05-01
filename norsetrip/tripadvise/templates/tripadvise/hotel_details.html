@@ -92,8 +92,14 @@
 		{{ review.pub_date}}</small> <br>
 		{% if user.username == review.author %}
 
-		<a href="editreview" style="text-decoration: none; color: #086A87">Edit</a>
-		&nbsp;<a href="deletereview" style="text-decoration: none; color: #B40404">Delete</a>
+		<a href="editreview"><span class='fa-stack fa-1x'>
+		<i class='fa fa-square fa-stack-2x'></i>
+		<i class="fa fa-pencil-square-o fa-stack-1x fa-inverse"></i></span>
+		</a>
+		&nbsp;<a href="deletereview"><span class='fa-stack fa-1x'>
+		<i class='fa fa-square fa-stack-2x'></i>
+		<i class="fa fa-trash fa-stack-1x fa-inverse"></i></span>
+		</a>  
 
 		{% endif %}
 
@@ -231,13 +237,13 @@
 <!-- only for admin -->
 {% if user.is_superuser and not user.is_anonymous  %}
 <br>
-<a href="edit"><span class='fa-stack fa-4x'>
-<i class='fa fa-circle fa-stack-2x'></i>
+<a href="edit"><span class='fa-stack fa-3x'>
+<i class='fa fa-square fa-stack-2x'></i>
 <i class="fa fa-pencil-square-o fa-stack-1x fa-inverse"></i></span>
 </a>
 
-<a href="delete"><span class='fa-stack fa-4x'>
-<i class='fa fa-circle fa-stack-2x'></i>
+<a href="delete"><span class='fa-stack fa-3x'>
+<i class='fa fa-square fa-stack-2x'></i>
 <i class="fa fa-trash fa-stack-1x fa-inverse"></i></span>
 </a> 
 
