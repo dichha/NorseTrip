@@ -24,6 +24,10 @@ body {
     overflow: auto;
 }
 
+a {
+    color:#2f4f4f;
+}
+
 
 
 /* Footer Styles */
