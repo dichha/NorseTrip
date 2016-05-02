@@ -333,6 +333,7 @@ def hotel_details(request,lodgeId):
             else:
 
                 lodge_info = get_object_or_404(Lodge,pk = lodgeId)
+                
                 context = {
                 'lodge_info': lodge_info,
                 }
@@ -696,9 +697,7 @@ def lodge_update(request, lodgeId = None):
         lodges.save()
         messages.success(request, "Successfully Updated")
         return HttpResponseRedirect(lodges.get_absolute_url())
-    else:
-        messages.error(request, "Not Successfully Updated")
-      
+    
     context = {
       "lodges": lodges,
       "form": form
