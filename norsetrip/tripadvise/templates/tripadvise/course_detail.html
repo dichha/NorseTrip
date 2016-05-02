@@ -53,9 +53,18 @@
 {% for cla in cl_assign %}
 	{% if course_info.name == cla.course_name|stringformat:"s" %} 
 		{% for lodge in lodges %}
+		
+			{% if user and not user.is_anonymous  %}
+			{% if lodge.lodge_name == cla.lodge_name|stringformat:"s" %}
+				<a href="/hotel_details/{{ lodge.lodgeId }}" style="text-decoration:none" id="course_hotel_use_list">
+				{{cla.lodge_name|stringformat:"s"}}</a><small> &nbsp {{lodge.review_set.count}} reviews</small><br><br>
+			{% endif %}
+			{% endif %}
+			{% if user.is_anonymous %}
 			{% if lodge.lodge_name == cla.lodge_name|stringformat:"s" %}
 				<a href="/hotel_details_notuser/{{ lodge.lodgeId }}" style="text-decoration:none" id="course_hotel_use_list">
 				{{cla.lodge_name|stringformat:"s"}}</a><small> &nbsp {{lodge.review_set.count}} reviews</small><br><br>
+			{% endif %}
 			{% endif %}
 		{% endfor %}
 	{% endif %}
