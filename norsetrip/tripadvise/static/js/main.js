@@ -42,7 +42,7 @@ $('#likes').click(function(){
 	var review_id;
 	review_id = $(this).attr("reviewid");
 	$.get('add_like/',{reviewId: review_id}, function(data){
-		$('#like_count').html(data);
+		$('#like_count').html(data + " likes");
 	});
 
 });
