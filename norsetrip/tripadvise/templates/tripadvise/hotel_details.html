@@ -231,10 +231,14 @@
 <!-- only for admin -->
 {% if user.is_superuser and not user.is_anonymous  %}
 <br>
-<a href="edit" style="text-decoration:none"><button type="button" class="btn btn-info btn-sm">Edit</button>
-</a> &nbsp;
-<a href="delete" style="text-decoration:none"><button type="button" class="btn btn-danger btn-sm">Delete</button>
-</a>  
+
+<a class="btn btn-default btn-sm" href="edit">
+<i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i>Edit</a>
+
+
+<a class="btn btn-danger" href="delete">
+<i class="fa fa-trash-o fa-lg" aria-hidden="true"></i> Delete</a>
+
 
 
 <br><br>
