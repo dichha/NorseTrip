@@ -19,6 +19,7 @@
 
 
 
+
 <div class="row">
 
 <div class="col-sm-8">
@@ -150,8 +151,10 @@
 	<table>
 	{{ form.as_table }}
 	</table>
-    
-<button type="submit" class="save btn btn-primary">Add</button>
+
+		<button type="submit" class="btn btn-primary">
+        	<i class="fa fa-floppy-o fa-lg" aria-hidden="true"></i> Save
+        </button>
 </form>
 </div>
 {% endif %}
@@ -208,6 +211,8 @@
 
 {% if user.username == food_info.author %}
 <br>
+
+
 <a class="btn btn-default btn-sm" href="edit">
 <i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i>Edit</a>
 

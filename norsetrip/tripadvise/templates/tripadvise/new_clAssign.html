@@ -4,6 +4,10 @@
     <h1>New post</h1>
     <form method="POST" class="post-form">{% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="save btn btn-default">Save</button>
+
+		<button type="submit" class="btn btn-primary">
+        	<i class="fa fa-floppy-o fa-lg" aria-hidden="true"></i> Save
+        </button>    
+        
     </form>
 {% endblock %}
