@@ -256,15 +256,12 @@
 <!-- only for admin -->
 {% if user.is_superuser and not user.is_anonymous  %}
 <br>
-<a href="edit"><span class='fa-stack fa-3x'>
-<i class='fa fa-square fa-stack-2x'></i>
-<i class="fa fa-pencil-square-o fa-stack-1x fa-inverse"></i></span>
-</a>
+<a class="btn btn-default btn-sm" href="edit">
+<i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i>Edit</a>
 
-<a href="delete"><span class='fa-stack fa-3x'>
-<i class='fa fa-square fa-stack-2x'></i>
-<i class="fa fa-trash fa-stack-1x fa-inverse"></i></span>
-</a> 
+
+<a class="btn btn-danger" href="delete">
+<i class="fa fa-trash-o fa-lg" aria-hidden="true"></i> Delete</a>
 
 <br><br>
 {% endif %}
