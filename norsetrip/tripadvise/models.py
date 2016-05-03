@@ -272,8 +272,10 @@ class Food(models.Model):
 	
 	
 class FoodReview(models.Model):
-	#def __init__(self):
-	#	return self.reviewId
+	def __int__(self):
+		return self.reviewId
+	def __unicode__(self):
+		return '%s' % (self.reviewId)
 	
 	RATING_CHOICES = ((1,'1'),
                           (2,'2'),
