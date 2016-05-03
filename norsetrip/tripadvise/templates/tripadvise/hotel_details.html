@@ -22,15 +22,21 @@
 <div class="col-sm-8">
 <div class="hotel_detail">
 <b>Address: </b>{{lodge_info.lodge_address}} | {{lodge_info.city}} , {{lodge_info.country}}<br>
-<b>Rating:</b>{% if lodge.mean_rating > 0 %}
-                <div class='rating_bar'>
-                    <div  class='rating' style='width:{{lodge.mean_rating}}%;'></div>
-                </div>
-                {% else %}
-				<div class='rating_bar'>
-                    <div  class='rating' style='width:0%;'></div>
-                </div>
-                {% endif %}
+<b>Rating:</b>{% if lodge_info.review_set.count = 0 %}
+		<div class='rating_bar'>
+    <!-- div element that contains full stars with percentage width, 
+    which represents rating -->
+    <div  class='rating' style='width:0%;'>
+    </div>
+</div>
+{% else %}
+<div class='rating_bar'>
+    <!-- div element that contains full stars with percentage width, 
+    which represents rating -->
+    <div  class='rating' style='width:{{lodge_info.mean_rating}}%;'>
+    </div>
+</div>
+{% endif %}
 {% if lodge_info.review_set.count == 1 %}
 {{ lodge_info.review_set.count }} review
 {% else %}
@@ -63,7 +69,7 @@
 	{% endif %}
 {% endfor %}
 
-<b> Restaurants Around  </b>
+<b> Restaurants that in the same city as hotel </b>
 
 {% for food in foods %}
 	{% if lodge_info.city == food.city|stringformat:"s" %}
@@ -190,15 +196,22 @@
 	 		<small> 
 	 		Address: {{lodge.lodge_address}} | {{lodge.city}} , {{lodge.country}}<br>
 
-	 		Review: {% if lodge.mean_rating > 0 %}
-                <div class='rating_bar'>
-                    <div  class='rating' style='width:{{lodge.mean_rating}}%;'></div>
-                </div>
-                {% else %}
-				<div class='rating_bar'>
-                    <div  class='rating' style='width:0%;'></div>
-                </div>
-                {% endif %}</small>
+	 		Review: 
+{% if lodge.review_set.count = 0 %}
+		<div class='rating_bar'>
+    <!-- div element that contains full stars with percentage width, 
+    which represents rating -->
+    <div  class='rating' style='width:0%;'>
+    </div>
+</div>
+{% else %}
+<div class='rating_bar'>
+    <!-- div element that contains full stars with percentage width, 
+    which represents rating -->
+    <div  class='rating' style='width:{{lodge.mean_rating}}%;'>
+    </div>
+</div></small>
+{% endif %}
 			<div>
 			{% if lodge.lodge_image.url %}
 				<a href="/hotel_details/{{ lodge.lodgeId }}" style="text-decoration:none"><img src="{{lodge.lodge_image.url }}" class="img-responsive" border="0" height="250px" width="300px"></a><br>
@@ -214,9 +227,15 @@
 {% endfor %}
 <!-- {% for key, val in unique_hotel_course_dict.items %}
 	{{key}}, {{val}}<br>
-{% endfor %} -->	
+{% endfor %} -->
+
+
+
+
+
+
+	
 </div><!--.other_hotels -->
-<br><br>
 
 <div id="add_restaurant">
 <h4 id="other_acc">Add a restaurant</h4>
@@ -237,15 +256,15 @@
 <!-- only for admin -->
 {% if user.is_superuser and not user.is_anonymous  %}
 <br>
+<a href="edit"><span class='fa-stack fa-3x'>
+<i class='fa fa-square fa-stack-2x'></i>
+<i class="fa fa-pencil-square-o fa-stack-1x fa-inverse"></i></span>
+</a>
 
-<a class="btn btn-default btn-sm" href="edit">
-<i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i>Edit</a>
-
-
-<a class="btn btn-danger" href="delete">
-<i class="fa fa-trash-o fa-lg" aria-hidden="true"></i> Delete</a>
-
-
+<a href="delete"><span class='fa-stack fa-3x'>
+<i class='fa fa-square fa-stack-2x'></i>
+<i class="fa fa-trash fa-stack-1x fa-inverse"></i></span>
+</a> 
 
 <br><br>
 {% endif %}
