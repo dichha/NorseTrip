@@ -22,15 +22,21 @@
 <div class="col-sm-8">
 <div class="hotel_detail">
 <b>Address: </b>{{lodge_info.lodge_address}} | {{lodge_info.city}} , {{lodge_info.country}}<br>
-<b>Rating:</b>{% if lodge.mean_rating > 0 %}
-                <div class='rating_bar'>
-                    <div  class='rating' style='width:{{lodge.mean_rating}}%;'></div>
-                </div>
-                {% else %}
-				<div class='rating_bar'>
-                    <div  class='rating' style='width:0%;'></div>
-                </div>
-                {% endif %}
+<b>Rating:</b>{% if lodge_info.review_set.count = 0 %}
+		<div class='rating_bar'>
+    <!-- div element that contains full stars with percentage width, 
+    which represents rating -->
+    <div  class='rating' style='width:0%;'>
+    </div>
+</div>
+{% else %}
+<div class='rating_bar'>
+    <!-- div element that contains full stars with percentage width, 
+    which represents rating -->
+    <div  class='rating' style='width:{{lodge_info.mean_rating}}%;'>
+    </div>
+</div>
+{% endif %}
 {% if lodge_info.review_set.count == 1 %}
 {{ lodge_info.review_set.count }} review
 {% else %}
@@ -178,12 +184,21 @@
 	 		<small> 
 	 		Address: {{lodge.lodge_address}} | {{lodge.city}} , {{lodge.country}}<br>
 
-	 		Review: <div class='rating_bar'>
+	 		Review: {% if lodge.review_set.count = 0 %}
+		<div class='rating_bar'>
+    <!-- div element that contains full stars with percentage width, 
+    which represents rating -->
+    <div  class='rating' style='width:0%;'>
+    </div>
+</div>
+{% else %}
+<div class='rating_bar'>
     <!-- div element that contains full stars with percentage width, 
     which represents rating -->
     <div  class='rating' style='width:{{lodge.mean_rating}}%;'>
     </div>
-</div></small>
+</div>
+{% endif %}</small>
 			<div>
 			{% if lodge.lodge_image.url %}
 				<a href="/hotel_details_notuser/{{ lodge.lodgeId }}" style="text-decoration:none"><img src="{{lodge.lodge_image.url }}" class="img-responsive" border="0" height="250px" width="300px"></a><br>
