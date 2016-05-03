@@ -22,12 +22,15 @@
 <div class="col-sm-8">
 <div class="hotel_detail">
 <b>Address: </b>{{lodge_info.lodge_address}} | {{lodge_info.city}} , {{lodge_info.country}}<br>
-<b>Rating:</b><div class='rating_bar'>
-    <!-- div element that contains full stars with percentage width, 
-    which represents rating -->
-    <div  class='rating' style='width:{{lodge_info.mean_rating}}%;'>
-    </div>
-</div>
+<b>Rating:</b>{% if lodge.mean_rating > 0 %}
+                <div class='rating_bar'>
+                    <div  class='rating' style='width:{{lodge.mean_rating}}%;'></div>
+                </div>
+                {% else %}
+				<div class='rating_bar'>
+                    <div  class='rating' style='width:0%;'></div>
+                </div>
+                {% endif %}
 {% if lodge_info.review_set.count == 1 %}
 {{ lodge_info.review_set.count }} review
 {% else %}
@@ -145,11 +148,8 @@
 					<table>
 						{{ form.as_table }}
 					</table>
-					
-					<button type="submit" class="btn btn-primary">
-                	<i class="fa fa-floppy-o fa-lg" aria-hidden="true"></i> Save
-           		 </button>
-				
+    
+					<button type="submit" class="save btn btn-primary">Add</button>
 				</form>
 				
 			</div>
@@ -190,12 +190,15 @@
 	 		<small> 
 	 		Address: {{lodge.lodge_address}} | {{lodge.city}} , {{lodge.country}}<br>
 
-	 		Review: <div class='rating_bar'>
-    <!-- div element that contains full stars with percentage width, 
-    which represents rating -->
-    <div  class='rating' style='width:{{lodge.mean_rating}}%;'>
-    </div>
-</div></small>
+	 		Review: {% if lodge.mean_rating > 0 %}
+                <div class='rating_bar'>
+                    <div  class='rating' style='width:{{lodge.mean_rating}}%;'></div>
+                </div>
+                {% else %}
+				<div class='rating_bar'>
+                    <div  class='rating' style='width:0%;'></div>
+                </div>
+                {% endif %}</small>
 			<div>
 			{% if lodge.lodge_image.url %}
 				<a href="/hotel_details/{{ lodge.lodgeId }}" style="text-decoration:none"><img src="{{lodge.lodge_image.url }}" class="img-responsive" border="0" height="250px" width="300px"></a><br>
@@ -236,7 +239,7 @@
 <br>
 
 <a class="btn btn-default btn-sm" href="edit">
-<i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i> Edit</a>
+<i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i>Edit</a>
 
 
 <a class="btn btn-danger" href="delete">
