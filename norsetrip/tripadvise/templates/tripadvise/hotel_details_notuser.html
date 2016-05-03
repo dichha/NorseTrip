@@ -22,12 +22,15 @@
 <div class="col-sm-8">
 <div class="hotel_detail">
 <b>Address: </b>{{lodge_info.lodge_address}} | {{lodge_info.city}} , {{lodge_info.country}}<br>
-<b>Rating:</b><div class='rating_bar'>
-    <!-- div element that contains full stars with percentage width, 
-    which represents rating -->
-    <div  class='rating' style='width:{{lodge_info.mean_rating}}%;'>
-    </div>
-</div>
+<b>Rating:</b>{% if lodge.mean_rating > 0 %}
+                <div class='rating_bar'>
+                    <div  class='rating' style='width:{{lodge.mean_rating}}%;'></div>
+                </div>
+                {% else %}
+				<div class='rating_bar'>
+                    <div  class='rating' style='width:0%;'></div>
+                </div>
+                {% endif %}
 {% if lodge_info.review_set.count == 1 %}
 {{ lodge_info.review_set.count }} review
 {% else %}
