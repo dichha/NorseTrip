@@ -22,7 +22,7 @@ class Lodge(models.Model):
 	country = CountryField("Country", blank_label = 'Select Country')
 	lodge_url = models.URLField("Lodge URL")
 	lodge_descrip = models.TextField("Lodge Description")
-	lodge_image = models.ImageField("Lodge Image", null=True, blank = True,width_field = "width_field", 
+	lodge_image = models.ImageField("Lodge Image", null=True, blank = False,width_field = "width_field", 
 		height_field = "height_field")
 
 	height_field = models.IntegerField(default = 0)
@@ -242,7 +242,7 @@ class Food(models.Model):
 	url = models.URLField("Food URL", null = True, blank = True)
 	descrip = models.TextField("Food Description")
 	pub_date = models.DateTimeField("Date Published", null = True)
-	image = models.ImageField("Food Image", null=True, blank = True,width_field = "width_field", 
+	image = models.ImageField("Food Image", null=True, blank = False, width_field = "width_field", 
 		height_field = "height_field")
 	#def save(self,force_insert=False, force_update=False, *args, **kwargs):
 		#super(Food, self).save(force_insert, force_update)
