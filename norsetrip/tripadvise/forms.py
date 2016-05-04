@@ -8,6 +8,9 @@ from .models import Course_User_Assignment
 from .models import Review
 from .models import Food
 from .models import FoodReview
+from .models import Entertainment
+from .models import EntertainmentReview
+
 
 
 class LodgeForm(forms.ModelForm):
@@ -92,35 +95,9 @@ class FoodForm(forms.ModelForm):
                 # do some validation, if it fails
                 raise forms.ValidationError(u'Form error')
             return image        
-    #def clean_image(self):
-        #image = self.cleaned_data.get['image']
-        #if image:
-            #from django.core.files.images import get_image_dimensions
-            #w, h = get_image_dimensions(image)
-            #if not image.content_type in settings.VALID_IMAGE_FORMATS:
-                #raise forms.ValidationError(u'Only *.gif, *.jpg and *.png images are allowed.')
-            #if w > settings.VALID_IMAGE_WIDTH or h > settings.VALID_IMAGE_HEIGHT:
-                #raise forms.ValidationError(u'That image is too big. The image needs to be ' +     str(settings.VALID_IMAGE_WIDTH) + 'px * ' + str(settings.VALID_IMAGE_HEIGHT) + 'px (or less).')
-        #return image    
-             
-    #def clean_image(self):
-        #image = self.cleaned_data.get['image']
-        #if image:
-            #from django.core.files.images import get_image_dimensions
-            #w, h = get_image_dimensions(image)
-            #if not image.content_type in settings.VALID_IMAGE_FORMATS:
-                #raise forms.ValidationError(u'Only *.gif, *.jpg and *.png images are allowed.')
-            #if w > settings.VALID_IMAGE_WIDTH or h > settings.VALID_IMAGE_HEIGHT:
-                #raise forms.ValidationError(u'That image is too big. The image needs to be ' +     str(settings.VALID_IMAGE_WIDTH) + 'px * ' + str(settings.VALID_IMAGE_HEIGHT) + 'px (or less).')
-        #return image        
+         
         
-        
-        def clean_image(self):
-            image = self.cleaned_data.get['image']
-            if image:
-                # do some validation, if it fails
-                raise forms.ValidationError(u'Form error')
-            #return image        
+               
 class FoodReviewForm(forms.ModelForm):
     class Meta:
         model = FoodReview
@@ -128,16 +105,34 @@ class FoodReviewForm(forms.ModelForm):
             'rating',
             'comment',
             ] 
-        # widgets = {
-        # 'comment': Textarea(attrs = {'cols': 40, 'row': 15})
-        # }
-
-# class ReviewForm(forms.ModelForm):
-#     class Meta:
-#         model = Review
-#         fields = ['rating', 'comment']
-#         widgets = {
-#         'comment': forms.TextInput(
-#             attrs={'required': True})
-#         }
+            
+class EntertainmentForm(forms.ModelForm):
+    class Meta:
+        model = Entertainment
+        fields = [
+                            'name',
+                            'address',
+                            'city',
+                            'country',
+                            'url',
+                            'descrip',
+                            'image',
+                            ]  
+        def clean_image(self):
+            image = self.cleaned_data.get['image']
+            if image:
+                # do some validation, if it fails
+                raise forms.ValidationError(u'Form error')
+            return image        
+         
+        
+               
+class EntertainmentReviewForm(forms.ModelForm):
+    class Meta:
+        model = EntertainmentReview
+        fields = [
+            'rating',
+            'comment',
+            ] 
+  
         

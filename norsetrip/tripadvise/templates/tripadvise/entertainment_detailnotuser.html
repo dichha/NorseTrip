@@ -1,0 +1,117 @@
+{% extends 'tripadvise/base.html' %}
+{% load foodList_extras %}
+
+
+{% block content %}
+<div class="container">
+	{% if messages %}
+		<ul class="messages">
+		{% for message in messages %}
+		<p {% if message.tags == "success" %} class="alert alert-success" class="{{ message.tags }}"{% endif %}> {{message}} </p>
+
+		{% endfor %}
+		</ul>
+	{% endif %}
+
+<div class="col-sm-12">
+<h2>{{entertainment_info.name|title}}</h2>
+
+
+
+<div class="row">
+
+<div class="col-sm-8">
+<div class="hotel_detail">
+<b>Created by:</b> {{entertainment_info.author}}</b> 
+<b>Address: </b>{{entertainment_info.address}} | {{entertainment_info.city}} , {{entertainment_info.country}}<br>
+<b>Rating:</b><div class='rating_bar'>
+    <!-- div element that contains full stars with percentage width, 
+    which represents rating -->
+    <div  class='rating' style='width:{{entertainment_info.mean_rating}}%;'>
+    </div>
+</div>
+{% if entertainment_info.review_set.count == 1 %}
+{{ entertainment_info.review_set.count }} review
+{% else %}
+{{ entertainment_info.review_set.count }} reviews 
+{% endif %}
+
+{% if entertainment_info.image.url %}
+<img src="{{entertainment_info.image.url }}" class="img-responsive" width="500" height="400" border="0"><br>
+{% endif %}
+
+
+<b>Description:</b><br> <div id="entertainment_descrip">{{entertainment_info.descrip}}</div><br>
+<b>URL:</b> <a href = "{{ entertainment_info.url }}">{{ entertainment_info.url }} </a> <br><br>
+
+</div>
+
+<div class="review">
+
+<h3>Reviews</h3>
+<hr style="border-color:lightgrey">
+<!-- Review -->
+{% if review_pag %}
+	{% for review in review_pag %} 
+		{% if review.entertainment_Id|stringformat:"s" == entertainment_info.name %}
+		<div class = "comment">
+		{{ review.comment }} 
+		<br>
+		<small class = "review_timestamp">{% with review.author|split:"@" as splitted_email %} 
+		<small class = "review_author"> {{ splitted_email|first }}</small> 
+		{% endwith %} rated {{ review.rating }} of 5 | 
+		{{ review.pub_date}}</small> <br>
+		
+		
+		</div>
+		
+		<p><span id="helpful">Helpful?</span>&nbsp;&nbsp;<button class="btn btn-default btn-sm glyphicon glyphicon-thumbs-up" id="likes" reviewid = "{{ review.reviewId }}"> </button>&nbsp;<small id="like_count">{{review.likes}} likes </small></p>
+		
+
+		{% endif%}
+		
+
+	{% endfor %}
+{% else %}
+<p> No reviews are available. </p>
+{% endif %}
+
+	<div class="pagination">
+    <span class="step-links">
+        {% if review_pag.has_previous %}
+            <a href="?{{ page_request_var }}={{ review_pag.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ review_pag.number }} of {{ review_pag.paginator.num_pages }}.
+        </span>
+
+        {% if review_pag.has_next %}
+            <a href="?{{ page_request_var }}={{ review_pag.next_page_number }}">next</a>
+        {% endif %}
+   		 </span>
+	</div>
+</div>
+
+	
+
+</div><!--.col-sm-8-->
+
+
+
+
+	
+</div><!--.other_hotels -->
+	
+</div><!--.col-sm-4-->
+
+	
+</div><!--.row-->
+
+<!-- only for admin -->
+
+</div><!--.col-sm-12 -->
+</div>
+{% endblock %}
+
+

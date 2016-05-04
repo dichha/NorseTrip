@@ -13,9 +13,9 @@ from datetime import datetime
 from django.core.urlresolvers import reverse
 from django_ajax.decorators import ajax
 
-from tripadvise.models import Lodge, Course, Course_Lodge_Assignment, CustomUser, Course_User_Assignment, Review, Food, FoodReview
+from tripadvise.models import Lodge, Course, Course_Lodge_Assignment, CustomUser, Course_User_Assignment, Review, Food, FoodReview, Entertainment, EntertainmentReview
 
-from .forms import LodgeForm, CourseForm, Course_Lodge_AssignmentForm, CustomUserForm, Course_User_AssignmentForm, ReviewForm, FoodForm, FoodReviewForm
+from .forms import LodgeForm, CourseForm, Course_Lodge_AssignmentForm, CustomUserForm, Course_User_AssignmentForm, ReviewForm, FoodForm, FoodReviewForm, EntertainmentForm, EntertainmentReviewForm
 import collections
 from django.contrib.auth.models import Permission, User
 from django.contrib.contenttypes.models import ContentType
@@ -250,6 +250,8 @@ def hotel_details(request,lodgeId):
     cl_assign = Course_Lodge_Assignment.objects.all()
     courses = Course.objects.all()
     foods = Food.objects.all()
+    entertainments = Entertainment.objects.all()
+
     cu_assign = Course_User_Assignment.objects.all()
     lodges = Lodge.objects.all()  
     lodge_info = get_object_or_404(Lodge,pk = lodgeId)
@@ -376,6 +378,8 @@ def hotel_details(request,lodgeId):
     'courses' : courses,
     'lodges' : lodges,
     'review' : review,
+    'entertainments': entertainments,
+
     #'localemail':localemail,
     #'localuser' : localuser,
     'coursecheck': coursecheck,
@@ -916,7 +920,7 @@ def hotel_details_notuser(request,lodgeId):
     lodges = Lodge.objects.all()  
     lodge_info = get_object_or_404(Lodge,pk = lodgeId)
     unique_hotel_list=[]
-   
+    entertainments = Entertainment.objects.all()
     
     reviews_list = Review.objects.filter(lodge_Id = lodge_info.lodgeId)
     
@@ -963,8 +967,7 @@ def hotel_details_notuser(request,lodgeId):
     'cu_assign': cu_assign,
     'courses' : courses,
     'lodges' : lodges,
-    
-    #'coursecheck': coursecheck,
+    'entertainments' : entertainments,
     'foods' : foods,
     #'getclid' : getclid,
     # 'reviews' : reviews,
@@ -1017,3 +1020,252 @@ def food_detail_notuser(request, foodId):
         }
     return render(request, 'tripadvise/food_detailnotuser.html', context)
 
+def post_entertainment(request):
+    fun = Entertainment.objects.all()
+    
+    #food_info = get_object_or_404(Food,pk = foodId)
+    if request.user.is_active:
+	try:
+	    author = request.user.email
+	    customuser = CustomUser.objects.get(email = author)
+	    userid = customuser.userId
+	except CustomUser.DoesNotExist:
+	    pass
+    else:
+	pass    
+    
+    if request.method == "POST":
+	#request.POST or None is builtin validation
+	form = EntertainmentForm(request.POST or None, request.FILES)
+	if form.is_valid():
+	    new = form.save(commit=False)
+	    new.author = request.user
+	    new.user_Id = customuser
+	   
+	   
+	    if request.user and request.user.is_active:
+		try:
+		    localemail = get_object_or_404(User, email = request.user.email)
+		    
+		    localuser = CustomUser.objects.get(email = localemail)
+		except CustomUser.DoesNotExist:
+
+		    return render(request, 'tripadvise/notauser.html')
+		
+	    else:
+		return render(request, 'tripadvise/notauser.html')
+	    new.save()
+	    messages.success(request, "Successfully Created")
+	    return HttpResponseRedirect(new.get_absolute_url())
+	    
+    else:
+	form = EntertainmentForm(request.POST or None)
+    context = {
+        #'food': food,
+        #'food_info': food_info,
+        'form' : form,
+        }
+    return render(request, 'tripadvise/post_entertainment.html', context) 
+    
+def entertainment_detail(request, entertainmentId):
+    
+    entertainment_info = get_object_or_404(Entertainment, pk = entertainmentId)
+    entertainmentreview = EntertainmentReview.objects.all()
+    
+    if request.user.is_active:
+	try:
+	    author = request.user.email
+	    customuser = CustomUser.objects.get(email = author)
+	    userid = customuser.userId  
+	except CustomUser.DoesNotExist:
+	    pass
+    else:
+	pass
+	
+    reviews_list = EntertainmentReview.objects.filter(entertainment_Id = entertainment_info.entertainmentId)
+    
+    review = EntertainmentReview.objects.filter(entertainment_Id = entertainment_info.entertainmentId, user_Id__email = request.user.email).values_list('reviewId', flat = True).count()
+	
+    paginator = Paginator(reviews_list,6) # Show 6 lodges per page
+    page_request_var = "review_page"
+    page = request.GET.get(page_request_var)
+    try:
+	review_pag = paginator.page(page)
+    except PageNotAnInteger:
+	# If page is not an integer, deliver first page.
+	review_pag = paginator.page(1)
+    except EmptyPage:
+	# If page is out of range (e.g. 9999), deliver last page of results.
+	review_pag = paginator.page(paginator.num_pages)
+
+    if request.method == "POST":
+	form = EntertainmentReviewForm(request.POST or None)
+	if form.is_valid():
+		rating = form.cleaned_data['rating']
+		comment = form.cleaned_data['comment']
+		review = EntertainmentReview()
+		review.entertainment_Id = entertainment_info
+		review.user_Id = customuser
+		review.author = author
+		review.rating = rating
+		review.comment = comment
+		review.pub_date = datetime.now()
+		#reviewcontenttype = content_type
+		if request.user and request.user.is_active:
+		    try:
+			localemail = get_object_or_404(User, email = request.user.email)
+			#foodcheck = Lodge.objects.filter(city = review.food_Id.city)
+			foodcheck = Course_Lodge_Assignment.objects.filter(lodge_name__city = review.entertainment_Id.city).values_list('course_name', flat = True)
+			
+			
+			
+			local = Course_User_Assignment.objects.filter(user_Id__email = localemail, course_Id__in=foodcheck).values_list('courseAssignId', flat = True)
+			finalget = Course_User_Assignment.objects.get(courseAssignId = local)
+			
+		    except Course_User_Assignment.DoesNotExist:
+			return render(request, 'tripadvise/notauser.html')
+		        permission = Permission.objects.get(codename = 'can_review', content_type = foodreviewcontenttype)
+		        localemail.user_permissions.add(permission)
+		else:
+		    return render(request, 'tripadvise/notauser.html')
+					
+		review.save()
+		return HttpResponseRedirect(reverse('tripadvise.views.entertainment_detail', args = [str(entertainment_info.entertainmentId)]))
+    else: 
+	form = EntertainmentReviewForm() 	    
+		
+    context = {
+        'entertainment_info': entertainment_info,
+        'form': form,
+        #'foodreviews_list': foodreviews_list,
+        'review': review,
+        
+        'page_request_var': page_request_var,
+        'review_pag' : review_pag,
+        
+        }
+    return render(request, 'tripadvise/entertainment_detail.html', context)
+
+def entertainment_update(request, entertainmentId = None):
+    entertainments = get_object_or_404(Entertainment, pk = entertainmentId)
+    form = EntertainmentForm(request.POST or None, instance = entertainments)
+    if form.is_valid():
+        entertainments = form.save(commit=False)
+        entertainments.save()
+        messages.success(request, "Successfully Updated")
+        return HttpResponseRedirect(entertainments.get_absolute_url())
+    
+    context = {
+      "entertainments": entertainments,
+      "form": form
+
+    }
+    
+    return render(request, 'tripadvise/post_entertainment.html', context)
+
+    
+def entertainment_delete(request, entertainmentId = None):
+    entertainment = get_object_or_404(Entertainment, pk = entertainmentId)
+    entertainment.delete()
+    messages.success(request, "Successfully deleted")
+    return redirect("tripadvise.views.hotels")
+    
+def entertainmentreview_update(request, entertainmentId = None):
+    entertainments = get_object_or_404(Entertainment, pk = entertainmentId)
+    localemail = get_object_or_404(User, email = request.user.email)
+    fine = EntertainmentReview.objects.filter(entertainment_Id = entertainments)
+    keep = [item.pk for item in fine]
+    if request.user.is_active:
+	    try:
+		author = request.user.email
+		customuser = CustomUser.objects.get(email = author)
+		userid = customuser.userId
+	    except CustomUser.DoesNotExist:
+		pass
+    else:
+	pass    
+    
+    reviews = EntertainmentReview.objects.filter(user_Id__email = localemail, reviewId__in=keep).values_list('reviewId', flat = True)
+    review = EntertainmentReview.objects.get(reviewId = reviews)
+    
+    
+    form = EntertainmentReviewForm(request.POST or None, instance = review)
+    if form.is_valid():
+        review = form.save(commit=False)
+	
+	rating = form.cleaned_data['rating']
+	comment = form.cleaned_data['comment']
+	#review = Review()
+	review.entertainment_Id 
+	review.user_Id
+	review.author 
+	review.rating 
+	review.comment 
+	review.pub_date = datetime.now()	
+        messages.success(request, "Successfully Updated")
+	#return render(request,'tripadvise/review_detail.html', context)
+        #return HttpResponseRedirect(lodges.get_absolute_url())
+	review.save()
+	
+	return HttpResponseRedirect(reverse('tripadvise.views.entertainment_detail',args = [str(entertainments.entertainmentId)]))
+    
+    else:
+	pass
+        #messages.error(request, "Not Successfully Updated")
+      
+    context = {
+        "review": review,
+      "entertainments": entertainments,
+      "form": form
+
+    }
+    
+    return render(request,'tripadvise/review_detail.html', context)
+
+def entertainmentreview_delete(request, entertainmentId = None):
+    entertainments = get_object_or_404(Entertainment, pk = entertainmentId)
+    localemail = get_object_or_404(User, email = request.user.email)
+    fine = EntertainmentReview.objects.filter(entertainment_Id = entertainments)
+    keep = [item.pk for item in fine]
+    if request.user.is_active:
+	    try:
+		author = request.user.email
+		customuser = CustomUser.objects.get(email = author)
+		userid = customuser.userId
+	    except CustomUser.DoesNotExist:
+		pass
+    else:
+	pass    
+    
+    reviews = EntertainmentReview.objects.filter(user_Id__email = localemail, reviewId__in=keep).values_list('reviewId', flat = True)
+    review = EntertainmentReview.objects.get(reviewId = reviews)
+    review.delete()
+    messages.success(request, "Successfully deleted")
+    #return redirect("tripadvise.views.courses")
+    return HttpResponseRedirect(reverse('tripadvise.views.entertainment_detail',args = [str(entertainments.entertainmentId)]))
+
+def entertainment_detail_notuser(request, entertainmentId):
+    
+    entertainment_info = get_object_or_404(Entertainment, pk = entertainmentId)
+    entertainmentreview = EntertainmentReview.objects.all()
+    reviews_list = EntertainmentReview.objects.filter(entertainment_Id = entertainment_info.entertainmentId)
+    
+    paginator = Paginator(reviews_list,6) # Show 6 lodges per page
+    page_request_var = "review_page"
+    page = request.GET.get(page_request_var)
+    try:
+	review_pag = paginator.page(page)
+    except PageNotAnInteger:
+	# If page is not an integer, deliver first page.
+	review_pag = paginator.page(1)
+    except EmptyPage:
+	# If page is out of range (e.g. 9999), deliver last page of results.
+	review_pag = paginator.page(paginator.num_pages)
+	
+    context = {
+        'entertainment_info': entertainment_info,
+	'page_request_var': page_request_var,
+        'review_pag' : review_pag,
+        }
+	
+    return render(request, 'tripadvise/entertainment_detailnotuser.html', context)

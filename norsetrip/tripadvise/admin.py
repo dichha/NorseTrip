@@ -9,6 +9,9 @@ from .models import Review
 from .models import Course_User_Assignment
 from .models import Food
 from .models import FoodReview
+from .models import Entertainment
+from .models import EntertainmentReview
+
 
 #admin.site.register(Lodging)
 class LodgeAdmin(admin.ModelAdmin):
@@ -54,3 +57,11 @@ admin.site.register(Food, FoodAdmin)
 class FoodReviewAdmin(admin.ModelAdmin):
 	list_display = ('reviewId','likes','food_Id','rating', 'pub_date')#'user_Id','rating','pub_date')
 admin.site.register(FoodReview, FoodReviewAdmin)
+
+class EntertainmentAdmin(admin.ModelAdmin):
+	list_display = ('entertainmentId','name','address','city', 'image',)
+admin.site.register(Entertainment, EntertainmentAdmin)
+
+class EntertainmentReviewAdmin(admin.ModelAdmin):
+	list_display = ('reviewId','likes','entertainment_Id','rating', 'pub_date')#'user_Id','rating','pub_date')
+admin.site.register(EntertainmentReview, EntertainmentReviewAdmin)

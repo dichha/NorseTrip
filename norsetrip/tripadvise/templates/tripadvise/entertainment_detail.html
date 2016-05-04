@@ -15,7 +15,7 @@
 
 
 <div class="col-sm-12">
-<h2>{{food_info.name|title}}</h2>
+<h2>{{entertainment_info.name|title}}</h2>
 
 
 
@@ -24,30 +24,30 @@
 
 <div class="col-sm-8">
 <div class="hotel_detail">
-<b>Created by:</b> {{food_info.author}}</b> 
-<b>Address: </b>{{food_info.address}} | {{food_info.city}} , {{food_info.country}}<br>
+<b>Created by:</b> {{entertainment_info.author}}</b> 
+<b>Address: </b>{{entertainment_info.address}} | {{entertainment_info.city}} , {{entertainment_info.country}}<br>
 <b>Rating:</b><div class='rating_bar'>
     <!-- div element that contains full stars with percentage width, 
     which represents rating -->
     <div  class='rating' style='width:{{food_info.mean_rating}}%;'>
     </div>
 </div>
-{% if food_info.review_set.count == 1 %}
-{{ food_info.review_set.count }} review
+{% if entertainment_info.review_set.count == 1 %}
+{{ entertainment_info.review_set.count }} review
 {% else %}
-{{ food_info.review_set.count }} reviews 
+{{ entertainment_info.review_set.count }} reviews 
 {% endif %}
 
-{% if food_info.image.url %}
-<img src="{{food_info.image.url }}" class="img-responsive" width="500" height="400" border="0"><br>
+{% if entertainment_info.image.url %}
+<img src="{{entertainment_info.image.url }}" class="img-responsive" width="500" height="400" border="0"><br>
 {% endif %}
 
 
 
 
 
-<b>Description:</b><br> <div id="food_descrip">{{food_info.descrip}}</div><br>
-<b>URL:</b> <a href = "{{ food_info.url }}">{{ food_info.url }} </a> <br><br>
+<b>Description:</b><br> <div id="entertainment_descrip">{{entertainment_info.descrip}}</div><br>
+<b>URL:</b> <a href = "{{ entertainment_info.url }}">{{ entertainment_info.url }} </a> <br><br>
 
 </div>
 
@@ -58,7 +58,7 @@
 <!-- Review -->
 {% if review_pag %}
 	{% for review in review_pag %} 
-		{% if review.food_Id|stringformat:"s" == food_info.name %}
+		{% if review.entertainment_Id|stringformat:"s" == entertainment_info.name %}
 		<div class = "comment">
 		{{ review.comment }} 
 		<br>
@@ -132,25 +132,6 @@
 	
 
 </div><!--.col-sm-8-->
-<!--<div class="col-sm-9">
-	<div class="add_restaurant">
-		<h3> Add Restaurant </h3>
-		<hr style="border-color:lightgrey">
-		<form method="POST" class="post-form">{% csrf_token %}
-			<table>
-			{{ foodform.as_table }}
-			</table>
-			    
-			<button type="submit" class="save btn btn-primary">Add</button>
-		</form>
-	</div>	
-</div>	-->	
-
-
-
-
-
-
 
 
 	
@@ -159,11 +140,12 @@
 
 	
 </div><!--.col-sm-4-->
+<br />
 
-{% if user.username == food_info.author %}
+{% if user.username == entertainment_info.author %}
 <br>
 
-
+<br />
 <a class="btn btn-default btn-sm" href="edit">
 <i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i>Edit</a>
 

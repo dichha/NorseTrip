@@ -68,7 +68,7 @@
 
 	{% endif %}
 {% endfor %}
-<b> Restaurants that in the same city as hotel </b>
+<b> Restaurants that are in the same city as hotel </b>
 {% for food in foods %}
 	{% if lodge_info.city == food.city|stringformat:"s" %}
 	<ul>
@@ -79,7 +79,20 @@
 	</ul>
 	{% endif %}
 {% endfor %} 
-
+<br />
+<br />
+<b> Entertainment that is in the same city as hotel </b>
+{% for entertainment in entertainments %}
+	{% if lodge_info.city == entertainment.city|stringformat:"s" %}
+	<ul>
+	<li>
+	<a href="/entertainment_detail_notuser/{{entertainment.entertainmentId}}">
+	{{entertainment.name|stringformat:"s"}}</a>
+	</li>
+	</ul>
+	{% endif %}
+{% endfor %} 
+<br />
 </div>
 {{getfood}}
 <div class="review">

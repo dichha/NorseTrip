@@ -13,6 +13,8 @@ urlpatterns = [
     url(r'^hotels', views.hotels, name = 'hotels'),
     url(r'^hotel_details_notuser/(?P<lodgeId>[0-9]+)/$', views.hotel_details_notuser, name ='hotel_details_notuser'),
     url(r'^food_detail_notuser/(?P<foodId>[0-9]+)/$', views.food_detail_notuser, name ='food_detail_notuser'),
+    url(r'^entertainment_detail_notuser/(?P<entertainmentId>[0-9]+)/$', views.entertainment_detail_notuser, name ='entertainment_detail_notuser'),
+
 
     url(r'^hotel_details/(?P<lodgeId>[0-9]+)/$', views.hotel_details, name ='hotel_details'),
 
@@ -28,6 +30,12 @@ urlpatterns = [
 	url(r'^food_detail/(?P<foodId>[0-9]+)/edit/$',views.food_update, name= "food_update"),
 	url(r'^food_detail/(?P<foodId>[0-9]+)/editreview/$',views.foodreview_update, name= "foodreview_update"),
 	url(r'^food_detail/(?P<foodId>[0-9]+)/deletereview/$',views.foodreview_delete, name= "foodreview_delete"),
+	url(r'^entertainment_detail/(?P<entertainmentId>[0-9]+)/$', views.entertainment_detail, name = "entertainment_detail"),
+	url(r'^entertainment_detail/(?P<entertainmentId>[0-9]+)/edit/$',views.entertainment_update, name= "entertainment_update"),
+	url(r'^entertainment_detail/(?P<entertainmentId>[0-9]+)/delete/$',views.entertainment_delete, name= "entertainment_delete"),
+	url(r'^entertainment_detail/(?P<entertainmentId>[0-9]+)/editreview/$',views.entertainmentreview_update, name= "entertainmentreview_update"),
+	url(r'^entertainment_detail/(?P<entertainmentId>[0-9]+)/deletereview/$',views.entertainmentreview_delete, name= "entertainmentreview_delete"),
+
 
 
     url(r'^food_detail/(?P<foodId>[0-9]+)/delete/$', views.food_delete, name = 'food_delete'),
@@ -38,6 +46,9 @@ urlpatterns = [
     
     url(r'^post_course', views.post_course, name = 'post_course'),
     url(r'^post_food', views.post_food, name = 'post_food'),
+    url(r'^post_entertainment', views.post_entertainment, name = 'post_entertainment'),
+
+    
     
 
     url(r'^clAssignment', views.clAssignment, name = 'clAssignment'),

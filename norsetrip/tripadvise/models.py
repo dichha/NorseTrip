@@ -296,4 +296,76 @@ class FoodReview(models.Model):
 	
 	class Meta:
 		ordering = ["-pub_date"]
+		
+class Entertainment(models.Model):
+	def __int__(self):
+		return self.funId	
+	def __str__(self):
+		return self.name	
+	
+	entertainmentId = models.AutoField(primary_key = True, db_column = "EntertainmentId")
+	user_Id = models.ForeignKey('CustomUser', db_column = "UserId FK", on_delete = models.CASCADE, null = True)
+	name = models.CharField("Name", max_length = 200)
+	author = models.EmailField("Author", max_length=24, null = True)	
+	
+	address = models.CharField("Address", max_length = 200)
+	city = models.CharField("City", max_length = 100)
+	country = CountryField("Country", blank_label = 'Select Country')
+	url = models.URLField("URL", null = True, blank = True)
+	descrip = models.TextField("Entertainment Description")
+	pub_date = models.DateTimeField("Date Published", null = True)
+	image = models.ImageField("Entertainment Image", null=True, blank = False, width_field = "width_field", 
+		height_field = "height_field")
+	#def save(self,force_insert=False, force_update=False, *args, **kwargs):
+		#super(Food, self).save(force_insert, force_update)
+		#if self.image:
+			#if self.image.width > 300 or self.image.height > 300:
+				#resize_image(self.image)	
+
+	height_field = models.IntegerField(default = 0)
+	width_field = models.IntegerField(default = 0)
+	#def save(self,force_insert=False, force_update=False, *args, **kwargs):
+		#super(Food, self).save(force_insert, force_update)
+		#if self.image:
+			#if self.image.width > 300 or self.image.height > 300:
+				#resize_image(self.image)	
+	
+	def get_absolute_url(self):
+		return reverse('tripadvise.views.entertainment_detail', args=[str(self.entertainmentId)])	
+	
+	class Meta:
+		ordering = ["name"]
+		#preventing duplicates
+		unique_together = ["name","address","city","country", "url"]
+
+	def mean_rating(self):
+		all_ratings = map(lambda x: x.rating, self.entertainmentreview_set.all())
+		return (np.mean(all_ratings)*20)
+	
+	
+class EntertainmentReview(models.Model):
+	def __int__(self):
+		return self.reviewId
+	def __unicode__(self):
+		return '%s' % (self.reviewId)
+	
+	RATING_CHOICES = ((1,'1'),
+                          (2,'2'),
+                          (3, '3'),
+                          (4, '4'),
+                          (5, '5'),
+        )
+	
+	reviewId = models.AutoField(primary_key = True)
+	
+	entertainment_Id = models.ForeignKey(Entertainment,on_delete  = models.CASCADE)
+	user_Id = models.ForeignKey('CustomUser', db_column = "UserId FK", on_delete = models.CASCADE)
+	author = models.EmailField("Author", max_length=24)
+	rating = models.IntegerField("Rating", choices = RATING_CHOICES)
+	comment = models.TextField("Comment")
+	pub_date = models.DateTimeField("Date Published")
+	likes = models.IntegerField(default=0)
+	
+	class Meta:
+		ordering = ["-pub_date"]
 

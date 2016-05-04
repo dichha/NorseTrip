@@ -1,0 +1,21 @@
+{% extends 'tripadvise/base.html' %}
+
+{% block content %}
+<div class="container">
+<div class="col-sm-12">
+    <h1>Add A Venue your classmates will enjoy!</h1>
+    <h2>Examples: bowling alley, movie theater, pub</h2>
+    <hr style="border-color:lightgrey">
+    <form enctype="multipart/form-data" method="post">{% csrf_token %}
+    
+    <table>
+        {{ form.as_table }}
+        </table>
+
+		<button type="submit" class="btn btn-primary">
+        	<i class="fa fa-floppy-o fa-lg" aria-hidden="true"></i> Save
+        </button>
+        </form>
+ </div>
+ </div>
+{% endblock %}

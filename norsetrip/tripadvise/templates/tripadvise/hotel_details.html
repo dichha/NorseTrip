@@ -81,6 +81,21 @@
 	</ul>
 	{% endif %}
 {% endfor %} 
+<br />
+<br />
+<b> Entertainment that is in the same city as hotel </b>
+
+{% for entertainment in entertainments %}
+	{% if lodge_info.city == entertainment.city|stringformat:"s" %}
+	<ul>
+	<li>
+	<a href="/entertainment_detail/{{entertainment.entertainmentId}}">
+	{{entertainment.name|stringformat:"s"}}</a>
+	</li>
+	</ul>
+	{% endif %}
+{% endfor %}
+<br />
 
 </div>
 <div class="review">
@@ -168,19 +183,7 @@
 	
 
 </div><!--.col-sm-8-->
-<!--<div class="col-sm-9">
-	<div class="add_restaurant">
-		<h3> Add Restaurant </h3>
-		<hr style="border-color:lightgrey">
-		<form method="POST" class="post-form">{% csrf_token %}
-			<table>
-			{{ foodform.as_table }}
-			</table>
-			    
-			<button type="submit" class="save btn btn-primary">Add</button>
-		</form>
-	</div>	
-</div>	-->	
+
 
 <div class="col-sm-4">
 
@@ -247,6 +250,17 @@
 </a>
 
 </div><!--.add_restaurant-->
+
+<div id="add_entertainment">
+<h4 id="other_acc">Add Entertainment</h4>
+<hr style="border-color:lightgrey">
+<a href="/post_entertainment/">
+<span class='fa-stack fa-4x'>
+<i class='fa fa-circle fa-stack-2x'></i>
+<i class="fa fa-fort-awesome fa-stack-1x fa-inverse"></i></span>
+</a>
+
+</div><!--.add_entertainment-->
 	
 </div><!--.col-sm-4-->
 
