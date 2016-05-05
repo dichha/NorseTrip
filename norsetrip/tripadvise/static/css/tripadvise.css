@@ -264,15 +264,15 @@ a {
     color: #922B21;
 }
 .course_detail{
-    height: 500px;
+    height: 550px;
     width: 720px;
     border: 1px solid lightgrey;
     margin: 10px 10px 10px 10px;
 }
 .course_hotel_use{
     border: 1px solid lightgrey;
-    width:337px;
-    height: 500px;
+  /*  width:337px;
+    height: 500px;*/
     margin: 10px 10px 10px 10px;
     background-color: #FDEBD0;
 }
@@ -280,7 +280,7 @@ a {
     box-shadow: 7px 7px 5px grey;
 }
 #course_title{
-    margin-left: 22%;
+    text-align: center;
 }
 #course_descrip{
     padding-top: 10px;

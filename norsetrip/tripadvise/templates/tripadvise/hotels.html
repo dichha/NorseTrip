@@ -48,7 +48,7 @@
     </div> 
 
     <div class="col-sm-4 top_reviewed_div">
-        <h4 id="top_reviewed"> Overview of Accomodations </h4><br>
+        <h4 id="top_reviewed"> Overview of Accomodations </h4><hr style="border-color:lightgrey">
         {% for lodge in lodge_list %}
         {%if user.is_anonymous %}	
             <span style="margin-left: 10px"><a href="{% url 'hotel_details_notuser' lodge.lodgeId %}" style="text-decoration:none"><b>{{ lodge.lodge_name }}</b></a> <small> 
@@ -59,10 +59,10 @@
             {% endif %}</small>
             {% endif %}
         {%if user and not user.is_anonymous %}	
-            <span style="margin-left: 10px"><a href="{% url 'hotel_details' lodge.lodgeId %}" style="text-decoration:none"><b>{{ lodge.lodge_name }}</b></a> <small> 
+            <span style="margin-left: 10px"><a href="{% url 'hotel_details' lodge.lodgeId %}" style="text-decoration:none"><b>{{ lodge.lodge_name }} | </b></a> <small> 
 
             {% if lodge.review_set.count < 1 %}
-            No Reviews Made
+            0 review            
             {% elif lodge.review_set.count == 1 %}
             &nbsp{{ lodge.review_set.count }} review
             {% elif lodge.review_set.count > 1 %}

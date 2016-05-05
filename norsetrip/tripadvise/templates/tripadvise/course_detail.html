@@ -68,9 +68,8 @@
 			{% endif %}
 		{% endfor %}
 	{% endif %}
-{% endfor %} 	
+{% endfor %} 
 
-<div style="float:center; position: absolute; bottom: 0;">
 {% if course_info.term|lower|capfirst == "Jterm" %}
 	<img src="../../static/images/Winter.jpg" width="300px">
 	{% endif %}
@@ -83,7 +82,7 @@
 {% if  course_info.term|lower|capfirst == "Year" %}
 	<img src="../../static/images/city.jpg" width="300px">
 	{% endif %}
-</div>
+
 
 </div>
 <!-- Department : {{course_info.dept|lower|capfirst }}<br><br>
@@ -108,10 +107,10 @@ Hotels Stayed:
 {% if user.is_superuser %}
 <br><br><br>
 <!-- only for admin -->
-<a class="btn btn-default btn-sm" href="edit">
+<a href="edit" class="btn btn-default btn-sm">
 <i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i>Edit</a>
 
-<a class="btn btn-danger" href="delete">
+<a href="delete" class="btn btn-danger" >
   <i class="fa fa-trash-o fa-lg" aria-hidden="true"></i> Delete</a>
 
 
