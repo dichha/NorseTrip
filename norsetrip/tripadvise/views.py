@@ -20,6 +20,10 @@ import collections
 from django.contrib.auth.models import Permission, User
 from django.contrib.contenttypes.models import ContentType
 from django.core.mail import send_mail
+from django.utils.encoding import smart_unicode
+
+def __unicode__(self):
+	return smart_unicode(self.tag)
 
 
 content_type = ContentType.objects.get_for_model(Review)
@@ -664,12 +668,35 @@ def cuAssignment(request):
     if request.method == "POST":
         form = Course_User_AssignmentForm(request.POST)
         if form.is_valid():
+            customuser = CustomUser.objects.get(email = form.cleaned_data.get('user_Id'))
+            localemail = customuser.email
+            course_assigned = form.cleaned_data.get('course_Id')
+            subject = "Welcome to Norse Trip!"
+            from_email = settings.EMAIL_HOST_USER
+            to_email = localemail
+            email_message = """
+            Hello %s!
+            
+            Congratulations on your acceptance into %s!
+            Welcome to NorseTrip, the coolest place for Luther Students to review the hotels that they stay at while studying abroad.
+            Since you have now been assigned to a course, you are able to go in and review the accommodations you used on your trip.
+            You can visit us currently at localhost:8000 and sign in using your Norse Key.
+            
+            Hope your abroad experience is great,
+            NorseTrip Team
+            """%(customuser.fullName,course_assigned)
+            
             post = form.save(commit=False)
             post.save()
             form = Course_User_AssignmentForm()
             success = True
             #message success
             messages.success(request, "Successfully Assigned.")
+            send_mail(subject,
+                    email_message,
+                    from_email,
+                    [to_email],
+                    fail_silently=False)
            
         else:
             messages.error(request, "Not Successfully Assigned.")

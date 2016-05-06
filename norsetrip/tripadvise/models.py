@@ -94,10 +94,10 @@ class Course(models.Model):
 					('NOTTINGHAM','NOTTINGHAM'),
 					('NWL','NATURAL WORLD LAB'),
 					('NWNL','NATURAL WORLD NON LAB'),
-					('QUANT','QUANTTITAVE'),
+					('QUANT','QUANTITAVE'),
 					('REL II', 'RELIGION II'),
 					('ROCHESTER', 'ROCHESTER'),	
-					('PAID 450', 'PAIDIEA 450'),
+					('PAID 450', 'PAIDEIA 450'),
 					('WASHINGTON', 'WASHINGTON')
 					)
 
@@ -129,7 +129,7 @@ class Course(models.Model):
 	        ('MUSEUM STUDIES','MUSEUM STUDIES'),
 	        ('MUSIC','MUSIC'),
 	        ('NURSING','NURSING'),
-	        ('PAIDIEA','PAIDIEA'),
+	        ('PAIDEIA','PAIDEIA'),
 	        ('PHILOSOPHY','PHILOSOPHY'),
 	        ('PHYSICS','PHYSICS'),
 	        ('POLITICAL SCIENCE','POLITICAL SCIENCE'),

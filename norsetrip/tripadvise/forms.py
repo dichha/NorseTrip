@@ -1,4 +1,5 @@
 from django import forms
+from django.utils.encoding import smart_unicode
 
 from .models import Lodge
 from .models import Course
@@ -11,7 +12,8 @@ from .models import FoodReview
 from .models import Entertainment
 from .models import EntertainmentReview
 
-
+def __unicode__(self):
+	return smart_unicode(self.tag)
 
 class LodgeForm(forms.ModelForm):
 
