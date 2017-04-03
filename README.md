@@ -1,6 +1,6 @@
-#NorseTrip
+## NorseTrip
 CS Senior Project 2015-16
-#Installation: 
+## Installation: 
 pip install django_countries <br />
 pip install django-multiselectfield <br />
 pip install python-social-auth <br />
