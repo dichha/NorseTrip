@@ -10,4 +10,4 @@ pip install python-social-auth <br />
 pip install django-ajax <br />
 pip install numpy <br />
 
-This is a slide for the final [presentation](https://drive.google.com/open?id=1Mw4YVcVNOzRt8wW0ojMX6PyHGr0ioM1rxW-7M1Qv-e8) on May 6th 2016. The demo was done live so we didn't put any artifacts about it in slides (wish had done) [-;  
+This is a slide for the final [presentation](https://drive.google.com/open?id=1Mw4YVcVNOzRt8wW0ojMX6PyHGr0ioM1rxW-7M1Qv-e8) on May 6th 2016. The demo was done live so we didn't put any artifacts about it in slides. 
